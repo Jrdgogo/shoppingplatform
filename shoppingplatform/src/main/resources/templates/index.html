@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>主页</title>
+<script th:src="@{../static/js/jquery-1.9.1.min.js}"></script>
+</head>
+<body>
+	<table th:if="!${roles.empty}">
+		<caption>角色表</caption>
+		>
+		<tr>
+			<td>角色</td>
+			<td>创建时间</td>
+			<td>更改时间</td>
+		</tr>
+		<tr th:each="role : ${roles}">
+			<td th:text="${role.admin}"></td>
+			<td
+				th:text="${#dates.format(role.createdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+			<td
+				th:text="${#dates.format(role.updatedate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+		</tr>
+	</table>
+	<table th:if="!${users.empty}">
+		<caption>用户表</caption>
+		<tr>
+			<td>姓名</td>
+			<td>年龄</td>
+			<td>邮箱</td>
+			<td>性别</td>
+			<td>创建时间</td>
+			<td>更改时间</td>
+		</tr>
+		<tr th:each="user : ${users}">
+			<td th:text="${user.name}"></td>
+			<td th:text="${user.age}"></td>
+			<td th:text="${user.email}"></td>
+			<td th:text="${user.sex}"></td>
+			<td
+				th:text="${#dates.format(user.createdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+			<td
+				th:text="${#dates.format(user.updatedate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+		</tr>
+	</table>
+	<a th:href="@{/home/activeUser.mvc}">链接</a>
+	<a onclick="date()">点击</a>
+</body>
+<script type="text/javascript">
+function date(){
+	       var dateparam=new Date();
+			$.ajax({
+				type: "POST",
+				url: '/home/activeUser.mvc',
+				data: "dateparam"+dateparam,
+				dataType: "json",
+				success: function(result) {
+					var jsonobj=eval(result);
+					alert(jsonobj.dateparam);
+				},
+				error: function() {
+				}
+			});
+}
+</script>
+</html>
