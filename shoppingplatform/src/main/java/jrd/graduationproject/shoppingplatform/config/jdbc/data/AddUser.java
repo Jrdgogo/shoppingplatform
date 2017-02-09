@@ -17,6 +17,7 @@ import jrd.graduationproject.shoppingplatform.pojo.enumfield.SexEnum;
 @Order(value=2)
 public class AddUser implements CommandLineRunner {
 
+
 	@PersistenceContext
 	private EntityManager entityManager;
 	@Autowired
@@ -30,6 +31,7 @@ public class AddUser implements CommandLineRunner {
 		user.setPassword("123");
 		user.setSex(SexEnum.MAN);
 		user.setEmail("ruidong@greatld.com");
+		
 		entityManager.joinTransaction();
 		userJpa.save(user);
 	}

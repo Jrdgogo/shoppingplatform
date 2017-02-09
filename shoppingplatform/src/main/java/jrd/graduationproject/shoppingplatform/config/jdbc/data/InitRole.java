@@ -1,5 +1,6 @@
 package jrd.graduationproject.shoppingplatform.config.jdbc.data;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import jrd.graduationproject.shoppingplatform.pojo.enumfield.AdminEnum;
 @Component
 @Order(value=1)
 public class InitRole implements CommandLineRunner {
+
 
 	@PersistenceContext
 	private EntityManager entityManager;
