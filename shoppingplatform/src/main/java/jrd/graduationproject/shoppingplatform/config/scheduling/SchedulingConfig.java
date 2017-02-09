@@ -18,7 +18,7 @@ public class SchedulingConfig {
     private void process(){
 		Map<String, Object> params=new HashMap<String, Object>();
 		params.put("Num", 5);
-		springMail.doSend("企查查", "order_failure.ftl", params, "ruidong@greatld.com");
+		springMail.doSend("只为让您购物愉快", "order_failure.ftl", params, "1477450172@qq.com");
     }
 
 }

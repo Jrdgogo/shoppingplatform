@@ -30,7 +30,7 @@ public class AddUser implements CommandLineRunner {
 		user.setName("testUser");
 		user.setPassword("123");
 		user.setSex(SexEnum.MAN);
-		user.setEmail("ruidong@greatld.com");
+		user.setEmail("1477450172@qq.com");
 		
 		entityManager.joinTransaction();
 		userJpa.save(user);

@@ -35,8 +35,8 @@ public class SpringMailConfig {
 		JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 		javaMailSender.setHost(env.getProperty("host"));
 		javaMailSender.setPort(env.getProperty("port",int.class));
-		javaMailSender.setUsername(env.getProperty("username"));
-		javaMailSender.setPassword(env.getProperty("password"));
+		javaMailSender.setUsername(env.getProperty("mail_userName"));
+		javaMailSender.setPassword(env.getProperty("mail_password"));
 		javaMailSender.setDefaultEncoding(env.getProperty("defaultEncoding"));
 		javaMailSender.setJavaMailProperties(properties);
 		return javaMailSender;
@@ -55,6 +55,7 @@ public class SpringMailConfig {
 	}
 	@Bean(name = "SpringMail")
 	public SpringMail springMail(@Qualifier("mailSender")JavaMailSender mailSender,@Qualifier("freemarkerConfiguration")FreeMarkerConfigurationFactoryBean freemarkerConfiguration) throws IOException, TemplateException {
+		
 		SpringMail springMail= new SpringMail();
 		springMail.setMailSender(mailSender);
 		springMail.setFreemarkerConfiguration(freemarkerConfiguration.createConfiguration());
