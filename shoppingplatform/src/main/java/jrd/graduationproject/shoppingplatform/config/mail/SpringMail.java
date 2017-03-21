@@ -1,4 +1,4 @@
-package jrd.graduationproject.shoppingplatform.util;
+package jrd.graduationproject.shoppingplatform.config.mail;
 
 import java.io.IOException;
 import java.util.Map;
@@ -10,12 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
+@Component
 public class SpringMail {
 	private JavaMailSender mailSender;
 	private Configuration freemarkerConfiguration;
@@ -82,13 +84,12 @@ public class SpringMail {
 		this.senderUser = senderUser;
 	}
 
+	public void setPersonal(String personal) {
+		 this.personal=personal;
+	}
+
 	public String getPersonal() {
 		return personal;
 	}
-
-	public void setPersonal(String personal) {
-		this.personal = personal;
-	}
-	
 
 }

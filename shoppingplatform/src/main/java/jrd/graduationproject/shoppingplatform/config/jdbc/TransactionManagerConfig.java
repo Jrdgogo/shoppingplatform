@@ -13,14 +13,8 @@ public class TransactionManagerConfig {
 
 	@Bean("transactionManager")
 	@Primary
-	public DataSourceTransactionManager MySqlDataSourceTransactionManager(@Qualifier("dataSource")DataSource dataSource) {
+	public DataSourceTransactionManager sqlServerDataSourceTransactionManager(
+			@Qualifier("dataSource")DataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
 	}
-	
-	@Bean(name = "h2TransactionManager")
-	public DataSourceTransactionManager h2DataSourceTransactionManager(
-			@Qualifier("h2DataSource") DataSource dataSource) {
-		return new DataSourceTransactionManager(dataSource);
-	}
-	
 }

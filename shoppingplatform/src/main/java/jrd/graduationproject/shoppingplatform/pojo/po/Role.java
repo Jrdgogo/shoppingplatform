@@ -1,4 +1,4 @@
-package jrd.graduationproject.shoppingplatform.pojo;
+package jrd.graduationproject.shoppingplatform.pojo.po;
 
 import java.util.Date;
 
@@ -14,7 +14,7 @@ import javax.persistence.TemporalType;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.AdminEnum;
 
 @Entity
-@Table(name="role")
+@Table(name="t_role")
 public class Role {
 	@Id 
 	@Enumerated(EnumType.ORDINAL)

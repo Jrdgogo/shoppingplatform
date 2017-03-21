@@ -1,4 +1,4 @@
-package jrd.graduationproject.shoppingplatform.pojo;
+package jrd.graduationproject.shoppingplatform.pojo.po;
 
 import java.util.Date;
 
@@ -18,12 +18,13 @@ import jrd.graduationproject.shoppingplatform.pojo.enumfield.SexEnum;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.StatusEnum;
 
 @Entity
-@Table(name="users")
+@Table(name="t_user")
 public class User {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	@Column(nullable=false,unique=true)
-	private String name;
+	private String username;
+	private String realname;
 	@Column(nullable=false)
 	private String password;
 	private Integer age;
@@ -35,8 +36,13 @@ public class User {
 	private String email;
 	private String qq;
 	private String phone;
+	private String address;
+	@Temporal(TemporalType.DATE)
+	private Date birth;
 	@Lob
-	private byte[] photo;
+	private Byte[] photo;
+	@Lob
+	private String selfdesc;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(updatable = false)  
@@ -49,19 +55,17 @@ public class User {
 //    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date updatedate;
 	
-	
-	
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
+	public String getUsername() {
+		return username;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public String getPassword() {
 		return password;
@@ -105,10 +109,10 @@ public class User {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public byte[] getPhoto() {
+	public Byte[] getPhoto() {
 		return photo;
 	}
-	public void setPhoto(byte[] photo) {
+	public void setPhoto(Byte[] photo) {
 		this.photo = photo;
 	}
 	public Date getCreatedate() {
@@ -122,6 +126,32 @@ public class User {
 	}
 	public void setUpdatedate(Date updatedate) {
 		this.updatedate = updatedate;
+	}
+	
+	public String getRealname() {
+		return realname;
+	}
+	public void setRealname(String realname) {
+		this.realname = realname;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public Date getBirth() {
+		return birth;
+	}
+	public void setBirth(Date birth) {
+		this.birth = birth;
+	}
+
+	public String getSelfdesc() {
+		return selfdesc;
+	}
+	public void setSelfdesc(String selfdesc) {
+		this.selfdesc = selfdesc;
 	}
 	@Override
 	public int hashCode() {

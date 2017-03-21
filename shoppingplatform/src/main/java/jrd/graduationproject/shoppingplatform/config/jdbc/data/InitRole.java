@@ -13,9 +13,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import jrd.graduationproject.shoppingplatform.dao.jpa.mysql.RoleJpa;
-import jrd.graduationproject.shoppingplatform.pojo.Role;
+import jrd.graduationproject.shoppingplatform.dao.jpa.RoleJpa;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.AdminEnum;
+import jrd.graduationproject.shoppingplatform.pojo.po.Role;
 
 @Component
 @Order(value=1)
@@ -30,13 +30,13 @@ public class InitRole implements CommandLineRunner {
 	@Override
 	@Transactional
 	public void run(String... arg0) throws Exception {
-		entityManager.joinTransaction();
 		List<Role> roles=new ArrayList<Role>(0);
 		for(AdminEnum adminEnum:AdminEnum.values()){
 			Role role=new Role();
 			role.setAdmin(adminEnum);
 			roles.add(role);
 		}
+		entityManager.joinTransaction();
 		roleJpa.save(roles);
 	}
 

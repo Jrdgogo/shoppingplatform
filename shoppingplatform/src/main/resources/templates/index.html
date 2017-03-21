@@ -3,19 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <title>主页</title>
-<<<<<<< HEAD
 <script th:src="@{/js/jquery-3.1.1.min.js}"></script>
-=======
-<script th:src="@{../static/js/jquery-1.9.1.min.js}"></script>
->>>>>>> a97830fa0a589a3d39e95302fa0d76ee72929890
 </head>
 <body>
 	<table th:if="!${roles.empty}">
 		<caption>角色表</caption>
-<<<<<<< HEAD
-=======
-		>
->>>>>>> a97830fa0a589a3d39e95302fa0d76ee72929890
 		<tr>
 			<td>角色</td>
 			<td>创建时间</td>
@@ -50,7 +42,6 @@
 				th:text="${#dates.format(user.updatedate, 'yyyy-MM-dd HH:mm:ss')}"></td>
 		</tr>
 	</table>
-<<<<<<< HEAD
 	<button th:onclick="'datetest()'">点击</button>
 	<form th:action="@{/home/addUser.mvc}" method="post">
 	    <input type="text" name="name" value="321"/>
@@ -59,41 +50,5 @@
 	    <input type="submit" value="添加"/>
 	</form>
 </body>
-<script type="text/javascript">
-function datetest(){
-	       var dateparam="2016-12-12 06:53:23";
-	       alert(dateparam);
-			$.ajax({
-				type: "POST",
-				url: '/home/activeUser.mvc',
-				data: "updatedate="+dateparam,
-				dataType: "json",
-				success: function(result) {
-					var jsonobj=eval(result);
-					alert(jsonobj.updatedate);
-				},
-				error: function(exception) {
-					alert(exception.responseText);
-=======
-	<a th:href="@{/home/activeUser.mvc}">链接</a>
-	<a onclick="date()">点击</a>
 </body>
-<script type="text/javascript">
-function date(){
-	       var dateparam=new Date();
-			$.ajax({
-				type: "POST",
-				url: '/home/activeUser.mvc',
-				data: "dateparam"+dateparam,
-				dataType: "json",
-				success: function(result) {
-					var jsonobj=eval(result);
-					alert(jsonobj.dateparam);
-				},
-				error: function() {
->>>>>>> a97830fa0a589a3d39e95302fa0d76ee72929890
-				}
-			});
-}
-</script>
 </html>
