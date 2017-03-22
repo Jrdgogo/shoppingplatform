@@ -22,26 +22,15 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
 import jrd.graduationproject.shoppingplatform.service.IUserService;
 
-/**
- * Servlet Filter implementation class LoginFilter
- */
 public class LoginFilter implements Filter {
 
 	private Logger logger = LoggerFactory.getLogger(LoginFilter.class);
 
-	/**
-	 * Default constructor.
-	 */
-	public LoginFilter() {
-	}
 
-	/**
-	 * @see Filter#destroy()
-	 */
 	public void destroy() {
 	}
 
-	private static final String[] IGNORE_URI = { "/css", "/js", "/images", "/home", "/public", "/view" };
+	private static final String[] IGNORE_URI = { "/css", "/js", "/images", "/home", "/public"};
 
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)

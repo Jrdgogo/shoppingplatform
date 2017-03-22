@@ -10,7 +10,7 @@ public interface UserExtrMapper {
 
     int deleteByExample(UserExtrExample example);
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(String id);
 
     int insert(UserExtr record);
 
@@ -18,7 +18,7 @@ public interface UserExtrMapper {
 
     List<UserExtr> selectByExample(UserExtrExample example);
 
-    UserExtr selectByPrimaryKey(Integer id);
+    UserExtr selectByPrimaryKey(String id);
 
     int updateByExampleSelective(@Param("record") UserExtr record, @Param("example") UserExtrExample example);
 

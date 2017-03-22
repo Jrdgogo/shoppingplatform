@@ -13,7 +13,7 @@ import javax.persistence.TemporalType;
 public class UserExtr {
 
 	@Id
-	private Integer id;
+	private String id;
 	@Column(nullable=false)
 	private String activecode;
 	@Temporal(TemporalType.TIMESTAMP)
@@ -21,12 +21,11 @@ public class UserExtr {
 	@org.hibernate.annotations.CreationTimestamp 
 	private Date createdate;
 
-
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

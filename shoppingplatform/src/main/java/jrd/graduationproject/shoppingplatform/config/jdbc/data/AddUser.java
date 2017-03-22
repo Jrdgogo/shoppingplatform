@@ -16,7 +16,7 @@ import jrd.graduationproject.shoppingplatform.pojo.po.User;
 import jrd.graduationproject.shoppingplatform.util.GlobalUtil;
 
 @Component
-@Order(value = 2)
+@Order(value = 1)
 public class AddUser implements CommandLineRunner {
 
 	@PersistenceContext
@@ -28,7 +28,7 @@ public class AddUser implements CommandLineRunner {
 	@Transactional
 	public void run(String... arg0) throws Exception {
 		User user = new User();
-
+        user.setId(GlobalUtil.getModelID(User.class));
 		user.setUsername("jrd");
 		user.setPassword("shop_J");
 		user.setSex(SexEnum.MAN);
@@ -41,6 +41,7 @@ public class AddUser implements CommandLineRunner {
 		user.setBirth(GlobalUtil.formatDate("1995-07-18"));
 		user.setRealname("季睿东");
 		user.setSelfdesc("毕业生");
+		user.setPower(1+2+4);
 		entityManager.joinTransaction();
 		userJpa.save(user);
 	}

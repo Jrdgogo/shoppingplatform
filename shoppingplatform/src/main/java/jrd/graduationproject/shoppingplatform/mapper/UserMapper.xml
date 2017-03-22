@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="jrd.graduationproject.shoppingplatform.dao.mybatis.UserMapper" >
   <resultMap id="BaseResultMap" type="jrd.graduationproject.shoppingplatform.pojo.po.User" >
-    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="address" property="address" jdbcType="VARCHAR" />
     <result column="age" property="age" jdbcType="INTEGER" />
     <result column="birth" property="birth" jdbcType="DATE" />
@@ -116,17 +116,17 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
     from `t_user`
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from `t_user`
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.UserExample" >
     delete from `t_user`
@@ -141,7 +141,7 @@
       realname, sex, `status`, 
       updatedate, username, photo, 
       selfdesc)
-    values (#{id,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, 
       #{birth,jdbcType=DATE}, #{createdate,jdbcType=TIMESTAMP}, #{email,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, 
       #{realname,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
@@ -202,7 +202,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=VARCHAR},
       </if>
       <if test="address != null" >
         #{address,jdbcType=VARCHAR},
@@ -261,7 +261,7 @@
     update `t_user`
     <set >
       <if test="record.id != null" >
-        id = #{record.id,jdbcType=INTEGER},
+        id = #{record.id,jdbcType=VARCHAR},
       </if>
       <if test="record.address != null" >
         address = #{record.address,jdbcType=VARCHAR},
@@ -315,7 +315,7 @@
   </update>
   <update id="updateByExampleWithBLOBs" parameterType="map" >
     update `t_user`
-    set id = #{record.id,jdbcType=INTEGER},
+    set id = #{record.id,jdbcType=VARCHAR},
       address = #{record.address,jdbcType=VARCHAR},
       age = #{record.age,jdbcType=INTEGER},
       birth = #{record.birth,jdbcType=DATE},
@@ -337,7 +337,7 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update `t_user`
-    set id = #{record.id,jdbcType=INTEGER},
+    set id = #{record.id,jdbcType=VARCHAR},
       address = #{record.address,jdbcType=VARCHAR},
       age = #{record.age,jdbcType=INTEGER},
       birth = #{record.birth,jdbcType=DATE},
@@ -404,7 +404,7 @@
         selfdesc = #{selfdesc,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.User" >
     update `t_user`
@@ -423,7 +423,7 @@
       username = #{username,jdbcType=VARCHAR},
       photo = #{photo,jdbcType=LONGVARBINARY},
       selfdesc = #{selfdesc,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.User" >
     update `t_user`
@@ -440,6 +440,6 @@
       `status` = #{status,jdbcType=INTEGER},
       updatedate = #{updatedate,jdbcType=TIMESTAMP},
       username = #{username,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

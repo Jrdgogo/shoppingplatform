@@ -10,12 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jrd.graduationproject.shoppingplatform.config.mail.SpringMail;
-import jrd.graduationproject.shoppingplatform.dao.jpa.RoleJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.UserJpa;
 import jrd.graduationproject.shoppingplatform.dao.mybatis.UserExtrMapper;
 import jrd.graduationproject.shoppingplatform.dao.mybatis.UserMapper;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.StatusEnum;
-import jrd.graduationproject.shoppingplatform.pojo.po.Role;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
 import jrd.graduationproject.shoppingplatform.pojo.po.UserExample;
 import jrd.graduationproject.shoppingplatform.pojo.po.UserExtr;
@@ -28,8 +26,6 @@ public class UserServiceImpl implements IUserService {
 	@Autowired
 	private UserJpa userJpa;
 	@Autowired
-	private RoleJpa roleJpa;
-	@Autowired
 	private UserMapper userMapper;
 	@Autowired
 	private UserExtrMapper userExtrMapper;
@@ -39,11 +35,6 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public List<User> getAllUser() {
 		return userJpa.findAll();
-	}
-
-	@Override
-	public List<Role> getAllRole() {
-		return roleJpa.findAll();
 	}
 
 	@Override
@@ -69,7 +60,7 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	@Transactional
-	public Boolean ActivationUser(Integer id, String activeCode) {
+	public Boolean ActivationUser(String id, String activeCode) {
 		UserExtr extr = userExtrMapper.selectByPrimaryKey(id);
 		if (extr == null)
 			throw new RuntimeException("激活链接已失效");
@@ -88,6 +79,7 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	@Transactional
 	public Boolean RegisterUser(User user) {
+		user.setId(GlobalUtil.getModelID(User.class));
 		user.setPassword(GlobalUtil.md5(user.getPassword()));
 		if ((user = userJpa.save(user)) != null) {
 			UserExtr record = new UserExtr();

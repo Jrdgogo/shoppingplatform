@@ -21,6 +21,9 @@ public class GlobalUtil {
 	public static String get32bitString() {
 		return UUID.randomUUID().toString().replaceAll("-", "");
 	}
+	public static String getModelID(Class<?> model){
+		return md5(get32bitString(),model.getName());
+	}
 
 	public static String getCode(String name) {
 		try {
@@ -55,7 +58,10 @@ public class GlobalUtil {
 	private static final Md5PasswordEncoder en = new Md5PasswordEncoder();
 
 	public static String md5(String password) {
-		return en.encodePassword(password, password.toLowerCase());
+		return md5(password,password.toLowerCase());
+	}
+	private static String md5(String password,String solt) {
+		return en.encodePassword(password, solt);
 	}
 
 	public static String margeCmd(String cmd, String... args) {

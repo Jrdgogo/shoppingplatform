@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="jrd.graduationproject.shoppingplatform.dao.mybatis.UserExtrMapper" >
   <resultMap id="BaseResultMap" type="jrd.graduationproject.shoppingplatform.pojo.po.UserExtr" >
-    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="activecode" property="activecode" jdbcType="VARCHAR" />
     <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -81,15 +81,15 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from `t_user_extr`
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from `t_user_extr`
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.UserExtrExample" >
     delete from `t_user_extr`
@@ -100,7 +100,7 @@
   <insert id="insert" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.UserExtr" >
     insert into `t_user_extr` (id, activecode, createdate
       )
-    values (#{id,jdbcType=INTEGER}, #{activecode,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}
+    values (#{id,jdbcType=VARCHAR}, #{activecode,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.UserExtr" >
@@ -118,7 +118,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=VARCHAR},
       </if>
       <if test="activecode != null" >
         #{activecode,jdbcType=VARCHAR},
@@ -138,7 +138,7 @@
     update `t_user_extr`
     <set >
       <if test="record.id != null" >
-        id = #{record.id,jdbcType=INTEGER},
+        id = #{record.id,jdbcType=VARCHAR},
       </if>
       <if test="record.activecode != null" >
         activecode = #{record.activecode,jdbcType=VARCHAR},
@@ -153,7 +153,7 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update `t_user_extr`
-    set id = #{record.id,jdbcType=INTEGER},
+    set id = #{record.id,jdbcType=VARCHAR},
       activecode = #{record.activecode,jdbcType=VARCHAR},
       createdate = #{record.createdate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -170,12 +170,12 @@
         createdate = #{createdate,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.UserExtr" >
     update `t_user_extr`
     set activecode = #{activecode,jdbcType=VARCHAR},
       createdate = #{createdate,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>
