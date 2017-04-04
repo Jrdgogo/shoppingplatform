@@ -11,7 +11,7 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 import com.alibaba.fastjson.JSONObject;
 
-import jrd.graduationproject.shoppingplatform.exception.NotParseException;
+import jrd.graduationproject.shoppingplatform.exception.category.NotParseException;
 
 public class GlobalUtil {
 
@@ -122,6 +122,13 @@ public class GlobalUtil {
 		} catch (ParseException e) {
 			throw new NotParseException("日期格式传入错误！请传入yyyy-MM-dd hh:mm:ss格式");
 		}
+	}
+	public static String toJsonString(Object ...agrs) {
+		JSONObject jsonObject=new JSONObject();
+		for(int i=0;i<agrs.length;i++){
+		   jsonObject.put(""+i, agrs[i]);
+		}
+		return jsonObject.toJSONString();
 	}
 
 }

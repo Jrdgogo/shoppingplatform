@@ -14,6 +14,8 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 
 import freemarker.template.TemplateException;
+import jrd.graduationproject.shoppingplatform.config.redis.JedisDataSource;
+import jrd.graduationproject.shoppingplatform.util.PropertiesUtil;
 
 @Configuration
 @PropertySource(value = { "classpath:mail.properties" })
@@ -45,15 +47,7 @@ public class SpringMailConfig {
 
 	@Bean(name = "mailProperties")
 	public Properties mailProperties() throws IOException {
-		Properties properties = new Properties();
-		properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("mail.properties"));
-		Properties mailProperties = new Properties();
-		for (String nameKey : properties.stringPropertyNames()) {
-			if (nameKey.startsWith(mailPropertiesStartsWith))
-				mailProperties.setProperty(nameKey.substring(mailPropertiesStartsWith.length() + 1),
-						properties.getProperty(nameKey));
-		}
-		return mailProperties;
+		return PropertiesUtil.propertiesOfFile("mail.properties", mailPropertiesStartsWith);
 	}
 
 	@Bean(name = "SpringMail")
@@ -66,5 +60,22 @@ public class SpringMailConfig {
 		springMail.setSenderUser(env.getProperty("mail_senderUser"));
 		springMail.setPersonal(env.getProperty("mail_personal"));
 		return springMail;
+	}
+
+	@Bean(name = "MailSubscribe", initMethod = "listener")
+	public MailSubscribe mailSubscribe(@Qualifier("SpringMail") SpringMail springMail,
+			@Qualifier("jedisDataSource") JedisDataSource jedisDataSource) throws IOException, TemplateException {
+		MailSubscribe mailSubscribe = new MailSubscribe();
+		mailSubscribe.setSpringMail(springMail);
+		mailSubscribe.setJedis(jedisDataSource.getJedis());
+		return mailSubscribe;
+	}
+
+	@Bean(name = "MailPublish")
+	public MailPublish mailPublish(@Qualifier("SpringMail") SpringMail springMail,
+			@Qualifier("jedisDataSource") JedisDataSource jedisDataSource) throws IOException, TemplateException {
+		MailPublish mailPublish = new MailPublish();
+		mailPublish.setJedisDataSource(jedisDataSource);
+		return mailPublish;
 	}
 }

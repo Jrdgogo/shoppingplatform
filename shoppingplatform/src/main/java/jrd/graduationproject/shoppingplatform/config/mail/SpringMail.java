@@ -10,14 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
-@Component
 public class SpringMail {
 	private JavaMailSender mailSender;
 	private Configuration freemarkerConfiguration;
@@ -46,6 +44,7 @@ public class SpringMail {
 	}
 	
 	public boolean doSend(String subject, String templateName, Map<String, Object> params, String... receiverUser){
+
 		try {
 			Template template = freemarkerConfiguration.getTemplate(templateName, DEFAULT_ENCODING);
 			String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, params);

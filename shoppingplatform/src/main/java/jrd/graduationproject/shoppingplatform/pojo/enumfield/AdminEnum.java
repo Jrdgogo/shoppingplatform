@@ -1,6 +1,6 @@
 package jrd.graduationproject.shoppingplatform.pojo.enumfield;
 
-import jrd.graduationproject.shoppingplatform.exception.NotFindEnumException;
+import jrd.graduationproject.shoppingplatform.exception.category.NotFindEnumException;
 
 public enum AdminEnum {
 	ADMIN(4, "管理员", 1 + 2 + 4), SHOPKEEPER(2, "店主", 1 + 2), USER(1, "用户", 1), VISITOR(0, "游客", 0);

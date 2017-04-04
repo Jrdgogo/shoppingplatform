@@ -1,6 +1,8 @@
-package jrd.graduationproject.shoppingplatform.exception;
+package jrd.graduationproject.shoppingplatform.exception.category;
 
-public class NotFindEnumException extends RuntimeException {
+import jrd.graduationproject.shoppingplatform.exception.SelfCodeException;
+
+public class NotFindEnumException extends SelfCodeException {
 
 	public NotFindEnumException() {
 		super();

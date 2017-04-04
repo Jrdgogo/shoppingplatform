@@ -1,9 +1,0 @@
-<html>
-	<body>
-		<div>
-			<h4>激活提醒</h4>
-			<div><p><span>订单数量：${Num}<span></p> 
-			</div>
-		</div>
-	</body>
-</html>

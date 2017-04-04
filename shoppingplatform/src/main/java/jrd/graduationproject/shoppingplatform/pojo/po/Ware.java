@@ -1,35 +1,36 @@
 package jrd.graduationproject.shoppingplatform.pojo.po;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "t_ware")
 public class Ware {
 
 	@Id
+	@Column(length=32)
 	private String id;
-
+	// 商品描述
+	@Column(length=80,nullable = false)
+	private String ware;
+	// 商品详情表
+	@Column(length=20,nullable = false)
 	private String waretable;
 
-	private String wareid;
-
+	@Column(nullable = false)
 	private Double price;
+	
+	@Column(nullable = false)
+	private String photo;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(updatable = false)
-	@org.hibernate.annotations.CreationTimestamp
-	private Date createdate;
+	//级联
+	@Column(length=32,nullable = false)
+	private String commodity;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@org.hibernate.annotations.UpdateTimestamp
-	private Date updatedate;
+	@Column(nullable = false,columnDefinition="VARCHAR(32) default '342623J19950718R0302D'")
+	private String seller;
 
 	public String getId() {
 		return id;
@@ -37,6 +38,14 @@ public class Ware {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getWare() {
+		return ware;
+	}
+
+	public void setWare(String ware) {
+		this.ware = ware;
 	}
 
 	public String getWaretable() {
@@ -47,14 +56,6 @@ public class Ware {
 		this.waretable = waretable;
 	}
 
-	public String getWareid() {
-		return wareid;
-	}
-
-	public void setWareid(String wareid) {
-		this.wareid = wareid;
-	}
-
 	public Double getPrice() {
 		return price;
 	}
@@ -63,20 +64,20 @@ public class Ware {
 		this.price = price;
 	}
 
-	public Date getCreatedate() {
-		return createdate;
+	public String getCommodity() {
+		return commodity;
 	}
 
-	public void setCreatedate(Date createdate) {
-		this.createdate = createdate;
+	public void setCommodity(String commodity) {
+		this.commodity = commodity;
 	}
 
-	public Date getUpdatedate() {
-		return updatedate;
+	public String getSeller() {
+		return seller;
 	}
 
-	public void setUpdatedate(Date updatedate) {
-		this.updatedate = updatedate;
+	public void setSeller(String seller) {
+		this.seller = seller;
 	}
-
+	
 }

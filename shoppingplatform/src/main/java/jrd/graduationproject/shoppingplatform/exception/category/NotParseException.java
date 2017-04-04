@@ -1,6 +1,8 @@
-package jrd.graduationproject.shoppingplatform.exception;
+package jrd.graduationproject.shoppingplatform.exception.category;
 
-public class NotParseException extends RuntimeException {
+import jrd.graduationproject.shoppingplatform.exception.SelfCodeException;
+
+public class NotParseException extends SelfCodeException{
 
 	public NotParseException() {
 		super();

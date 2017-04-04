@@ -2,11 +2,11 @@ package jrd.graduationproject.shoppingplatform.pojo.enumfield;
 
 import jrd.graduationproject.shoppingplatform.exception.category.NotFindEnumException;
 
-public enum StatusEnum {
-     NOTACTIVE(0,"未激活"),ACTIVE(1,"活跃"),CANCEL(2,"注销");
+public enum OrderStatusEnum {
+	UNPAID(0,"未支付"),PAYMENT(1,"已支付"),CANCEL(2,"取消"),BACK(3,"退单");
 	private Integer index;
 	private String desc;
-    private StatusEnum(Integer index,String desc){
+    private OrderStatusEnum(Integer index,String desc){
     	 this.index=index;
     	 this.desc=desc;
      }
@@ -16,15 +16,15 @@ public enum StatusEnum {
 	public String getDesc() {
 		return desc;
 	}
-     public static StatusEnum getStatusByIndex(Integer index){
-    	 for(StatusEnum statusEnum:StatusEnum.values()){
+     public static OrderStatusEnum getStatusByIndex(Integer index){
+    	 for(OrderStatusEnum statusEnum:OrderStatusEnum.values()){
     		 if(statusEnum.getIndex()==index)
     			 return statusEnum;
     	 }
     	 throw new NotFindEnumException("没有发现该枚举类型");
      }
-     public static StatusEnum getStatusByDesc(String desc){
-    	 for(StatusEnum statusEnum:StatusEnum.values()){
+     public static OrderStatusEnum getStatusByDesc(String desc){
+    	 for(OrderStatusEnum statusEnum:OrderStatusEnum.values()){
     		 if(statusEnum.getDesc().equals(desc))
     			 return statusEnum;
     	 }

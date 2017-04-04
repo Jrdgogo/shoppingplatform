@@ -1,24 +1,23 @@
 package jrd.graduationproject.shoppingplatform.service.impl;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import jrd.graduationproject.shoppingplatform.config.mail.SpringMail;
+import jrd.graduationproject.shoppingplatform.config.mail.MailPublish;
+import jrd.graduationproject.shoppingplatform.config.redis.JedisDataSource;
 import jrd.graduationproject.shoppingplatform.dao.jpa.UserJpa;
-import jrd.graduationproject.shoppingplatform.dao.mybatis.UserExtrMapper;
 import jrd.graduationproject.shoppingplatform.dao.mybatis.UserMapper;
+import jrd.graduationproject.shoppingplatform.exception.UserOptionErrorException;
+import jrd.graduationproject.shoppingplatform.exception.category.NotSaveException;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.StatusEnum;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
-import jrd.graduationproject.shoppingplatform.pojo.po.UserExample;
-import jrd.graduationproject.shoppingplatform.pojo.po.UserExtr;
 import jrd.graduationproject.shoppingplatform.service.IUserService;
 import jrd.graduationproject.shoppingplatform.util.GlobalUtil;
+import redis.clients.jedis.Jedis;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -28,75 +27,97 @@ public class UserServiceImpl implements IUserService {
 	@Autowired
 	private UserMapper userMapper;
 	@Autowired
-	private UserExtrMapper userExtrMapper;
+	private JedisDataSource jedisDataSource;
 	@Autowired
-	private SpringMail springMail;
-
-	@Override
-	public List<User> getAllUser() {
-		return userJpa.findAll();
-	}
+	private MailPublish mailPublish;
 
 	@Override
 	public User getUserByName_Pwd(User user) {
-		UserExample userExample = new UserExample();
-		userExample.createCriteria().andUsernameEqualTo(user.getUsername())
-				.andPasswordEqualTo(GlobalUtil.md5(user.getPassword()));
-		List<User> users = userMapper.selectByExample(userExample);
-		if (users != null && !users.isEmpty())
-			return users.get(0);
-		return null;
+		return userJpa.findByUsernameAndPassword(user.getUsername(), GlobalUtil.md5(user.getPassword()));
 	}
 
 	@Override
-	public Boolean getUserByName(String username) {
-		UserExample userExample = new UserExample();
-		userExample.createCriteria().andUsernameEqualTo(username);
-		int count = userMapper.countByExample(userExample);
-		if (count > 0)
-			return true;
-		return false;
+	public User getUserByName(String username) {
+		return userJpa.findByUsername(username);
 	}
 
 	@Override
 	@Transactional
-	public Boolean ActivationUser(String id, String activeCode) {
-		UserExtr extr = userExtrMapper.selectByPrimaryKey(id);
-		if (extr == null)
-			throw new RuntimeException("激活链接已失效");
-		String code = extr.getActivecode();
-		if (code.equals(activeCode)) {
-			User record = userJpa.findOne(id);
-			record.setStatus(StatusEnum.ACTIVE);
-			if (userJpa.save(record)!=null)
-				throw new RuntimeException("激活失败");
-			userExtrMapper.deleteByPrimaryKey(id);
-			return true;
+	public User ActivationUser(String id, String activeCode) {
+		User user = userJpa.findOne(id);
+		if (user == null)
+			throw new UserOptionErrorException("用户不存在！！！");
+		if (user.getStatus().equals(StatusEnum.ACTIVE))
+			throw new UserOptionErrorException("用户已经激活！！！");
+		Jedis jedis = jedisDataSource.getJedis();
+		try {
+			String value = jedis.get(id);
+			if (value == null) {
+				ActiveCode(user, jedis);
+				throw new UserOptionErrorException("激活码已失效！！！,已重新发送激活邮件，注意查收");
+			}
+			if (!value.equals(activeCode))
+				throw new UserOptionErrorException("激活码错误！请点击邮件链接进行激活");
+
+			jedis.del(id);
+
+			user.setStatus(StatusEnum.ACTIVE);
+
+			return userJpa.saveAndFlush(user);
+		} catch (RuntimeException e) {
+			throw e;
+		} finally {
+			if (jedis != null)
+				jedis.close();
 		}
-		return false;
 	}
 
 	@Override
 	@Transactional
-	public Boolean RegisterUser(User user) {
+	public User RegisterUser(User user) {
+
 		user.setId(GlobalUtil.getModelID(User.class));
 		user.setPassword(GlobalUtil.md5(user.getPassword()));
-		if ((user = userJpa.save(user)) != null) {
-			UserExtr record = new UserExtr();
-			record.setId(user.getId());
-			record.setActivecode(GlobalUtil.get32bitString());
-			if (userExtrMapper.insertSelective(record) <= 0)
-				throw new RuntimeException("激活码保存失败");
+		user.setPaymentpwd(user.getPassword());
+		user.setStatus(StatusEnum.NOTACTIVE);
 
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("userName", user.getUsername());
-			params.put("url",
-					"/home/activationUser.action?id=" + user.getId() + "&activeCode=" + record.getActivecode());
-			if (!springMail.doSend("用户激活", "activeion_User.ftl", params, user.getEmail()))
-				throw new RuntimeException("邮箱发送失败");
-			return true;
+		Jedis jedis = jedisDataSource.getJedis();
+		try {
+			ActiveCode(user, jedis);
+			return userJpa.saveAndFlush(user);
+		} catch (RuntimeException e) {
+			throw e;
+		} finally {
+			if (jedis != null)
+				jedis.close();
 		}
-		return false;
+	}
+
+	private void ActiveCode(User user, Jedis jedis) {
+		String activeCode = GlobalUtil.get32bitString();
+		String reply = jedis.set(user.getId(), activeCode, "NX", "EX", 60 * 30);
+		if (!"OK".equals(reply)) {
+			throw new NotSaveException("用户激活码保存失败！");
+		}
+		String logmsg = "用戶:" + user.getId() + ";激活码:" + activeCode;
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userName", user.getUsername());
+		params.put("url",
+				"http://127.0.0.1/home/activationUser.action?id=" + user.getId() + "&activeCode=" + activeCode);
+		String msg = GlobalUtil.toJsonString(logmsg, params, user.getEmail());
+		mailPublish.publish(msg);
+	}
+
+	@Override
+	@Transactional
+	public User alterUserInfo(User user) {
+		userMapper.updateByPrimaryKeySelective(user);
+		return userMapper.selectByPrimaryKey(user.getId());
+	}
+
+	@Override
+	public User getUserInfo(String id) {
+		return userJpa.findOne(id);
 	}
 
 }

@@ -3,23 +3,22 @@
 <mapper namespace="jrd.graduationproject.shoppingplatform.dao.mybatis.UserMapper" >
   <resultMap id="BaseResultMap" type="jrd.graduationproject.shoppingplatform.pojo.po.User" >
     <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="account" property="account" jdbcType="DECIMAL" />
     <result column="age" property="age" jdbcType="INTEGER" />
-    <result column="birth" property="birth" jdbcType="DATE" />
+    <result column="birth" property="birth" jdbcType="DATE"/>
     <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="paymentpwd" property="paymentpwd" jdbcType="VARCHAR" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
-    <result column="qq" property="qq" jdbcType="VARCHAR" />
+    <result column="power" property="power" jdbcType="INTEGER" />
     <result column="realname" property="realname" jdbcType="VARCHAR" />
-    <result column="sex" property="sex" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="updatedate" property="updatedate" jdbcType="TIMESTAMP" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+    <result column="status" property="status" jdbcType="INTEGER" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
     <result column="username" property="username" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="jrd.graduationproject.shoppingplatform.pojo.po.User" extends="BaseResultMap" >
     <result column="photo" property="photo" jdbcType="LONGVARBINARY" />
-    <result column="selfdesc" property="selfdesc" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -80,11 +79,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, address, age, birth, createdate, email, `password`, phone, qq, realname, sex, 
-    `status`, updatedate, username
+    id, account, age, birth, createdate, email, `password`, paymentpwd, phone, `power`, 
+    realname, sex, `status`, username
   </sql>
   <sql id="Blob_Column_List" >
-    photo, selfdesc
+    photo
   </sql>
   <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.UserExample" >
     select
@@ -135,18 +134,18 @@
     </if>
   </delete>
   <insert id="insert" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.User" >
-    insert into `t_user` (id, address, age, 
+    insert into `t_user` (id, account, age, 
       birth, createdate, email, 
-      `password`, phone, qq, 
-      realname, sex, `status`, 
-      updatedate, username, photo, 
-      selfdesc)
-    values (#{id,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, 
+      `password`, paymentpwd, phone, 
+      `power`, realname, sex, 
+      `status`, username, photo
+      )
+    values (#{id,jdbcType=VARCHAR}, #{account,jdbcType=DECIMAL}, #{age,jdbcType=INTEGER}, 
       #{birth,jdbcType=DATE}, #{createdate,jdbcType=TIMESTAMP}, #{email,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, 
-      #{realname,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{updatedate,jdbcType=TIMESTAMP}, #{username,jdbcType=VARCHAR}, #{photo,jdbcType=LONGVARBINARY}, 
-      #{selfdesc,jdbcType=LONGVARCHAR})
+      #{password,jdbcType=VARCHAR}, #{paymentpwd,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{power,jdbcType=INTEGER}, #{realname,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler}, 
+      #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, #{username,jdbcType=VARCHAR}, #{photo,jdbcType=LONGVARBINARY}
+      )
   </insert>
   <insert id="insertSelective" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.User" >
     insert into `t_user`
@@ -154,8 +153,8 @@
       <if test="id != null" >
         id,
       </if>
-      <if test="address != null" >
-        address,
+      <if test="account != null" >
+        account,
       </if>
       <if test="age != null" >
         age,
@@ -172,11 +171,14 @@
       <if test="password != null" >
         `password`,
       </if>
+      <if test="paymentpwd != null" >
+        paymentpwd,
+      </if>
       <if test="phone != null" >
         phone,
       </if>
-      <if test="qq != null" >
-        qq,
+      <if test="power != null" >
+        `power`,
       </if>
       <if test="realname != null" >
         realname,
@@ -187,25 +189,19 @@
       <if test="status != null" >
         `status`,
       </if>
-      <if test="updatedate != null" >
-        updatedate,
-      </if>
       <if test="username != null" >
         username,
       </if>
       <if test="photo != null" >
         photo,
       </if>
-      <if test="selfdesc != null" >
-        selfdesc,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="address != null" >
-        #{address,jdbcType=VARCHAR},
+      <if test="account != null" >
+        #{account,jdbcType=DECIMAL},
       </if>
       <if test="age != null" >
         #{age,jdbcType=INTEGER},
@@ -222,32 +218,29 @@
       <if test="password != null" >
         #{password,jdbcType=VARCHAR},
       </if>
+      <if test="paymentpwd != null" >
+        #{paymentpwd,jdbcType=VARCHAR},
+      </if>
       <if test="phone != null" >
         #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="qq != null" >
-        #{qq,jdbcType=VARCHAR},
+      <if test="power != null" >
+        #{power,jdbcType=INTEGER},
       </if>
       <if test="realname != null" >
         #{realname,jdbcType=VARCHAR},
       </if>
       <if test="sex != null" >
-        #{sex,jdbcType=VARCHAR},
+        #{sex,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
       </if>
       <if test="status != null" >
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="updatedate != null" >
-        #{updatedate,jdbcType=TIMESTAMP},
+        #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
       </if>
       <if test="username != null" >
         #{username,jdbcType=VARCHAR},
       </if>
       <if test="photo != null" >
         #{photo,jdbcType=LONGVARBINARY},
-      </if>
-      <if test="selfdesc != null" >
-        #{selfdesc,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -263,8 +256,8 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=VARCHAR},
       </if>
-      <if test="record.address != null" >
-        address = #{record.address,jdbcType=VARCHAR},
+      <if test="record.account != null" >
+        account = #{record.account,jdbcType=DECIMAL},
       </if>
       <if test="record.age != null" >
         age = #{record.age,jdbcType=INTEGER},
@@ -281,32 +274,29 @@
       <if test="record.password != null" >
         `password` = #{record.password,jdbcType=VARCHAR},
       </if>
+      <if test="record.paymentpwd != null" >
+        paymentpwd = #{record.paymentpwd,jdbcType=VARCHAR},
+      </if>
       <if test="record.phone != null" >
         phone = #{record.phone,jdbcType=VARCHAR},
       </if>
-      <if test="record.qq != null" >
-        qq = #{record.qq,jdbcType=VARCHAR},
+      <if test="record.power != null" >
+        `power` = #{record.power,jdbcType=INTEGER},
       </if>
       <if test="record.realname != null" >
         realname = #{record.realname,jdbcType=VARCHAR},
       </if>
       <if test="record.sex != null" >
-        sex = #{record.sex,jdbcType=VARCHAR},
+        sex = #{record.sex,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
       </if>
       <if test="record.status != null" >
-        `status` = #{record.status,jdbcType=INTEGER},
-      </if>
-      <if test="record.updatedate != null" >
-        updatedate = #{record.updatedate,jdbcType=TIMESTAMP},
+        `status` = #{record.status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
       </if>
       <if test="record.username != null" >
         username = #{record.username,jdbcType=VARCHAR},
       </if>
       <if test="record.photo != null" >
         photo = #{record.photo,jdbcType=LONGVARBINARY},
-      </if>
-      <if test="record.selfdesc != null" >
-        selfdesc = #{record.selfdesc,jdbcType=LONGVARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -316,21 +306,20 @@
   <update id="updateByExampleWithBLOBs" parameterType="map" >
     update `t_user`
     set id = #{record.id,jdbcType=VARCHAR},
-      address = #{record.address,jdbcType=VARCHAR},
+      account = #{record.account,jdbcType=DECIMAL},
       age = #{record.age,jdbcType=INTEGER},
       birth = #{record.birth,jdbcType=DATE},
       createdate = #{record.createdate,jdbcType=TIMESTAMP},
       email = #{record.email,jdbcType=VARCHAR},
       `password` = #{record.password,jdbcType=VARCHAR},
+      paymentpwd = #{record.paymentpwd,jdbcType=VARCHAR},
       phone = #{record.phone,jdbcType=VARCHAR},
-      qq = #{record.qq,jdbcType=VARCHAR},
+      `power` = #{record.power,jdbcType=INTEGER},
       realname = #{record.realname,jdbcType=VARCHAR},
-      sex = #{record.sex,jdbcType=VARCHAR},
-      `status` = #{record.status,jdbcType=INTEGER},
-      updatedate = #{record.updatedate,jdbcType=TIMESTAMP},
+      sex = #{record.sex,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      `status` = #{record.status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
       username = #{record.username,jdbcType=VARCHAR},
-      photo = #{record.photo,jdbcType=LONGVARBINARY},
-      selfdesc = #{record.selfdesc,jdbcType=LONGVARCHAR}
+      photo = #{record.photo,jdbcType=LONGVARBINARY}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -338,18 +327,18 @@
   <update id="updateByExample" parameterType="map" >
     update `t_user`
     set id = #{record.id,jdbcType=VARCHAR},
-      address = #{record.address,jdbcType=VARCHAR},
+      account = #{record.account,jdbcType=DECIMAL},
       age = #{record.age,jdbcType=INTEGER},
       birth = #{record.birth,jdbcType=DATE},
       createdate = #{record.createdate,jdbcType=TIMESTAMP},
       email = #{record.email,jdbcType=VARCHAR},
       `password` = #{record.password,jdbcType=VARCHAR},
+      paymentpwd = #{record.paymentpwd,jdbcType=VARCHAR},
       phone = #{record.phone,jdbcType=VARCHAR},
-      qq = #{record.qq,jdbcType=VARCHAR},
+      `power` = #{record.power,jdbcType=INTEGER},
       realname = #{record.realname,jdbcType=VARCHAR},
-      sex = #{record.sex,jdbcType=VARCHAR},
-      `status` = #{record.status,jdbcType=INTEGER},
-      updatedate = #{record.updatedate,jdbcType=TIMESTAMP},
+      sex = #{record.sex,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      `status` = #{record.status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
       username = #{record.username,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -358,8 +347,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.User" >
     update `t_user`
     <set >
-      <if test="address != null" >
-        address = #{address,jdbcType=VARCHAR},
+      <if test="account != null" >
+        account = #{account,jdbcType=DECIMAL},
       </if>
       <if test="age != null" >
         age = #{age,jdbcType=INTEGER},
@@ -376,23 +365,23 @@
       <if test="password != null" >
         `password` = #{password,jdbcType=VARCHAR},
       </if>
+      <if test="paymentpwd != null" >
+        paymentpwd = #{paymentpwd,jdbcType=VARCHAR},
+      </if>
       <if test="phone != null" >
         phone = #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="qq != null" >
-        qq = #{qq,jdbcType=VARCHAR},
+      <if test="power != null" >
+        `power` = #{power,jdbcType=INTEGER},
       </if>
       <if test="realname != null" >
         realname = #{realname,jdbcType=VARCHAR},
       </if>
       <if test="sex != null" >
-        sex = #{sex,jdbcType=VARCHAR},
+        sex = #{sex,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
       </if>
       <if test="status != null" >
-        `status` = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="updatedate != null" >
-        updatedate = #{updatedate,jdbcType=TIMESTAMP},
+        `status` = #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
       </if>
       <if test="username != null" >
         username = #{username,jdbcType=VARCHAR},
@@ -400,45 +389,41 @@
       <if test="photo != null" >
         photo = #{photo,jdbcType=LONGVARBINARY},
       </if>
-      <if test="selfdesc != null" >
-        selfdesc = #{selfdesc,jdbcType=LONGVARCHAR},
-      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.User" >
     update `t_user`
-    set address = #{address,jdbcType=VARCHAR},
+    set account = #{account,jdbcType=DECIMAL},
       age = #{age,jdbcType=INTEGER},
       birth = #{birth,jdbcType=DATE},
       createdate = #{createdate,jdbcType=TIMESTAMP},
       email = #{email,jdbcType=VARCHAR},
       `password` = #{password,jdbcType=VARCHAR},
+      paymentpwd = #{paymentpwd,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
-      qq = #{qq,jdbcType=VARCHAR},
+      `power` = #{power,jdbcType=INTEGER},
       realname = #{realname,jdbcType=VARCHAR},
-      sex = #{sex,jdbcType=VARCHAR},
-      `status` = #{status,jdbcType=INTEGER},
-      updatedate = #{updatedate,jdbcType=TIMESTAMP},
+      sex = #{sex,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      `status` = #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
       username = #{username,jdbcType=VARCHAR},
-      photo = #{photo,jdbcType=LONGVARBINARY},
-      selfdesc = #{selfdesc,jdbcType=LONGVARCHAR}
+      photo = #{photo,jdbcType=LONGVARBINARY}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.User" >
     update `t_user`
-    set address = #{address,jdbcType=VARCHAR},
+    set account = #{account,jdbcType=DECIMAL},
       age = #{age,jdbcType=INTEGER},
       birth = #{birth,jdbcType=DATE},
       createdate = #{createdate,jdbcType=TIMESTAMP},
       email = #{email,jdbcType=VARCHAR},
       `password` = #{password,jdbcType=VARCHAR},
+      paymentpwd = #{paymentpwd,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
-      qq = #{qq,jdbcType=VARCHAR},
+      `power` = #{power,jdbcType=INTEGER},
       realname = #{realname,jdbcType=VARCHAR},
-      sex = #{sex,jdbcType=VARCHAR},
-      `status` = #{status,jdbcType=INTEGER},
-      updatedate = #{updatedate,jdbcType=TIMESTAMP},
+      sex = #{sex,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      `status` = #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
       username = #{username,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>

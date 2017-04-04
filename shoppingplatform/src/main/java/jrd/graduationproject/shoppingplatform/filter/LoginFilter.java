@@ -50,8 +50,10 @@ public class LoginFilter implements Filter {
 			flag = cookieHave(req, session);
 
 		if (flag) {
-			resp.setStatus(253);// 未登录
-			resp.sendRedirect(req.getContextPath());
+			String local=req.getContextPath();
+			if(!local.endsWith("/"))
+				local=local+"/";
+			resp.sendRedirect(local);
 			return;
 		}
 		chain.doFilter(request, response);
@@ -73,7 +75,6 @@ public class LoginFilter implements Filter {
 		User user = new User();
 		user.setUsername(name);
 		user.setPassword(value);
-		;
 
 		user = userService.getUserByName_Pwd(user);
 		if (user != null && user.getStatus() != null && user.getStatus().getIndex() == 1) {

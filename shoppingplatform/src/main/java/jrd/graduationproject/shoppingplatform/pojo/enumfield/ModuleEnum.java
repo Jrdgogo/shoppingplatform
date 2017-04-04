@@ -1,6 +1,6 @@
 package jrd.graduationproject.shoppingplatform.pojo.enumfield;
 
-import jrd.graduationproject.shoppingplatform.exception.NotFindEnumException;
+import jrd.graduationproject.shoppingplatform.exception.category.NotFindEnumException;
 
 public enum ModuleEnum {
 	PUBLIC(0,"开放区","/public"),USER(1,"用户区","/user"),

@@ -12,9 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.AdminEnum;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.ModuleEnum;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
@@ -24,7 +21,7 @@ import jrd.graduationproject.shoppingplatform.pojo.po.User;
  */
 public class PowerFilter implements Filter {
 
-	private Logger logger = LoggerFactory.getLogger(PowerFilter.class);
+	//private Logger logger = LoggerFactory.getLogger(PowerFilter.class);
 
 	/**
 	 * Default constructor.
@@ -66,8 +63,11 @@ public class PowerFilter implements Filter {
 				Integer userPower = user.getPower();
 				Integer rolePower = AdminEnum.getModulePowerByRolePower(userPower);
 				if ((power & rolePower) != power) {
-					resp.setStatus(254);// 无权限
-					resp.sendRedirect(req.getContextPath());
+					// 无权限
+					String local=req.getContextPath();
+					if(!local.endsWith("/"))
+						local=local+"/";
+					resp.sendRedirect(local);
 					return;
 				}
 			}

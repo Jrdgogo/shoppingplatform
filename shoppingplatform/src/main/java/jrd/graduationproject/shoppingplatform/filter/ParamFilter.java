@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 
 import jrd.graduationproject.shoppingplatform.config.mvc.paramListener.IParamListenerFactory;
 import jrd.graduationproject.shoppingplatform.filter.paramListener.IParamListener;
+import jrd.graduationproject.shoppingplatform.pojo.po.User;
 
 public class ParamFilter implements Filter {
 	public void destroy() {
@@ -118,6 +119,10 @@ public class ParamFilter implements Filter {
 			while (enumeration.hasMoreElements()) {
 				String name = enumeration.nextElement();
 				paramValues.put(name, super.getParameterValues(name));
+			}
+			User user = (User) (super.getSession().getAttribute("User"));
+			if (user != null) {
+				paramValues.put("sessionUserId", new String[] { user.getId() });
 			}
 		}
 

@@ -15,19 +15,20 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
 @Configuration
-@MapperScan(basePackages="jrd.graduationproject.shoppingplatform.dao.mybatis",sqlSessionFactoryRef="sessionFactory")
+@MapperScan(basePackages = "jrd.graduationproject.shoppingplatform.dao.mybatis", sqlSessionFactoryRef = "sessionFactory")
 public class MySqlSessionFactoryMyBatisConfig {
 
 	@Autowired
 	private Environment env;
-	
-	@Bean(name="sessionFactory")
-    public SqlSessionFactory sqlSessionFactory(@Qualifier("dataSource")DataSource datasource) throws Exception {
-        SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
-        sessionFactory.setDataSource(datasource);
-        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        Resource[] resources=resolver.getResources(env.getProperty("mybatis.locationPattern"));
-        sessionFactory.setMapperLocations(resources);
-        return sessionFactory.getObject();
-    }
+
+	@Bean(name = "sessionFactory")
+	public SqlSessionFactory sqlSessionFactory(@Qualifier("dataSource") DataSource datasource) throws Exception {
+		SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
+		sessionFactory.setDataSource(datasource);
+		ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+		Resource[] resources = resolver.getResources(env.getProperty("mybatis.locationPattern"));
+		sessionFactory.setMapperLocations(resources);
+		return sessionFactory.getObject();
+	}
+
 }

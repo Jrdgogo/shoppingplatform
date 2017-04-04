@@ -1,6 +1,8 @@
-package jrd.graduationproject.shoppingplatform.exception;
+package jrd.graduationproject.shoppingplatform.exception.category;
 
-public class NotPowerException extends RuntimeException {
+import jrd.graduationproject.shoppingplatform.exception.UserOptionErrorException;
+
+public class NotPowerException extends UserOptionErrorException {
 
 	public NotPowerException() {
 		super();

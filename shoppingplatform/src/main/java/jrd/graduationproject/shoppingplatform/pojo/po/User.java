@@ -1,13 +1,19 @@
 package jrd.graduationproject.shoppingplatform.pojo.po;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,41 +25,68 @@ import jrd.graduationproject.shoppingplatform.pojo.enumfield.StatusEnum;
 @Table(name = "t_user")
 public class User {
 	@Id
+	@Column(length=32)
 	private String id;
-	@Column(nullable = false, unique = true)
+
+	@Column(length=40,nullable = false, unique = true)
 	private String username;
+	
+	@Column(length=20)
 	private String realname;
-	@Column(nullable = false)
+
+	@Column(length=32,nullable = false)
 	private String password;
+
+	@Column(columnDefinition="NUMERIC(11,2) DEFAULT 0.00")
+	private Double account;
+
+	@Column(length=32,nullable = false)
+	private String paymentpwd;
+
 	private Integer age;
+
 	@Enumerated(EnumType.STRING)
 	private SexEnum sex;
+
+	@Column(columnDefinition="INT DEFAULT 0")
 	@Enumerated(EnumType.ORDINAL)
-	private StatusEnum status = StatusEnum.NOTACTIVE;
+	private StatusEnum status;
+
 	@Column(nullable = false)
 	private String email;
-	private String qq;
+	
+	@Column(length=20)
 	private String phone;
-	private String address;
+
 	@Temporal(TemporalType.DATE)
 	private Date birth;
+
 	@Lob
+	@Basic(fetch=FetchType.LAZY)
 	private Byte[] photo;
-	@Lob
-	private String selfdesc;
-	
-	private Integer power=1;
+
+	@Column(columnDefinition="INT default 1")
+	private Integer power;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(updatable = false)
 	@org.hibernate.annotations.CreationTimestamp
 	private Date createdate;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@org.hibernate.annotations.UpdateTimestamp
+	// @Temporal(TemporalType.TIMESTAMP)
+	// @org.hibernate.annotations.UpdateTimestamp
 	// @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	// @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private Date updatedate;
+	// private Date updatedate;
+	
+	@OneToMany(fetch=FetchType.LAZY,cascade={CascadeType.ALL},
+			mappedBy="user")
+	private Set<UserWareAddr> wareAddrs=new HashSet<>();
+	
+	@OneToMany(fetch=FetchType.LAZY,cascade={CascadeType.ALL},
+			mappedBy="user")
+	private Set<Order> orders=new HashSet<>();
+	
+	
 
 	public String getId() {
 		return id;
@@ -77,6 +110,22 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Double getAccount() {
+		return account;
+	}
+
+	public void setAccount(Double account) {
+		this.account = account;
+	}
+
+	public String getPaymentpwd() {
+		return paymentpwd;
+	}
+
+	public void setPaymentpwd(String paymentpwd) {
+		this.paymentpwd = paymentpwd;
 	}
 
 	public Integer getAge() {
@@ -111,14 +160,6 @@ public class User {
 		this.email = email;
 	}
 
-	public String getQq() {
-		return qq;
-	}
-
-	public void setQq(String qq) {
-		this.qq = qq;
-	}
-
 	public String getPhone() {
 		return phone;
 	}
@@ -143,14 +184,6 @@ public class User {
 		this.createdate = createdate;
 	}
 
-	public Date getUpdatedate() {
-		return updatedate;
-	}
-
-	public void setUpdatedate(Date updatedate) {
-		this.updatedate = updatedate;
-	}
-
 	public String getRealname() {
 		return realname;
 	}
@@ -159,28 +192,12 @@ public class User {
 		this.realname = realname;
 	}
 
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
 	public Date getBirth() {
 		return birth;
 	}
 
 	public void setBirth(Date birth) {
 		this.birth = birth;
-	}
-
-	public String getSelfdesc() {
-		return selfdesc;
-	}
-
-	public void setSelfdesc(String selfdesc) {
-		this.selfdesc = selfdesc;
 	}
 
 	public Integer getPower() {
@@ -215,5 +232,23 @@ public class User {
 			return false;
 		return true;
 	}
+
+	public Set<UserWareAddr> getWareAddrs() {
+		return wareAddrs;
+	}
+
+	public void setWareAddrs(Set<UserWareAddr> wareAddrs) {
+		this.wareAddrs = wareAddrs;
+	}
+
+	public Set<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(Set<Order> orders) {
+		this.orders = orders;
+	}
+	
+	
 
 }
