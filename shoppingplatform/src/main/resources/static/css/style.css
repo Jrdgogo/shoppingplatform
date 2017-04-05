@@ -1,0 +1,325 @@
+.bc-f6f6f6{
+    background-color: #f6f6f6;
+}
+.bc-e3e4e5{
+    background-color: #e3e4e5;
+}
+.bc-f10215{
+    background-color: #f10215;
+}
+.bc-fff{
+    background-color: #fff;
+}
+.bc-f7f7f7{
+   background-color: #f7f7f7;
+}
+.bc-6e6568{
+  background-color: #6e6568;
+}
+
+.c-666{
+  color:#666;
+}
+.c-999{
+  color:#999;
+}
+.c-fff{
+  color: #fff;
+}
+.c-f10215{
+   color: #f10215;
+}
+
+.p0{
+   padding: 0;
+}
+.ptb5
+   padding: 5px 0;
+}
+.p10{
+   padding: 10px;
+}
+.pt10{
+   padding-top: 10px;
+}
+.p15{
+  padding: 15px;
+}
+.p20{
+  padding: 20px;
+}
+.ptb20{
+   padding: 20px 0;
+}
+.plr20{
+  padding: 0 20px;
+}
+.plr30{
+  padding: 0 30px;
+}
+.pt20{
+   padding-top: 20px;
+}
+
+.m0a{
+  margin: 0 auto;
+}
+.m0{
+  margin: 0;
+}
+.mt5{
+  margin-top: 5px;
+}
+.mr5{
+  margin-right: 5px;
+}
+.mt10{
+  margin-top: 10px;
+}
+.mtb10{
+  margin:10px 0;
+}
+.mr10{
+  margin-right: 10px;
+}
+.mt30{
+  margin-top: 30px;
+}
+.ml30{
+  margin-left: 30px;
+}
+.mb50{
+  margin-bottom: 50px;
+}
+
+.mt87{
+  margin-top: 87px;
+}
+
+
+.b-e3e4e5{
+  border: solid 1px #e3e4e5;
+}
+
+.br8{
+  border-radius: 8px;
+}
+
+.bs-d8d8d8{
+   box-shadow: 2px 0 1px 1px #d8d8d8;
+}
+
+.ftl{
+   float: left;
+}
+.ftr{
+   float: right;
+}
+.clear{
+   clear: both;
+}
+.tac{
+   text-align: center;
+}
+.tal{
+   text-align: left;
+}
+.tar{
+   text-align: right;
+}
+
+
+
+html,body{
+    overflow-x:hidden;
+}
+body,div,p,a,ul,li,img{
+	margin: 0;
+	padding: 0;
+}
+.bg{
+ 
+}
+        /*垂直居中*/
+.vc{
+	display: flex;
+	display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;
+	align-items:center;   /*垂直居中*/
+		-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;	
+}
+ 
+a{
+  text-decoration: none;
+}
+
+.header{
+   width: 100%;
+   height: 40px;
+   font-size: 11px;
+}
+.header a:hover{
+   color: #c81623;
+}
+
+.container{
+   width: 1100px;
+   /*height: 400px;*/
+}
+.left,.right,.show-left,.show-right{
+   display: inline-block;
+   vertical-align: top;
+}
+.left{
+   width: 200px;
+   /*height: 480px;*/
+   position: relative;
+   top:-60px;
+}
+.img-wh200{
+   width: 200px;
+   height: 200px;
+   vertical-align: bottom;
+}
+.relative{
+   position: relative;
+}
+.lists{
+   list-style: none;
+}
+.lists li{
+   padding-top: 3px;
+   padding-bottom: 3px;
+}
+.lists li:hover{
+   background-color: #999395;
+}
+.lists li a:hover{
+   color: #f10215;
+}
+.show{
+   display: none;
+   color:#e0e0e0;
+   width: 860px;
+   min-height: 162px;
+   position: absolute;
+   top:0;
+   left: 200px;
+   z-index: 20;
+}
+.lists li:hover .show{
+  display: block !important;
+}
+.show a{
+   color: #666;
+}
+.show a:hover{
+   color: #f10215;
+}
+
+.show-left{
+   width: 20%;
+   font-size: 13px;
+   font-weight: bold;
+}
+.show-right{
+   width: 60%;
+   font-size: 13px;
+}
+
+.right{
+   width: 880px;
+   /*height: 400px;*/
+}
+.input-search{
+   width: 300px;
+   height: 28px;
+   border-color: #f10215 !important;
+}
+.a-search-icon{
+   display: inline-block;
+   width: 44px;
+   height: 34px;
+   vertical-align: bottom;
+}
+.a-search-icon img{
+   width: 34px;
+   height: 34px;
+}
+.span-shop{
+   display: inline-block;
+   height: 32px;
+   line-height: 32px;
+   vertical-align: bottom;
+   font-size: 10px;
+}
+.span-shop img{
+   height: 28px;
+   width: 20px;
+   vertical-align: top;
+}
+.number{
+   display: inline-block;
+   width: 16px;
+   height: 16px;
+   line-height: 16px;
+   vertical-align: top;
+   margin-top: 3px;
+}
+  /*轮播*/
+.swiper-container {
+    width: 100%;
+    height: 200px;
+        
+}
+.swiper-slide{
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    
+        /* Center slide text vertically */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
+.swiper-slide img{
+  width: 100%;
+  height: 100%;
+}
+
+
+.div-w49{
+   display: inline-block;
+   width: 49%;
+}
+.div-w46{
+   display: inline-block;
+   width: 46%;
+}
+.title{
+   font-size: 18px;
+}
+.img-w160h268{
+   width: 160px;
+   height: 268px;
+}
+.img-w160{
+  width: 160px;
+}
+.group{
+  width: 342px;
+  display: inline-block;
+  vertical-align: top;
+}
+.img-w100h80{
+  width: 100px;
+  height: 80px;
+}

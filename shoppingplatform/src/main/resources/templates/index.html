@@ -1,32 +1,376 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8" />
-<title>主页</title>
-<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+	<meta charset="utf-8" />
+	<title>京东</title>
+	<link rel="stylesheet"  href="css/style.css"/>
+	<link rel="stylesheet"  href="css/swiper.min.css"/>
 </head>
-<body>
-	<table th:if="!${users.empty}">
-		<caption>用户表</caption>
-		<tr>
-			<td>姓名</td>
-			<td>年龄</td>
-			<td>邮箱</td>
-			<td>性别</td>
-			<td>创建时间</td>
-			<td>更改时间</td>
-		</tr>
-		<tr th:each="user : ${users}">
-			<td th:text="${user.name}"></td>
-			<td th:text="${user.age}"></td>
-			<td th:text="${user.email}"></td>
-			<td th:text="${user.sex}"></td>
-			<td
-				th:text="${#dates.format(user.createdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-			<td
-				th:text="${#dates.format(user.updatedate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-		</tr>
-	</table>
-</body>
+
+<body class="bc-f6f6f6">
+	<div class="bg">
+		<div class="header bc-e3e4e5 vc">
+			<div class="m0a" style="width: 80%;">
+				<a href="" class="c-f10215 ftr">免费注册</a>
+				<a href="" class="mr10 ftr c-999">你好，请登录</a>	
+			</div>
+		</div>
+		
+		<div class="container m0a pt20">
+			<div class="layer1">
+				<div class="left mr10">
+					<img src="img/logo.jpg" alt="" class="img-wh200" />	
+					<div class="relative">
+						<ul class="bc-6e6568 lists ptb20 c-fff">
+							<li class="plr20">
+								<a href="" class="c-fff">家用电器</a>
+								<!--分类显示1-->
+								<div class="show bc-f7f7f7 bs-d8d8d8 p20">
+									<div class="mt10">
+										<div class="show-left tar">
+											<a href="" class="">电视 ></a>
+										</div>
+										<div class="show-right ml30">
+											| <a href="" class="mr10">夏普</a>
+										</div>
+									</div>
+									
+									<div class="mt10">
+										<div class="show-left tar">
+											<a href="" class="">空调 ></a>
+										</div>
+										<div class="show-right ml30">
+											| <a href="" class="mr10">壁挂式空调</a>
+											| <a href="" class="mr10">中央空调</a>
+											| <a href="" class="mr10">柜式空调</a>
+											| <a href="" class="mr10">空调配件</a>
+											| <a href="" class="mr10">壁挂式空调</a>
+											| <a href="" class="mr10">中央空调</a>
+											| <a href="" class="mr10">柜式空调</a>
+											| <a href="" class="mr10">空调配件</a>
+											| <a href="" class="mr10">壁挂式空调</a>
+											| <a href="" class="mr10">中央空调</a>
+											| <a href="" class="mr10">柜式空调</a>
+											| <a href="" class="mr10">空调配件</a>
+										</div>
+									</div>
+									<div class="mt10">
+										<div class="show-left tar">
+											<a href="" class="">冰箱 ></a>
+										</div>
+										<div class="show-right ml30">
+											| <a href="" class="mr10">多门</a>
+											| <a href="" class="mr10">对开门</a>
+											| <a href="" class="mr10">三门</a>
+											| <a href="" class="mr10">双门</a>
+											| <a href="" class="mr10">酒柜</a>
+										</div>
+									</div>
+									
+								</div>
+							
+							</li>
+							<li class="plr20">
+								<a href="" class="c-fff">手机</a>
+								/ <a href="" class="c-fff">数码</a>
+								<!--分类显示2-->
+								<div class="show bc-f7f7f7 bs-d8d8d8 p20" >
+									<div class="mt10">
+										<div class="show-left tar">
+											<a href="" class="">手机 ></a>
+										</div>
+										<div class="show-right ml30">
+											| <a href="" class="mr10">夏普</a>
+											| <a href="" class="mr10">三星</a>
+											| <a href="" class="mr10">oppo</a>
+										</div>
+									</div>	
+								</div>
+							
+							</li>
+							<li class="plr20">
+								<a href="" class="c-fff">男装</a>
+								/ <a href="" class="c-fff">男鞋</a>						
+							</li>
+							<li class="plr20">
+								<a href="" class="c-fff">女装</a>
+								/ <a href="" class="c-fff">女鞋</a>							
+							</li>
+							<li class="plr20">
+								<a href="" class="c-fff">童装</a>
+								/ <a href="" class="c-fff">童鞋</a>
+							</li>
+							<li class="plr20">
+								<a href="" class="c-fff">图书</a>
+								/ <a href="" class="c-fff">音像</a>
+								/ <a href="" class="c-fff">电子书</a>
+							</li>
+						</ul>
+						
+							
+						
+					</div>
+				</div>
+				<div class="right tac pt20">
+					<input type="text" class="input-search" placeholder="请输入搜索关键词" /><a href="" class="a-search-icon bc-f10215"><img src="img/search.png" alt="" class="" /></a>
+				    <span class="span-shop bc-fff ml30 plr30 c-f10215 b-e3e4e5">
+				    	<img src="img/shopping.png" alt="" class="mr5" />
+				    	我的购物车
+				    	<span class="number bc-f10215 c-fff br8">2</span>
+				    </span>
+				    <!--轮播图-->
+				    <div class="lunbo mt87" style="background-color: orange;">
+				    	<!-- Swiper -->
+					    <div class="swiper-container">
+					        <div class="swiper-wrapper">
+					            <div class="swiper-slide"><img src="img/slide.jpg"/></div>
+					            <div class="swiper-slide"><img src="img/slide1.jpg"/></div>
+					            <div class="swiper-slide"><img src="img/slide2.jpg"/></div>
+					             <div class="swiper-slide"><img src="img/slide3.jpg"/></div>
+					        </div>
+					        <!-- Add Pagination -->
+					        <div class="swiper-pagination"></div>
+					        <!-- Add Arrows -->
+					        <div class="swiper-button-next"></div>
+					        <div class="swiper-button-prev"></div>
+					    </div>
+				    </div>
+				</div>
+			</div>
+			
+			<div class="layer2 tac mb50">
+				<!--家电馆-->
+			     <div class="div-w49 tal mtb10">
+			     	<div class="title p15 c-fff" style="background-color: #744E8B;">家电馆</div>
+			     	<div class="bc-fff p15">
+			     		<a href="" class="c-666">
+			     			<img src="img/jdg.jpg" alt="" class="img-w160h268" />
+			     		</a>
+			     		
+			     		<div class="group">
+			     			<div class="div-w46 bc-fff b-e3e4e5" style="padding: 4px;">
+			     				<a href="" class="c-666">
+				     				<span style="color: #744e8b;">电视电影</span><br />
+				     				<span style="font-size: 10px;">领券最高<br />减800元</span>
+				     				<img src="img/tv.jpg" alt="" class="ftr img-w100h80" />
+			     				</a>
+			     			</div>
+			     			<div class="div-w46 bc-fff b-e3e4e5" style="padding: 4px;">
+			     				<a href="" class="c-666">
+				     				<span style="color: #744e8b;">冰箱洗衣机</span><br />
+				     				<span style="font-size: 10px;">每满1000<br />立减150</span>
+				     				<img src="img/bx.jpg" alt="" class="ftr img-w100h80" />
+				     			</a>
+			     			</div>
+			     			<div class="div-w46 bc-fff b-e3e4e5" style="padding: 4px;margin-top: 4px;">
+			     				<a href="" class="c-666">
+				     				<span style="color: #744e8b;">家电电装节</span><br />
+				     				<span style="font-size: 10px;">低至3件<br />8.8折</span>
+				     				<img src="img/ds.jpg" alt="" class="ftr img-w100h80" />
+				     			</a>
+			     			</div>
+			     			<div class="div-w46 bc-fff b-e3e4e5" style="padding: 4px;margin-top: 4px;">
+			     				<a href="" class="c-666">
+				     				<span style="color: #744e8b;">厨卫家装惠</span><br />
+				     				<span style="font-size: 10px;">海量红包<br />免费领</span>
+				     				<img src="img/cw.jpg" alt="" class="ftr img-w100h80" />
+				     			</a>
+			     			</div>
+			     			
+			     		</div>
+			     	    <div class="c-666">
+			     	    	<a href="" class="">
+			     	    		<img src="img/sd.jpg" class="img-w160"/>
+			     	    	</a>
+			     	    	<a href="" class="">
+			     	    		<img src="img/qg.jpg" class="img-w160"/>
+			     	    	</a>
+			     	    	<a href="" class="">
+			     	    		<img src="img/yy.jpg" class="img-w160"/>
+			     	    	</a>
+			     	    </div>
+			     	</div>			     	
+			     </div>
+			     <!--搞机派-->
+			     <div class="div-w49 tal mtb10">
+			     	<div class="title p15 c-fff" style="background-color: #58688E;">搞机派</div>
+			     	<div class="bc-fff p15">
+			     		<a href="" class="">
+			     			<img src="img/sj.jpg" alt="" class="img-w160h268" />
+			     		</a>
+			     		
+			     		<div class="group">
+			     			<div class="div-w46 bc-fff b-e3e4e5" style="padding: 4px;">
+			     				<a href="" class="c-666">
+				     				<span style="color: #5e6c90;">新Phone尚</span><br />
+				     				<span style="font-size: 10px;">华为P10<br />旗舰新机</span>
+				     				<img src="img/p1.jpg" alt="" class="ftr img-w100h80" />
+			     				</a>
+			     			</div>
+			     			<div class="div-w46 bc-fff b-e3e4e5" style="padding: 4px;">
+			     				<a href="" class="c-666">
+				     				<span style="color: #5e6c90;">24小时榜</span><br />
+				     				<span style="font-size: 10px;">人气店铺<br />榜单揭秘</span>
+				     				<img src="img/p2.jpg" alt="" class="ftr img-w100h80" />
+				     			</a>
+			     			</div>
+			     			<div class="div-w46 bc-fff b-e3e4e5" style="padding: 4px;margin-top: 4px;">
+			     				<a href="" class="c-666">
+				     				<span style="color: #5e6c90;">京东网厅</span><br />
+				     				<span style="font-size: 10px;">每天1元<br />享800M</span>
+				     				<img src="img/p3.jpg" alt="" class="ftr img-w100h80" />
+				     			</a>
+			     			</div>
+			     			<div class="div-w46 bc-fff b-e3e4e5" style="padding: 4px;margin-top: 4px;">
+			     				<a href="" class="c-666">
+				     				<span style="color: #5e6c90;">京选卖家</span><br />
+				     				<span style="font-size: 10px;">诺基亚6<br />新品现货</span>
+				     				<img src="img/p.jpg" alt="" class="ftr img-w100h80" />
+				     			</a>
+			     			</div>
+			     			
+			     		</div>
+			     	    <div class="c-666">
+			     	    	<a href="" class="">
+			     	    		<img src="img/lx.jpg" class="img-w160"/>
+			     	    	</a>
+			     	    	<a href="" class="">
+			     	    		<img src="img/ml.jpg" class="img-w160"/>
+			     	    	</a>
+			     	    	<a href="" class="">
+			     	    		<img src="img/oppo.png" class="img-w160"/>
+			     	    	</a>
+			     	    </div>
+			     	</div>			     	
+			     </div>
+			    <!--家电馆-->
+			     <div class="div-w49 tal mtb10">
+			     	<div class="title p15 c-fff" style="background-color: #744E8B;">家电馆</div>
+			     	<div class="bc-fff p15">
+			     		<a href="" class="c-666">
+			     			<img src="img/jdg.jpg" alt="" class="img-w160h268" />
+			     		</a>
+			     		
+			     		<div class="group">
+			     			<div class="div-w46 bc-fff b-e3e4e5" style="padding: 4px;">
+			     				<a href="" class="c-666">
+				     				<span style="color: #744e8b;">电视电影</span><br />
+				     				<span style="font-size: 10px;">领券最高<br />减800元</span>
+				     				<img src="img/tv.jpg" alt="" class="ftr img-w100h80" />
+			     				</a>
+			     			</div>
+			     			<div class="div-w46 bc-fff b-e3e4e5" style="padding: 4px;">
+			     				<a href="" class="c-666">
+				     				<span style="color: #744e8b;">冰箱洗衣机</span><br />
+				     				<span style="font-size: 10px;">每满1000<br />立减150</span>
+				     				<img src="img/bx.jpg" alt="" class="ftr img-w100h80" />
+				     			</a>
+			     			</div>
+			     			<div class="div-w46 bc-fff b-e3e4e5" style="padding: 4px;margin-top: 4px;">
+			     				<a href="" class="c-666">
+				     				<span style="color: #744e8b;">家电电装节</span><br />
+				     				<span style="font-size: 10px;">低至3件<br />8.8折</span>
+				     				<img src="img/ds.jpg" alt="" class="ftr img-w100h80" />
+				     			</a>
+			     			</div>
+			     			<div class="div-w46 bc-fff b-e3e4e5" style="padding: 4px;margin-top: 4px;">
+			     				<a href="" class="c-666">
+				     				<span style="color: #744e8b;">厨卫家装惠</span><br />
+				     				<span style="font-size: 10px;">海量红包<br />免费领</span>
+				     				<img src="img/cw.jpg" alt="" class="ftr img-w100h80" />
+				     			</a>
+			     			</div>
+			     			
+			     		</div>
+			     	    <div class="c-666">
+			     	    	<a href="" class="">
+			     	    		<img src="img/sd.jpg" class="img-w160"/>
+			     	    	</a>
+			     	    	<a href="" class="">
+			     	    		<img src="img/qg.jpg" class="img-w160"/>
+			     	    	</a>
+			     	    	<a href="" class="">
+			     	    		<img src="img/yy.jpg" class="img-w160"/>
+			     	    	</a>
+			     	    </div>
+			     	</div>			     	
+			     </div>
+			     <!--搞机派-->
+			     <div class="div-w49 tal mtb10">
+			     	<div class="title p15 c-fff" style="background-color: #58688E;">搞机派</div>
+			     	<div class="bc-fff p15">
+			     		<a href="" class="">
+			     			<img src="img/sj.jpg" alt="" class="img-w160h268" />
+			     		</a>
+			     		
+			     		<div class="group">
+			     			<div class="div-w46 bc-fff b-e3e4e5" style="padding: 4px;">
+			     				<a href="" class="c-666">
+				     				<span style="color: #5e6c90;">新Phone尚</span><br />
+				     				<span style="font-size: 10px;">华为P10<br />旗舰新机</span>
+				     				<img src="img/p1.jpg" alt="" class="ftr img-w100h80" />
+			     				</a>
+			     			</div>
+			     			<div class="div-w46 bc-fff b-e3e4e5" style="padding: 4px;">
+			     				<a href="" class="c-666">
+				     				<span style="color: #5e6c90;">24小时榜</span><br />
+				     				<span style="font-size: 10px;">人气店铺<br />榜单揭秘</span>
+				     				<img src="img/p2.jpg" alt="" class="ftr img-w100h80" />
+				     			</a>
+			     			</div>
+			     			<div class="div-w46 bc-fff b-e3e4e5" style="padding: 4px;margin-top: 4px;">
+			     				<a href="" class="c-666">
+				     				<span style="color: #5e6c90;">京东网厅</span><br />
+				     				<span style="font-size: 10px;">每天1元<br />享800M</span>
+				     				<img src="img/p3.jpg" alt="" class="ftr img-w100h80" />
+				     			</a>
+			     			</div>
+			     			<div class="div-w46 bc-fff b-e3e4e5" style="padding: 4px;margin-top: 4px;">
+			     				<a href="" class="c-666">
+				     				<span style="color: #5e6c90;">京选卖家</span><br />
+				     				<span style="font-size: 10px;">诺基亚6<br />新品现货</span>
+				     				<img src="img/p.jpg" alt="" class="ftr img-w100h80" />
+				     			</a>
+			     			</div>
+			     			
+			     		</div>
+			     	    <div class="c-666">
+			     	    	<a href="" class="">
+			     	    		<img src="img/lx.jpg" class="img-w160"/>
+			     	    	</a>
+			     	    	<a href="" class="">
+			     	    		<img src="img/ml.jpg" class="img-w160"/>
+			     	    	</a>
+			     	    	<a href="" class="">
+			     	    		<img src="img/oppo.png" class="img-w160"/>
+			     	    	</a>
+			     	    </div>
+			     	</div>			     	
+			     </div>
+			     
+			</div>
+			
+		</div>
+		
+	</div>	
+	
+ <!-- Swiper JS -->
+    <script src="js/swiper.min.js"></script>
+
+<!-- Initialize Swiper -->
+<script>
+var swiper = new Swiper('.swiper-container', {
+    pagination: '.swiper-pagination',
+    nextButton: '.swiper-button-next',
+    prevButton: '.swiper-button-prev',
+    paginationClickable: true,
+    spaceBetween: 30,
+    centeredSlides: true,
+    autoplay: 3000,
+    loop: true,
+    autoplayDisableOnInteraction: false
+});
+</script>	
+
 </body>
 </html>
