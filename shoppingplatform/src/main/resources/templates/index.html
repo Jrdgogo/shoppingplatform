@@ -3,23 +3,23 @@
 <head>
 	<meta charset="utf-8" />
 	<title>京东</title>
-	<link rel="stylesheet"  href="css/style.css"/>
-	<link rel="stylesheet"  href="css/swiper.min.css"/>
+	<link rel="stylesheet"  th:href="@{/css/style.css}"/>
+	<link rel="stylesheet"  th:href="@{/css/swiper.min.css}"/>
 </head>
 
 <body class="bc-f6f6f6">
 	<div class="bg">
 		<div class="header bc-e3e4e5 vc">
-			<div class="m0a" style="width: 80%;">
-				<a href="" class="c-f10215 ftr">免费注册</a>
-				<a href="" class="mr10 ftr c-999">你好，请登录</a>	
+			<div class="m0a" style="width: 80%;" >
+				<a href="" class="c-f10215 ftr" th:if="${User == null }">免费注册</a>
+				<a href="" class="mr10 ftr c-999" th:text="${User != null}? '你好,'+${User.username}:'你好,请登录'">你好，请登录</a>	
 			</div>
 		</div>
 		
 		<div class="container m0a pt20">
 			<div class="layer1">
 				<div class="left mr10">
-					<img src="img/logo.jpg" alt="" class="img-wh200" />	
+					<img src="img/logo.jpg" alt="" class="img-wh200" th:src="@{/img/logo.jpg}"/>	
 					<div class="relative">
 						<ul class="bc-6e6568 lists ptb20 c-fff">
 							<li class="plr20">

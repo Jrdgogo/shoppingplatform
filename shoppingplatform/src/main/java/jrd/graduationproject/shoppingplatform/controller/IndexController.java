@@ -31,8 +31,9 @@ public class IndexController {
 	public String indexHtml(Model model, HttpSession session) {
 
 		User user = (User) session.getAttribute("User");
-		if (user != null)
+		if (user != null){
 			model.addAttribute("User", user);
+		}
 		Map<Integer, List<CategoryEnum>> categoryEnumMap = new HashMap<>();
 		Map<Integer, List<TypeEnum>> typeEnumMap = new HashMap<>();
 		Map<String, List<Commodity>> commodityMap = new HashMap<>();
