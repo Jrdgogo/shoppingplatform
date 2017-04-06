@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.TypeEnum;
 import jrd.graduationproject.shoppingplatform.pojo.po.Commodity;
+import jrd.graduationproject.shoppingplatform.pojo.po.Ware;
 import jrd.graduationproject.shoppingplatform.pojo.vo.PageParam;
 
 public interface IWareService {
@@ -13,5 +14,7 @@ public interface IWareService {
 	List<Commodity> getCommoditysByType(TypeEnum typeEnum);
 
 	Page<Commodity> getCommoditys(PageParam page);
+
+	Page<Ware> getWares(Commodity commodity, PageParam page);
 
 }

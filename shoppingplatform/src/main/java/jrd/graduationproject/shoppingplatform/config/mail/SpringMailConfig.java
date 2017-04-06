@@ -11,9 +11,10 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
-import freemarker.template.TemplateException;
 import jrd.graduationproject.shoppingplatform.config.redis.JedisDataSource;
 import jrd.graduationproject.shoppingplatform.util.PropertiesUtil;
 
@@ -24,11 +25,17 @@ public class SpringMailConfig {
 	@Autowired
 	private Environment env;
 
-	@Bean(name = "freemarkerConfiguration")
-	public FreeMarkerConfigurationFactoryBean freeMarkerConfigurationFactoryBean() {
-		FreeMarkerConfigurationFactoryBean freeMarkerConfiguration = new FreeMarkerConfigurationFactoryBean();
-		freeMarkerConfiguration.setTemplateLoaderPath(env.getProperty("mail_templateLoaderPath"));
-		return freeMarkerConfiguration;
+	@Bean(name = "mailTemplateEngine")
+	public TemplateEngine templateEngine() {
+
+		TemplateEngine engine = new SpringTemplateEngine();
+		ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+		templateResolver.setPrefix(env.getProperty("mail_prefix"));
+		templateResolver.setSuffix(env.getProperty("mail_suffix"));
+		templateResolver.setTemplateMode(env.getProperty("mail_model"));
+		templateResolver.setCharacterEncoding(env.getProperty("mail_defaultEncoding"));
+		engine.setTemplateResolver(templateResolver);
+		return engine;
 	}
 
 	@Bean(name = "mailSender")
@@ -52,11 +59,10 @@ public class SpringMailConfig {
 
 	@Bean(name = "SpringMail")
 	public SpringMail springMail(@Qualifier("mailSender") JavaMailSender mailSender,
-			@Qualifier("freemarkerConfiguration") FreeMarkerConfigurationFactoryBean freemarkerConfiguration)
-			throws IOException, TemplateException {
+			@Qualifier("mailTemplateEngine") TemplateEngine templateEngine) throws IOException {
 		SpringMail springMail = new SpringMail();
 		springMail.setMailSender(mailSender);
-		springMail.setFreemarkerConfiguration(freemarkerConfiguration.createConfiguration());
+		springMail.setTemplateEngine(templateEngine);
 		springMail.setSenderUser(env.getProperty("mail_senderUser"));
 		springMail.setPersonal(env.getProperty("mail_personal"));
 		return springMail;
@@ -64,7 +70,7 @@ public class SpringMailConfig {
 
 	@Bean(name = "MailSubscribe", initMethod = "listener")
 	public MailSubscribe mailSubscribe(@Qualifier("SpringMail") SpringMail springMail,
-			@Qualifier("jedisDataSource") JedisDataSource jedisDataSource) throws IOException, TemplateException {
+			@Qualifier("jedisDataSource") JedisDataSource jedisDataSource) throws IOException {
 		MailSubscribe mailSubscribe = new MailSubscribe();
 		mailSubscribe.setSpringMail(springMail);
 		mailSubscribe.setJedis(jedisDataSource.getJedis());
@@ -73,7 +79,7 @@ public class SpringMailConfig {
 
 	@Bean(name = "MailPublish")
 	public MailPublish mailPublish(@Qualifier("SpringMail") SpringMail springMail,
-			@Qualifier("jedisDataSource") JedisDataSource jedisDataSource) throws IOException, TemplateException {
+			@Qualifier("jedisDataSource") JedisDataSource jedisDataSource) throws IOException {
 		MailPublish mailPublish = new MailPublish();
 		mailPublish.setJedisDataSource(jedisDataSource);
 		return mailPublish;
