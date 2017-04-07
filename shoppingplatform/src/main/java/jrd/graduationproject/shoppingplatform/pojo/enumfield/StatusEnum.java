@@ -3,7 +3,7 @@ package jrd.graduationproject.shoppingplatform.pojo.enumfield;
 import jrd.graduationproject.shoppingplatform.exception.category.NotFindEnumException;
 
 public enum StatusEnum {
-     NOTACTIVE(0,"未激活"),ACTIVE(1,"活跃"),CANCEL(2,"注销");
+    NOTACTIVE(0,"未激活"),ACTIVE(1,"活跃"),CANCEL(2,"冻结");
 	private Integer index;
 	private String desc;
     private StatusEnum(Integer index,String desc){

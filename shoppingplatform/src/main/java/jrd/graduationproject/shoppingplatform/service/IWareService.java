@@ -16,5 +16,9 @@ public interface IWareService {
 	Page<Commodity> getCommoditys(PageParam page);
 
 	Page<Ware> getWares(Commodity commodity, PageParam page);
+	
+	Commodity addCommodity(Commodity commodity);
+	
+	Ware addWare(Ware ware);
 
 }

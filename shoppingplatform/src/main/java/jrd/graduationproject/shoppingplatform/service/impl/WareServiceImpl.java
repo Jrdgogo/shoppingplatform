@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jrd.graduationproject.shoppingplatform.dao.jpa.CommodityJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.SellerJpa;
@@ -17,6 +18,7 @@ import jrd.graduationproject.shoppingplatform.pojo.po.Commodity;
 import jrd.graduationproject.shoppingplatform.pojo.po.Ware;
 import jrd.graduationproject.shoppingplatform.pojo.vo.PageParam;
 import jrd.graduationproject.shoppingplatform.service.IWareService;
+import jrd.graduationproject.shoppingplatform.util.GlobalUtil;
 
 @Service
 public class WareServiceImpl implements IWareService {
@@ -52,6 +54,20 @@ public class WareServiceImpl implements IWareService {
 		probe.setCommodity(commodity.getId());
 		Example<Ware> example = Example.of(probe);
 		return wareJpa.findAll(example, pageable);
+	}
+
+	@Override
+	@Transactional
+	public Commodity addCommodity(Commodity commodity) {
+		commodity.setId(GlobalUtil.getModelID(Commodity.class));
+		return commodityJpa.saveAndFlush(commodity);
+	}
+
+	@Override
+	@Transactional
+	public Ware addWare(Ware ware) {
+		ware.setId(GlobalUtil.getModelID(Ware.class));
+		return wareJpa.saveAndFlush(ware);
 	}
 
 }
