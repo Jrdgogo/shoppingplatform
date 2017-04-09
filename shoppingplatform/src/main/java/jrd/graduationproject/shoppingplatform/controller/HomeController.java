@@ -42,7 +42,7 @@ public class HomeController {
 
 	
 	@ResponseBody
-	@RequestMapping(value = "/getUserByName.action")
+	@RequestMapping(value = "/getUserByName.ajax")
 	public User getUserByName(@RequestParam("username") String username) {
 		return userService.getUserByName(username);
 	}
@@ -57,7 +57,7 @@ public class HomeController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/registerUser.action")
+	@RequestMapping(value = "/registerUser.ajax")
 	public Integer RegisterUser(HttpSession session, @RequestParam("code") String code, @RequestParam("pwd") String pwd,
 			User user) {
 		String imgcode = (String) session.getAttribute("imgcode");
@@ -77,7 +77,7 @@ public class HomeController {
 	private static final int SESSION_OUTTIME = 60 * 60 * 24;
 
 	@ResponseBody
-	@RequestMapping(value = "/loginValidate.action")
+	@RequestMapping(value = "/loginValidate.ajax")
 	public Integer loginValidate(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			User user) {
 		User u = userService.getUserByName_Pwd(user);

@@ -8,9 +8,9 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.CategoryEnum;
@@ -31,8 +31,27 @@ public class IndexController {
 	public String indexHtml(Model model, HttpSession session) {
 
 		User user = (User) session.getAttribute("User");
-		if (user != null){
+		CategoryEnum[] categoryEnums = fullCategory(model, user);
+		Map<String, List<Ware>> wares = new HashMap<>();
+		for (CategoryEnum categoryEnum : categoryEnums) {
+			PageParam page=new PageParam();
+			page.setPagesize(8);
+			Ware ware=new Ware();
+			ware.setCategory(categoryEnum);
+			List<Ware> categoryWares = wareService.getWares(page,ware).getContent();
+			if(categoryWares.size()<8)
+				continue;
+			wares.put(categoryEnum.getName(), categoryWares);
+		}
+		model.addAttribute("wares", wares);
+		
+		return "index";
+	}
+
+	private CategoryEnum[] fullCategory(Model model, User user) {
+		if (user != null) {
 			model.addAttribute("User", user);
+			model.addAttribute("shopcar", wareService.getUserShopCar(user));
 		}
 		Map<Integer, List<CategoryEnum>> categoryEnumMap = new HashMap<>();
 		Map<Integer, List<TypeEnum>> typeEnumMap = new HashMap<>();
@@ -68,19 +87,12 @@ public class IndexController {
 		model.addAttribute("categorys", categoryEnumMap);
 		model.addAttribute("types", typeEnumMap);
 		model.addAttribute("commoditys", commodityMap);
-		PageParam page = new PageParam();
-		page.setPagenum(1);
-		page.setPagesize(6);
-		Page<Commodity> pageModel = wareService.getCommoditys(page);
-		List<Commodity> commodities = pageModel.getContent();
-		page.setPagenum(1);
-		page.setPagesize(8);
-		for (Commodity commodity : commodities) {
-			Page<Ware> pageWare = wareService.getWares(commodity, page);
-			model.addAttribute(commodity.getId(), pageWare.getContent());
-		}
-
-		return "index";
+		return categoryEnums;
 	}
 
+	@RequestMapping("/public/{path}.html")
+	public String punlicHtml(@PathVariable(value = "path", required = true) String path) {
+		return "public/" + path;
+	}
+	
 }

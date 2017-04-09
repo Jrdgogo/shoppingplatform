@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="account" property="account" jdbcType="DECIMAL" />
     <result column="age" property="age" jdbcType="INTEGER" />
-    <result column="birth" property="birth" jdbcType="DATE"/>
+    <result column="birth" property="birth" jdbcType="DATE" />
     <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
@@ -13,8 +13,8 @@
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="power" property="power" jdbcType="INTEGER" />
     <result column="realname" property="realname" jdbcType="VARCHAR" />
-    <result column="sex" property="sex" jdbcType="VARCHAR" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
-    <result column="status" property="status" jdbcType="INTEGER" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+    <result column="sex" property="sex" jdbcType="VARCHAR" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
+    <result column="status" property="status" jdbcType="INTEGER" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
     <result column="username" property="username" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="jrd.graduationproject.shoppingplatform.pojo.po.User" extends="BaseResultMap" >
@@ -44,6 +44,44 @@
                 </when>
               </choose>
             </foreach>
+            <foreach collection="criteria.sexCriteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumTypeHandler} and #{criterion.secondValue,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.statusCriteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler} and #{criterion.secondValue,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
           </trim>
         </if>
       </foreach>
@@ -69,6 +107,44 @@
                   and ${criterion.condition}
                   <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
                     #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.sexCriteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumTypeHandler} and #{criterion.secondValue,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.statusCriteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler} and #{criterion.secondValue,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
                   </foreach>
                 </when>
               </choose>
@@ -138,14 +214,14 @@
       birth, createdate, email, 
       `password`, paymentpwd, phone, 
       `power`, realname, sex, 
-      `status`, username, photo
-      )
+      `status`, 
+      username, photo)
     values (#{id,jdbcType=VARCHAR}, #{account,jdbcType=DECIMAL}, #{age,jdbcType=INTEGER}, 
       #{birth,jdbcType=DATE}, #{createdate,jdbcType=TIMESTAMP}, #{email,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{paymentpwd,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{power,jdbcType=INTEGER}, #{realname,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler}, 
-      #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, #{username,jdbcType=VARCHAR}, #{photo,jdbcType=LONGVARBINARY}
-      )
+      #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, 
+      #{username,jdbcType=VARCHAR}, #{photo,jdbcType=LONGVARBINARY})
   </insert>
   <insert id="insertSelective" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.User" >
     insert into `t_user`

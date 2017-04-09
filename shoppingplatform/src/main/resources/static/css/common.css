@@ -1,0 +1,432 @@
+          /*背景色*/
+.bc-white{
+	background-color: #fff;
+}
+.bc-lblue{
+    background-color:#d8ebef;
+}
+.bc-blue{
+	background-color: #43B0E2;
+}
+.bc-lcheng{
+	background-color: #FFBE5C;
+}
+.bc-cheng{
+	background-color: #F4682D;
+}
+.bc-dgray{
+     background-color: #323232;
+}
+.bc-zihong{
+     background-color: #D8AFB3;
+}
+.bc-green{
+     background-color: #31A868;
+}
+.bc-lgreen{
+     background-color: #9EC483;
+}
+
+       /*字色*/
+.c-white{
+	color: #fff;
+}
+.c-blank{
+	color: #000;
+}
+.c-cheng{
+ color: #F4682D;
+}
+.c-gray{
+ color: #666;
+}
+.c-red{
+  color: red;
+}
+
+.m0{
+   margin: 0;
+}
+.ml2{
+	margin-left: 0.02rem;
+}
+.mt2{
+	margin-top: 0.02rem;
+}
+.mtb2{
+	margin: 0.02rem 0;
+}
+.ml3{
+	margin-left: 0.03rem;
+}
+.mtb5{
+	margin: 0.05rem 0;
+}
+.mt5{
+	margin-top: 0.05rem;
+}
+.mb5{
+	margin-bottom: 0.05rem;
+}
+.ml5{
+	margin-left: 0.05rem;
+}
+.mb8{
+	margin-bottom: 0.08rem;
+}
+.ml10{
+	margin-left: 0.1rem;
+}
+.mlr10{
+	margin: 0 0.1rem;
+}
+.mt10{
+	margin-top: 0.1rem;
+}
+.mb10{
+	margin-bottom: 0.1rem;
+}
+.mtb10{
+	margin: 0.1rem 0;
+}
+.ml15{
+	margin-left: 0.15rem;
+}
+.mt20{
+	margin-top: 0.2rem;
+}
+.mb20{
+	margin-bottom: 0.2rem;
+}
+.mtb20{
+	margin: 0.2rem 0;
+}
+.ml20{
+	margin-left: 0.2rem;
+}
+.mr20{
+	margin-right: 0.2rem;
+}
+.mt40{
+	margin-top: 0.4rem;
+}
+.mb40{
+	margin-bottom: 0.4rem;
+}
+.ml120{
+	margin-left: 1.2rem;
+}
+.p5{
+	padding: 0.05rem;
+}
+.pt5{
+	padding-top: 0.05rem;
+}
+.plr5{
+	padding: 0 0.05rem;
+}
+.plr8{
+	padding: 0 0.08rem;
+}
+.ptb8{
+	padding: 0.08rem 0;
+}
+.p10{
+	padding: 0.1rem;
+}
+.plr10{
+	padding: 0 0.1rem;
+}
+.ptb10{
+	padding: 0.1rem 0;
+}
+.p20{
+	padding: 0.2rem;
+}
+.pl20{
+	padding-left: 0.2rem;
+}
+.pr20{
+	padding-right: 0.2rem;
+}
+.pt20{
+	padding-top: 0.2rem;
+}
+.ptb20{
+	padding: 0.2rem 0;
+}
+.p40{
+	padding: 0.4rem;
+}
+.pl40{
+	padding-left: 0.4rem;
+}
+.pr40{
+	padding-right: 0.4rem;
+}
+.pl50{
+	padding-left: 0.5rem;
+}
+.pr50{
+	padding-right: 0.5rem;
+}
+
+         /*字号*/
+.f5{
+	font-size: 0.05rem;
+}
+.f6{
+	font-size: 0.06rem;
+}
+.f7{
+	font-size: 0.07rem;
+}
+.f8{
+	font-size: 0.08rem;
+}
+.f10{
+	font-size: 0.1rem;
+}
+.f11{
+	font-size: 0.11rem;
+}
+.f12{
+	font-size: 0.12rem;
+}
+.f13{
+	font-size: 0.13rem;
+}
+.f14{
+	font-size: 0.14rem;
+}
+.f15{
+	font-size: 0.15rem;
+}
+
+.img-wh5{
+	width: 0.05rem;
+	height: 0.05rem;
+}
+.img-wh8{
+	width: 0.08rem;
+	height: 0.08rem;
+}
+.img-wh10{
+	width: 0.1rem;
+	height: 0.1rem;
+}
+.img-wh15{
+	width: 0.15rem;
+	height: 0.15rem;
+}
+.img-wh20{
+	width: 0.2rem;
+	height: 0.2rem;
+}
+.img-wh30{
+	width: 0.3rem;
+	height: 0.3rem;
+}
+.img-wh40{
+	width: 0.4rem;
+	height: 0.4rem;
+}
+.img-wh60{
+	width: 0.6rem;
+	height: 0.6rem;
+}
+.img-wh80{
+	width: 0.8rem;
+	height: 0.8rem;
+}
+.img-w80h180{
+	width: 80%;
+	height: 1.8rem;
+}
+.img-h120{
+	width: 100%;
+	height: 1.2rem;
+}
+.img-h150{
+	width: 100%;
+	height: 1.5rem;
+}
+.img-photo{
+   display: inline-block;
+   width: 300px;
+   height: 180px;
+}
+.img-icon{
+   width: 28px;
+   height: 28px;  
+}
+.img-icon-lg{
+   width: 38px;
+   height: 38px;  
+}
+.img-tiehua{
+   width:400px;
+   position: absolute;
+   right: 0;
+   top:0;
+   
+}
+.img-logo{
+   width: 120px;
+}
+
+
+.b0{
+   border: 0;
+}
+.b-t-gray{
+    border-top:1px solid #999;
+}
+     /*边框圆角*/
+.br5{
+	border-radius: 0.05rem;
+}
+.br10{
+	border-radius: 0.1rem;
+}
+.br20{
+	border-radius: 0.2rem;
+}
+.br60{
+	border-radius: 0.6rem;
+}
+.br80{
+	border-radius: 0.8rem;
+}
+
+    /*边框颜色*/
+.b-white{
+	border: 0.01rem solid #fff;
+}
+.b-cheng{
+	border:0.01rem solid #F4682D;
+}
+
+  /*边框阴影*/
+.bs-gray{
+   box-shadow: 0 0 2px 1px rgba(30,30,30,.3);
+}
+.bs-photo-gray{
+   box-shadow: 1px 1px 4px 1px rgba(30,30,30,.3);
+}
+
+
+
+
+.ftl{
+	float: left;
+}
+.ftr{
+	float: right !important;
+}
+.fc { 
+	clear: both !important;
+ }  /*清除浮动*/
+
+.m0a{
+	margin: 0 auto;
+}
+.tac{
+	text-align: center;
+}
+.tal{
+	text-align: left;
+}
+.tar{
+	text-align: right;
+}
+
+
+        /*垂直居中*/
+.vc{
+	display: flex;
+	display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;
+	align-items:center;   /*垂直居中*/
+		-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;	
+}
+
+html,body{
+    width: 100%;
+    height:100%;
+    font-family:"Microsoft YaHei",Arial;
+    overflow-x:hidden;
+    overflow-y:auto;
+}  
+html,body,a,i{
+    padding: 0;
+    margin: 0;
+} 
+/* IE下需要设置body的font-size */
+ /*body{
+  font-size:100%;
+} */
+.ff{
+	 font-family:"Microsoft YaHei",Arial !important;
+}
+
+/*渐变色背景*/
+.bg{
+    width:100%;
+    height:100%;
+    background-size: 100% 100%;
+}
+
+
+/*welcome.html开始*/
+.welcome{
+	overflow-y: hidden;
+}
+.bg-welcome{
+    width:100%;
+    height:100%;
+    background-image: url("/images/welcome/bg.jpg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    position: absolute;
+    z-index: 0;
+}
+             /*替换了默认a链接的颜色*/
+.bg-welcome a:hover,.bg a:active{
+    color: #6C9EAA;
+}
+.bg-welcome a{
+    display: inline-block;
+    width: 0.36rem;
+    height: 0.18rem;
+    position: absolute;
+    /*background-color: yellow;*/
+    z-index: 1;
+}
+.bg-welcome a i{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100%;
+    position: absolute;
+    z-index: 2; 
+}
+.bgAzc{
+    top:78%;
+    left: 35%;
+}
+.bgAzc i{
+    background-image: url("/images/welcome/zc.png");
+}
+.bgAzc i:hover{
+    background-image: url("/images/welcome/zc1.png");
+}
+.bgAdlu{
+    top: 78%;
+    left: 55%;
+}
+.bgAdlu i{
+    background-image: url("/images/welcome/dlu.png");
+}
+.bgAdlu i:hover{
+    background-image: url("/images/welcome/dlu1.png");
+}

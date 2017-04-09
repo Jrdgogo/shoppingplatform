@@ -39,7 +39,7 @@ public class ErgodicClass {
 
 	public static List<Class<?>> getAllClass() {
 		List<Class<?>> clss = new ArrayList<Class<?>>(0);
-		URL url = Thread.currentThread().getContextClassLoader().getResource("/");
+		URL url = Thread.currentThread().getContextClassLoader().getResource("");
 		try {
 			String path = url.getPath();
 			if (path.contains("/bin/"))

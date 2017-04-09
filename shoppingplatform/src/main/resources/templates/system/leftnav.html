@@ -1,0 +1,45 @@
+<html>
+
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" th:href="@{/css/main.css}"/>
+		<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+		<script type="text/javascript">
+			$(function() {
+				$(".nav ul li a").click(function() {
+					if(!$(this).hasClass("not_used")) {
+						$(".nav ul li a").removeClass("selected")
+						$(this).addClass("selected")
+					}
+				})
+			})
+		</script>
+	</head>
+
+	<body style="padding:0;margin:0;">
+
+		<!--左侧导航栏-->
+		<div style="height:100%;width:100%; background: #333f51;">
+			<!-- Your content -->
+			<div class="nav-img">
+				<a href="#" style="border: 0px"><img style="width:120px;height:30px;" th:src="@{/img/logo.png}"></img></a>
+			</div>
+			<div class="nav">
+				<ul>
+					<li>
+						<a class="selected" style="display: block" th:href="@{/system/commodity/show.action}" target="middle">商品管理</a>
+					</li>
+					<li>
+						<a style="display: block" th:href="@{/system/seller/show.action}" target="middle">商家管理</a>
+					</li>
+					<li>
+						<a style="display: block;" th:href="@{/system/user/show.action}" target="middle">用户管理</a>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -33,14 +33,35 @@
 .p0{
    padding: 0;
 }
-.ptb5
-   padding: 5px 0;
+.pt3{
+   padding-top: 3px !important;
+}
+.pb3{
+   padding-bottom: 3px !important;
+}
+.ptb5{
+   padding: 5px 0 ;
+}
+.pt8{
+   padding-top: 8px;
+}
+.pb8{
+   padding-bottom: 8px;
+}
+.p8{
+   padding:8px !important;
 }
 .p10{
-   padding: 10px;
+   padding: 10px !important;
 }
 .pt10{
    padding-top: 10px;
+}
+.pb10{
+   padding-bottom: 10px;
+}
+.ptb10{
+   padding: 10px 0 ;
 }
 .p15{
   padding: 15px;
@@ -48,8 +69,17 @@
 .p20{
   padding: 20px;
 }
+.pt20{
+   padding-top: 20px;
+}
 .ptb20{
    padding: 20px 0;
+}
+.plr10{
+  padding: 0 10px;
+}
+.plr15{
+  padding: 0 15px;
 }
 .plr20{
   padding: 0 20px;
@@ -57,9 +87,7 @@
 .plr30{
   padding: 0 30px;
 }
-.pt20{
-   padding-top: 20px;
-}
+
 
 .m0a{
   margin: 0 auto;
@@ -82,6 +110,9 @@
 .mr10{
   margin-right: 10px;
 }
+.mr20{
+  margin-right: 20px;
+}
 .mt30{
   margin-top: 30px;
 }
@@ -91,14 +122,35 @@
 .mb50{
   margin-bottom: 50px;
 }
-
+.ml80{
+  margin-left: 80px;
+}
 .mt87{
   margin-top: 87px;
 }
 
 
+.f12{
+   font-size: 12px;
+}
+.f14{
+   font-size: 14px;
+}
+.f18{
+   font-size: 18px;
+}
+.f20{
+   font-size: 20px;
+}
+
 .b-e3e4e5{
   border: solid 1px #e3e4e5;
+}
+.b-b-ddd{
+   border-bottom: solid 1px #ddd;
+}
+.b-b-b1191a{
+   border-bottom: solid 2px #b1191a;
 }
 
 .br8{
@@ -323,3 +375,48 @@ a{
   width: 100px;
   height: 80px;
 }
+
+
+
+/*phone.html*/
+.img-w200{
+   width: 250px;
+   height: 80px;
+   vertical-align: middle;
+}
+.price-list a{
+   color:#005aa0;
+}
+.price-list a:hover{
+   color: #f10215;
+}
+    /*子元素平均分布*/
+.sortnav{
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+.sortnav a{
+   color: #333;
+}
+.sortnav a:hover,.selected{
+   background-color: #F10215;
+   color: #fff !important;
+}
+.sortbox{
+   display: table;
+}
+.sortlists{
+   display: table-cell;
+}
+.sortlists:hover{
+   box-shadow:0 0 1px 1px #d8d8d8;
+}
+.img-googs{
+   width: 100%;
+}
+.describe:hover{
+   color: #f10215;
+}
+

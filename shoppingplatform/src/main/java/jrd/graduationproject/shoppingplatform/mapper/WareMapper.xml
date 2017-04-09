@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="jrd.graduationproject.shoppingplatform.dao.mybatis.WareMapper" >
+  <resultMap id="BaseResultMap" type="jrd.graduationproject.shoppingplatform.pojo.po.Ware" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="commodity" property="commodity" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="seller" property="seller" jdbcType="VARCHAR" />
+    <result column="ware" property="ware" jdbcType="VARCHAR" />
+    <result column="waretable" property="waretable" jdbcType="VARCHAR" />
+    <result column="photo" property="photo" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="category" property="category" jdbcType="VARCHAR" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
+    <result column="type" property="type" jdbcType="VARCHAR" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.categoryCriteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumTypeHandler} and #{criterion.secondValue,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.typeCriteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumTypeHandler} and #{criterion.secondValue,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.categoryCriteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumTypeHandler} and #{criterion.secondValue,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.typeCriteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumTypeHandler} and #{criterion.secondValue,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, commodity, price, seller, ware, waretable, photo, `name`, category, `type`
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.WareExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `t_ware`
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from `t_ware`
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from `t_ware`
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.WareExample" >
+    delete from `t_ware`
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.Ware" >
+    insert into `t_ware` (id, commodity, price, 
+      seller, ware, waretable, 
+      photo, `name`, category, 
+      `type`)
+    values (#{id,jdbcType=VARCHAR}, #{commodity,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, 
+      #{seller,jdbcType=VARCHAR}, #{ware,jdbcType=VARCHAR}, #{waretable,jdbcType=VARCHAR}, 
+      #{photo,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler}, 
+      #{type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler})
+  </insert>
+  <insert id="insertSelective" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.Ware" >
+    insert into `t_ware`
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="commodity != null" >
+        commodity,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="seller != null" >
+        seller,
+      </if>
+      <if test="ware != null" >
+        ware,
+      </if>
+      <if test="waretable != null" >
+        waretable,
+      </if>
+      <if test="photo != null" >
+        photo,
+      </if>
+      <if test="name != null" >
+        `name`,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
+      <if test="type != null" >
+        `type`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="commodity != null" >
+        #{commodity,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="seller != null" >
+        #{seller,jdbcType=VARCHAR},
+      </if>
+      <if test="ware != null" >
+        #{ware,jdbcType=VARCHAR},
+      </if>
+      <if test="waretable != null" >
+        #{waretable,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null" >
+        #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.WareExample" resultType="java.lang.Integer" >
+    select count(*) from `t_ware`
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update `t_ware`
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commodity != null" >
+        commodity = #{record.commodity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DOUBLE},
+      </if>
+      <if test="record.seller != null" >
+        seller = #{record.seller,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ware != null" >
+        ware = #{record.ware,jdbcType=VARCHAR},
+      </if>
+      <if test="record.waretable != null" >
+        waretable = #{record.waretable,jdbcType=VARCHAR},
+      </if>
+      <if test="record.photo != null" >
+        photo = #{record.photo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        `name` = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.category != null" >
+        category = #{record.category,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      </if>
+      <if test="record.type != null" >
+        `type` = #{record.type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update `t_ware`
+    set id = #{record.id,jdbcType=VARCHAR},
+      commodity = #{record.commodity,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DOUBLE},
+      seller = #{record.seller,jdbcType=VARCHAR},
+      ware = #{record.ware,jdbcType=VARCHAR},
+      waretable = #{record.waretable,jdbcType=VARCHAR},
+      photo = #{record.photo,jdbcType=VARCHAR},
+      `name` = #{record.name,jdbcType=VARCHAR},
+      category = #{record.category,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      `type` = #{record.type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.Ware" >
+    update `t_ware`
+    <set >
+      <if test="commodity != null" >
+        commodity = #{commodity,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="seller != null" >
+        seller = #{seller,jdbcType=VARCHAR},
+      </if>
+      <if test="ware != null" >
+        ware = #{ware,jdbcType=VARCHAR},
+      </if>
+      <if test="waretable != null" >
+        waretable = #{waretable,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null" >
+        photo = #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null" >
+        category = #{category,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      </if>
+      <if test="type != null" >
+        `type` = #{type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.Ware" >
+    update `t_ware`
+    set commodity = #{commodity,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      seller = #{seller,jdbcType=VARCHAR},
+      ware = #{ware,jdbcType=VARCHAR},
+      waretable = #{waretable,jdbcType=VARCHAR},
+      photo = #{photo,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      category = #{category,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      `type` = #{type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

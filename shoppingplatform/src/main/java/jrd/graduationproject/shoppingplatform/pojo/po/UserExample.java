@@ -1,10 +1,11 @@
 package jrd.graduationproject.shoppingplatform.pojo.po;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import jrd.graduationproject.shoppingplatform.pojo.enumfield.SexEnum;
+import jrd.graduationproject.shoppingplatform.pojo.enumfield.StatusEnum;
 
 public class UserExample {
     protected String orderByClause;
@@ -67,19 +68,75 @@ public class UserExample {
     }
 
     protected abstract static class GeneratedCriteria {
+        protected List<Criterion> sexCriteria;
+
+        protected List<Criterion> statusCriteria;
+
+        protected List<Criterion> allCriteria;
+
         protected List<Criterion> criteria;
 
         protected GeneratedCriteria() {
             super();
             criteria = new ArrayList<Criterion>();
+            sexCriteria = new ArrayList<Criterion>();
+            statusCriteria = new ArrayList<Criterion>();
+        }
+
+        public List<Criterion> getSexCriteria() {
+            return sexCriteria;
+        }
+
+        protected void addSexCriterion(String condition, Object value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            sexCriteria.add(new Criterion(condition, value, "org.apache.ibatis.type.EnumTypeHandler"));
+            allCriteria = null;
+        }
+
+        protected void addSexCriterion(String condition, SexEnum value1, SexEnum value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            sexCriteria.add(new Criterion(condition, value1, value2, "org.apache.ibatis.type.EnumTypeHandler"));
+            allCriteria = null;
+        }
+
+        public List<Criterion> getStatusCriteria() {
+            return statusCriteria;
+        }
+
+        protected void addStatusCriterion(String condition, Object value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            statusCriteria.add(new Criterion(condition, value, "org.apache.ibatis.type.EnumOrdinalTypeHandler"));
+            allCriteria = null;
+        }
+
+        protected void addStatusCriterion(String condition, StatusEnum value1, StatusEnum value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            statusCriteria.add(new Criterion(condition, value1, value2, "org.apache.ibatis.type.EnumOrdinalTypeHandler"));
+            allCriteria = null;
         }
 
         public boolean isValid() {
-            return criteria.size() > 0;
+            return criteria.size() > 0
+                || sexCriteria.size() > 0
+                || statusCriteria.size() > 0;
         }
 
         public List<Criterion> getAllCriteria() {
-            return criteria;
+            if (allCriteria == null) {
+                allCriteria = new ArrayList<Criterion>();
+                allCriteria.addAll(criteria);
+                allCriteria.addAll(sexCriteria);
+                allCriteria.addAll(statusCriteria);
+            }
+            return allCriteria;
         }
 
         public List<Criterion> getCriteria() {
@@ -91,6 +148,7 @@ public class UserExample {
                 throw new RuntimeException("Value for condition cannot be null");
             }
             criteria.add(new Criterion(condition));
+            allCriteria = null;
         }
 
         protected void addCriterion(String condition, Object value, String property) {
@@ -98,6 +156,7 @@ public class UserExample {
                 throw new RuntimeException("Value for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value));
+            allCriteria = null;
         }
 
         protected void addCriterion(String condition, Object value1, Object value2, String property) {
@@ -105,6 +164,7 @@ public class UserExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
+            allCriteria = null;
         }
 
         protected void addCriterionForJDBCDate(String condition, Date value, String property) {
@@ -213,52 +273,52 @@ public class UserExample {
             return (Criteria) this;
         }
 
-        public Criteria andAccountEqualTo(BigDecimal value) {
+        public Criteria andAccountEqualTo(Double value) {
             addCriterion("account =", value, "account");
             return (Criteria) this;
         }
 
-        public Criteria andAccountNotEqualTo(BigDecimal value) {
+        public Criteria andAccountNotEqualTo(Double value) {
             addCriterion("account <>", value, "account");
             return (Criteria) this;
         }
 
-        public Criteria andAccountGreaterThan(BigDecimal value) {
+        public Criteria andAccountGreaterThan(Double value) {
             addCriterion("account >", value, "account");
             return (Criteria) this;
         }
 
-        public Criteria andAccountGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andAccountGreaterThanOrEqualTo(Double value) {
             addCriterion("account >=", value, "account");
             return (Criteria) this;
         }
 
-        public Criteria andAccountLessThan(BigDecimal value) {
+        public Criteria andAccountLessThan(Double value) {
             addCriterion("account <", value, "account");
             return (Criteria) this;
         }
 
-        public Criteria andAccountLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andAccountLessThanOrEqualTo(Double value) {
             addCriterion("account <=", value, "account");
             return (Criteria) this;
         }
 
-        public Criteria andAccountIn(List<BigDecimal> values) {
+        public Criteria andAccountIn(List<Double> values) {
             addCriterion("account in", values, "account");
             return (Criteria) this;
         }
 
-        public Criteria andAccountNotIn(List<BigDecimal> values) {
+        public Criteria andAccountNotIn(List<Double> values) {
             addCriterion("account not in", values, "account");
             return (Criteria) this;
         }
 
-        public Criteria andAccountBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andAccountBetween(Double value1, Double value2) {
             addCriterion("account between", value1, value2, "account");
             return (Criteria) this;
         }
 
-        public Criteria andAccountNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andAccountNotBetween(Double value1, Double value2) {
             addCriterion("account not between", value1, value2, "account");
             return (Criteria) this;
         }
@@ -863,63 +923,63 @@ public class UserExample {
             return (Criteria) this;
         }
 
-        public Criteria andSexEqualTo(String value) {
-            addCriterion("sex =", value, "sex");
+        public Criteria andSexEqualTo(SexEnum value) {
+            addSexCriterion("sex =", value, "sex");
             return (Criteria) this;
         }
 
-        public Criteria andSexNotEqualTo(String value) {
-            addCriterion("sex <>", value, "sex");
+        public Criteria andSexNotEqualTo(SexEnum value) {
+            addSexCriterion("sex <>", value, "sex");
             return (Criteria) this;
         }
 
-        public Criteria andSexGreaterThan(String value) {
-            addCriterion("sex >", value, "sex");
+        public Criteria andSexGreaterThan(SexEnum value) {
+            addSexCriterion("sex >", value, "sex");
             return (Criteria) this;
         }
 
-        public Criteria andSexGreaterThanOrEqualTo(String value) {
-            addCriterion("sex >=", value, "sex");
+        public Criteria andSexGreaterThanOrEqualTo(SexEnum value) {
+            addSexCriterion("sex >=", value, "sex");
             return (Criteria) this;
         }
 
-        public Criteria andSexLessThan(String value) {
-            addCriterion("sex <", value, "sex");
+        public Criteria andSexLessThan(SexEnum value) {
+            addSexCriterion("sex <", value, "sex");
             return (Criteria) this;
         }
 
-        public Criteria andSexLessThanOrEqualTo(String value) {
-            addCriterion("sex <=", value, "sex");
+        public Criteria andSexLessThanOrEqualTo(SexEnum value) {
+            addSexCriterion("sex <=", value, "sex");
             return (Criteria) this;
         }
 
-        public Criteria andSexLike(String value) {
-            addCriterion("sex like", value, "sex");
+        public Criteria andSexLike(SexEnum value) {
+            addSexCriterion("sex like", value, "sex");
             return (Criteria) this;
         }
 
-        public Criteria andSexNotLike(String value) {
-            addCriterion("sex not like", value, "sex");
+        public Criteria andSexNotLike(SexEnum value) {
+            addSexCriterion("sex not like", value, "sex");
             return (Criteria) this;
         }
 
-        public Criteria andSexIn(List<String> values) {
-            addCriterion("sex in", values, "sex");
+        public Criteria andSexIn(List<SexEnum> values) {
+            addSexCriterion("sex in", values, "sex");
             return (Criteria) this;
         }
 
-        public Criteria andSexNotIn(List<String> values) {
-            addCriterion("sex not in", values, "sex");
+        public Criteria andSexNotIn(List<SexEnum> values) {
+            addSexCriterion("sex not in", values, "sex");
             return (Criteria) this;
         }
 
-        public Criteria andSexBetween(String value1, String value2) {
-            addCriterion("sex between", value1, value2, "sex");
+        public Criteria andSexBetween(SexEnum value1, SexEnum value2) {
+            addSexCriterion("sex between", value1, value2, "sex");
             return (Criteria) this;
         }
 
-        public Criteria andSexNotBetween(String value1, String value2) {
-            addCriterion("sex not between", value1, value2, "sex");
+        public Criteria andSexNotBetween(SexEnum value1, SexEnum value2) {
+            addSexCriterion("sex not between", value1, value2, "sex");
             return (Criteria) this;
         }
 
@@ -933,53 +993,53 @@ public class UserExample {
             return (Criteria) this;
         }
 
-        public Criteria andStatusEqualTo(Integer value) {
-            addCriterion("`status` =", value, "status");
+        public Criteria andStatusEqualTo(StatusEnum value) {
+            addStatusCriterion("`status` =", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotEqualTo(Integer value) {
-            addCriterion("`status` <>", value, "status");
+        public Criteria andStatusNotEqualTo(StatusEnum value) {
+            addStatusCriterion("`status` <>", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThan(Integer value) {
-            addCriterion("`status` >", value, "status");
+        public Criteria andStatusGreaterThan(StatusEnum value) {
+            addStatusCriterion("`status` >", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
-            addCriterion("`status` >=", value, "status");
+        public Criteria andStatusGreaterThanOrEqualTo(StatusEnum value) {
+            addStatusCriterion("`status` >=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThan(Integer value) {
-            addCriterion("`status` <", value, "status");
+        public Criteria andStatusLessThan(StatusEnum value) {
+            addStatusCriterion("`status` <", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThanOrEqualTo(Integer value) {
-            addCriterion("`status` <=", value, "status");
+        public Criteria andStatusLessThanOrEqualTo(StatusEnum value) {
+            addStatusCriterion("`status` <=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusIn(List<Integer> values) {
-            addCriterion("`status` in", values, "status");
+        public Criteria andStatusIn(List<StatusEnum> values) {
+            addStatusCriterion("`status` in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(List<Integer> values) {
-            addCriterion("`status` not in", values, "status");
+        public Criteria andStatusNotIn(List<StatusEnum> values) {
+            addStatusCriterion("`status` not in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusBetween(Integer value1, Integer value2) {
-            addCriterion("`status` between", value1, value2, "status");
+        public Criteria andStatusBetween(StatusEnum value1, StatusEnum value2) {
+            addStatusCriterion("`status` between", value1, value2, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotBetween(Integer value1, Integer value2) {
-            addCriterion("`status` not between", value1, value2, "status");
+        public Criteria andStatusNotBetween(StatusEnum value1, StatusEnum value2) {
+            addStatusCriterion("`status` not between", value1, value2, "status");
             return (Criteria) this;
         }
 

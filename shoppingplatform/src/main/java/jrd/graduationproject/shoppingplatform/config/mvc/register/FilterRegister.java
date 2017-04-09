@@ -1,15 +1,15 @@
-package jrd.graduationproject.shoppingplatform.config.mvc.filter;
+package jrd.graduationproject.shoppingplatform.config.mvc.register;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 import jrd.graduationproject.shoppingplatform.filter.LoginFilter;
 import jrd.graduationproject.shoppingplatform.filter.ParamFilter;
 import jrd.graduationproject.shoppingplatform.filter.PowerFilter;
 import jrd.graduationproject.shoppingplatform.filter.ReturnJSonFilter;
 
-@Component
+@Configuration
 public class FilterRegister {
 
 	@Bean
@@ -36,7 +36,7 @@ public class FilterRegister {
 	public FilterRegistrationBean paramFilterRegistration() {
 		FilterRegistrationBean registration = new FilterRegistrationBean();
 		registration.setFilter(new ParamFilter());
-		registration.addUrlPatterns("*.action");
+		registration.addUrlPatterns("*.action","*.html","*.ajax");
 		registration.setName("paramFilter");
 		registration.setOrder(3);
 		return registration;
@@ -46,9 +46,10 @@ public class FilterRegister {
 	public FilterRegistrationBean returnJSonFilterRegistration() {
 		FilterRegistrationBean registration = new FilterRegistrationBean();
 		registration.setFilter(new ReturnJSonFilter());
-		registration.addUrlPatterns("*.action");
+		registration.addUrlPatterns("*.ajax");
 		registration.setName("returnJSonFilter");
 		registration.setOrder(4);
 		return registration;
 	}
+	
 }

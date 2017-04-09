@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8" />
+		<title th:text="${keyword}">子页面</title>
+		<link rel="stylesheet" th:href="@{/css/style.css}" />
+		<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$(".sortnav a").each(function() {
+					$(this).click(function() {
+						$(".sortnav a").removeClass("selected");
+						$(this).addClass("selected");
+						//return false;//防止页面跳转  
+					});
+				});
+			});
+		</script>
+	</head>
+
+	<body class="bc-fff">
+		<div class="bg">
+			<div class="header bc-e3e4e5 vc">
+				<div class="m0a" style="width: 80%;">
+					<a href="" class="c-f10215 ftr" th:if="${User == null }" th:href="@{/public/welcome.html}">
+						免费注册
+					</a>
+					<a href="" class="mr10 ftr c-999" th:href="${User == null}?@{/public/welcome.html}:''" th:text="${User != null}? '你好,'+${User.username}:'你好,请登录'">
+						你好，请登录
+					</a>
+				</div>
+			</div>
+			<div class="container m0a ptb20 b-b-b1191a">
+				<img th:src="@{/img/logo.png}" alt="" class="img-w200" />
+				<div class="ml80 tac" style="display: inline-block;">
+					<input type="text" class="input-search" placeholder="请输入搜索关键词" />
+					<a href="" class="a-search-icon bc-f10215"><img th:src="@{/img/search.png}" alt="" class="" /></a>
+					<span class="span-shop bc-fff ml30 plr30 c-f10215 b-e3e4e5" th:if="${User !=null}">
+			    	<img th:src="@{/img/shopping.png}" alt="" class="mr5" />
+			    	我的购物车
+			    	<span class="number bc-f10215 c-fff br8" th:text="${shopcar}">2</span>
+					</span>
+				</div>
+			</div>
+
+			<div class="container m0a ptb20 mt10">
+				<div class="f18 c-666 b-b-ddd ptb10" style="font-weight: bold;">
+					<span th:text="${keyword}">手机</span> &gt;
+					<span th:if="${sortprice}!= null">
+		    	  <span th:text="${sortprice.lessthen}!=null?${sortprice.greaterthen}+'-'+${sortprice.lessthen}:${sortprice.greaterthen}+'以上'"></span>
+					<a th:href="@{${wareurl}+${orderby}}">x</a>
+					</span>
+				</div>
+				<div class="f14 b-b-ddd ptb10">
+					<span class="c-666 plr20">价格 :</span>
+					<span class="ml80 price-list"> 
+		  	  	   <a href="" class="mr20" th:each="price:${sortprices}" 
+		  	  	   	th:text="${price.value.lessthen}!=null?${price.value.greaterthen}+'-'+${price.value.lessthen}:${price.value.greaterthen}+'以上'"
+		  	  	   	th:href="@{${wareurl}+${orderby}+'&amp;'+${price.key}}">
+		  	  	   	0-499
+		  	  	   </a>
+		  	  	   
+		  	    </span>
+				</div>
+			</div>
+
+			<div class="container m0a mt10 b-e3e4e5 mb50 c-666">
+				<div class="f14 b-b-ddd p10 vc bc-f7f7f7 sortnav">
+					<span class="">
+		    		<a th:text="${salesAsc}?'销量 ∨':'销量 ∧'" 
+		    			th:href="@{${sortquery}!=null?${wareurl}+${salesorder}+'&amp;'+${sortquery}:${wareurl}+${salesorder}}"
+		    			class="mr20 b-e3e4e5 plr15 pt3 pb3 bc-fff">
+		    		</a>
+	  	  	        <a class="mr20 b-e3e4e5 plr15 pt3 pb3 bc-fff"
+	  	  	        	th:text="${priceAsc}?'价格 ∨':'价格 ∧'" th:href="@{${sortquery}!=null?${wareurl}+${priceorder}+'&amp;'+${sortquery}:${wareurl}+${priceorder}}"></a>
+	  	  	        
+		    	</span>
+					<span class="" th:with="pageurl=@{${sortquery}!=null?${wareurl}+${orderby}+'&amp;'+${sortquery}:${wareurl}+${orderby}}">
+	  	  	    	<span class="c-f10215" th:text="${page.number}">1</span>
+					<span class="" th:text="'/'+${page.totalPages}">/20</span>
+					<a th:with="num=${page.number}-1>0?1:${page.number}" th:href="@{${pageurl}+'&amp;pagenum='+${num}}"
+						class="ml30 plr20 b-e3e4e5"> &lt; </a>
+					<a th:with="num=${page.number}+1>${page.totalPages}?${page.totalPages}:${page.number}+1" th:href="@{${pageurl}+'&amp;pagenum='+${num}}"
+						class="plr20 bc-fff b-e3e4e5"> &gt; </a>
+					</span>
+
+				</div>
+				<div class="f14 b-b-ddd p20" th:unless="${#lists.isEmpty(wares)}">
+					<div class="sortbox mb50" th:each="row :${wares}">
+						<!--放了四个-->
+						<div class="sortlists p10" th:each="ware :${row}">
+							<a href="" class=""><img th:src="@{${ware.photo}}" alt="" class="img-googs" /></a>
+							<div class="c-f10215 mt5">¥<span class="f18" th:text="${ware.price}">1799.00</span></div>
+							<div class="mt5 f12">
+								<a href="" class="c-666 describe" title="双镜头，大内存，长续航！【点我给你看颜值，戳我到会场！】" th:text="${ware.name}+' '+${ware.ware}">荣耀 畅玩6X 4GB 32GB 全网通4G手机 高配版 玫瑰金</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</body>
+
+</html>

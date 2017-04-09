@@ -46,6 +46,7 @@ public class SystemServiceImpl implements ISystemService {
 	}
 
 	@Override
+	@Transactional
 	public User grantSeller(User user) {
 		if ((user.getPower() & AdminEnum.SHOPKEEPER.getIndex()) == AdminEnum.SHOPKEEPER.getIndex())
 			return null;
@@ -56,6 +57,7 @@ public class SystemServiceImpl implements ISystemService {
 	}
 
 	@Override
+	@Transactional
 	public User cancelSeller(User user) {
 		if ((user.getPower() & AdminEnum.SHOPKEEPER.getIndex()) != AdminEnum.SHOPKEEPER.getIndex())
 			return null;
@@ -66,6 +68,7 @@ public class SystemServiceImpl implements ISystemService {
 	}
 
 	@Override
+	@Transactional
 	public User freezeUser(User user) {
 		user.setStatus(StatusEnum.CANCEL);
 		userMapper.updateByPrimaryKeySelective(user);

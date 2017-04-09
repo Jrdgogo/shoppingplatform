@@ -51,7 +51,7 @@ public class MailSubscribe {
 									receiverUsers.add(receiverUser);
 									i++;
 								}
-								if (!springMail.doSend("畅游--任意购 用户激活", "activeion_User.ftl", params,
+								if (!springMail.doSend("畅游--任意购 用户激活", "activeion_User", params,
 										receiverUsers.toArray(new String[receiverUsers.size()])))
 									logger.error(logmsg + " 邮箱发送失败");
 

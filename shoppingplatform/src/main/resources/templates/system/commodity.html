@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" th:href="@{/css/style.css}" />
+		<link rel="stylesheet" th:href="@{/css/swiper.min.css}" />
+		<script type="text/javascript" t:src="@{/js/jquery-3.1.1.min.js}"></script>
+	</head>
+
+	<body class="bc-f6f6f6">
+		<div>
+			<ul class="bc-6e6568 lists ptb20 c-fff" th:unless="${#maps.isEmpty(categorys)}">
+				<li class="plr20" th:each="entry : ${categorys}">
+					<div th:unless=" ${#lists.isEmpty(entry.value)} ">
+						<a href=" " class="c-fff " th:each="category,cs: ${entry.value}" th:href="@{/public/ware.action(wtype='category',id=${category.code})}">
+							<span th:text="${category.name}">手机</span>
+							<span th:text="${cs.index &lt; cs.size-1}? '/': '' ">/</span>
+						</a>
+					</div>
+					<div class="show bc-f7f7f7 bs-d8d8d8 p20 " th:unless="${#lists.isEmpty(types[entry.key])}">
+						<div class="mt10 " th:each="type,ts:${types[entry.key]}">
+							<div class="show-left tar ">
+								<a href=" " class=" " th:text="${type.name}" th:href="@{/public/ware.action(wtype='type',id=${type.code})}">
+									空调 >
+								</a>
+							</div>
+							<div class="show-right ml30 " th:unless="${#lists.isEmpty(commoditys[type.code])}">
+								|
+								<a href=" " class="mr10 " th:each="commodity,cos:${commoditys[type.code]}" th:href="@{/public/ware.action(wtype='commodity',id=${commodity.id})}">
+									<span th:text="${commodity.name}">壁挂式空调</span>
+									<span th:text="${cos.index &lt; cos.size-1}? '|': '' ">|</span>
+								</a>
+
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div>
+		  <form method="post" enctype="multipart/form-data" th:action="@{/system/commodity/add.action}">
+		      <input type="text" name='typeenum'/>
+		      <input type="text" name='name'/>
+		      <input type="text" name='searchkey'/>
+		  </form>
+		</div>
+
+	</body>
+
+</html>

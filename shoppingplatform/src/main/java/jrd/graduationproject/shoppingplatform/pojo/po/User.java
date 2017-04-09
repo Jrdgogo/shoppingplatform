@@ -67,6 +67,8 @@ public class User {
 
 	@Column(columnDefinition="INT default 1")
 	private Integer power;
+	
+
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@org.hibernate.annotations.CreationTimestamp
@@ -85,6 +87,10 @@ public class User {
 	@OneToMany(fetch=FetchType.LAZY,cascade={CascadeType.ALL},
 			mappedBy="user")
 	private Set<Order> orders=new HashSet<>();
+	
+	@OneToMany(fetch=FetchType.LAZY,cascade={CascadeType.ALL},
+			mappedBy="user")
+	private Set<ShopCar> shopcars=new HashSet<>();
 	
 	
 
@@ -248,7 +254,14 @@ public class User {
 	public void setOrders(Set<Order> orders) {
 		this.orders = orders;
 	}
-	
-	
+
+	public Set<ShopCar> getShopcars() {
+		return shopcars;
+	}
+
+	public void setShopcars(Set<ShopCar> shopcars) {
+		this.shopcars = shopcars;
+	}
+
 
 }

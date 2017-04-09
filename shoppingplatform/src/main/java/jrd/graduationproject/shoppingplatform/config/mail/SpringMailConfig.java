@@ -13,7 +13,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import org.thymeleaf.templateresolver.TemplateResolver;
 
 import jrd.graduationproject.shoppingplatform.config.redis.JedisDataSource;
 import jrd.graduationproject.shoppingplatform.util.PropertiesUtil;
@@ -29,7 +31,7 @@ public class SpringMailConfig {
 	public TemplateEngine templateEngine() {
 
 		TemplateEngine engine = new SpringTemplateEngine();
-		ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+		TemplateResolver templateResolver = new ClassLoaderTemplateResolver();
 		templateResolver.setPrefix(env.getProperty("mail_prefix"));
 		templateResolver.setSuffix(env.getProperty("mail_suffix"));
 		templateResolver.setTemplateMode(env.getProperty("mail_model"));
