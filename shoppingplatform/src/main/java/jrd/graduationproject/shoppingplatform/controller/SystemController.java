@@ -95,6 +95,13 @@ public class SystemController {
 		admin.setId(id);
 		return systemService.grantAdmin(admin, user);
 	}
+	
+	@RequestMapping(value = "/admin/show.action")
+	public String grantAdmin( User user,PageParam page) {
+		List<User> users= systemService.findAllAdmin(user,page);
+		
+		return "system/admin";
+	}
 
 	@RequestMapping(value = "/admin/cancel.action")
 	public User cancelAdmin(@RequestParam("sessionUserId") String id, User user) {

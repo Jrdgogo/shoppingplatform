@@ -1,6 +1,9 @@
 package jrd.graduationproject.shoppingplatform.service;
 
+import java.util.List;
+
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
+import jrd.graduationproject.shoppingplatform.pojo.vo.PageParam;
 
 public interface ISystemService {
 	
@@ -13,4 +16,6 @@ public interface ISystemService {
 	User cancelSeller(User user);
 	
 	User freezeUser(User user);
+
+	List<User> findAllAdmin(User user, PageParam page);
 }

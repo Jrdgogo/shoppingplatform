@@ -1,5 +1,7 @@
 package jrd.graduationproject.shoppingplatform.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,6 +10,7 @@ import jrd.graduationproject.shoppingplatform.dao.mybatis.UserMapper;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.AdminEnum;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.StatusEnum;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
+import jrd.graduationproject.shoppingplatform.pojo.vo.PageParam;
 import jrd.graduationproject.shoppingplatform.service.ISystemService;
 
 @Service
@@ -79,6 +82,12 @@ public class SystemServiceImpl implements ISystemService {
 		if ("342623J19950718R0302D".equals(user.getId()))
 			return true;
 		return false;
+	}
+
+	@Override
+	public List<User> findAllAdmin(User user, PageParam page) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
