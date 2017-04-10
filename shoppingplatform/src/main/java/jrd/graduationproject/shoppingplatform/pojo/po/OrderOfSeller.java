@@ -1,30 +1,48 @@
 package jrd.graduationproject.shoppingplatform.pojo.po;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "t_order_seller")
 public class OrderOfSeller {
+    @Id
+    @Column(length=32,nullable=false)
+	private String id;
+	
+    @Column(length=32,nullable=false)
+	private String orderid;
 
-	private String order;
+    @Column(length=32,nullable=false)
+	private String sellerid;
 
-	private String seller;
-
-	public String getOrder() {
-		return order;
+    
+	public String getId() {
+		return id;
 	}
 
-	public void setOrder(String order) {
-		this.order = order;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public String getSeller() {
-		return seller;
+	public String getOrderid() {
+		return orderid;
 	}
 
-	public void setSeller(String seller) {
-		this.seller = seller;
+	public void setOrderid(String orderid) {
+		this.orderid = orderid;
 	}
+
+	public String getSellerid() {
+		return sellerid;
+	}
+
+	public void setSellerid(String sellerid) {
+		this.sellerid = sellerid;
+	}
+
+	
 
 }

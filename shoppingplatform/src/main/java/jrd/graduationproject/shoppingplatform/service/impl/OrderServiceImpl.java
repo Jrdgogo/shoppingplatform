@@ -94,14 +94,14 @@ public class OrderServiceImpl implements IOrderService {
 		Sort sort = new Sort(Sort.Direction.DESC, "update");
 		Pageable pageable = new PageRequest(page.getPagenum() - 1, page.getPagesize(), sort);
 		OrderOfSeller os = new OrderOfSeller();
-		os.setOrder(order.getId());
-		os.setSeller(id);
+		os.setOrderid(order.getId());
+		os.setSellerid(id);
 		Example<OrderOfSeller> example = Example.of(os); 
 		Page<OrderOfSeller> idpages=orderSellerJpa.findAll(example, pageable);
 		List<OrderOfSeller> orderOfSellers=idpages.getContent();
 		List<String> ids=new ArrayList<>();
 		for(OrderOfSeller orderOfSeller:orderOfSellers)
-			ids.add(orderOfSeller.getOrder());
+			ids.add(orderOfSeller.getOrderid());
 		return new PageImpl<Order>(orderJpa.findAll(ids),pageable,idpages.getTotalElements());
 	}
 
