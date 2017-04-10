@@ -2,7 +2,10 @@ package jrd.graduationproject.shoppingplatform.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Slice;
+
 import jrd.graduationproject.shoppingplatform.pojo.po.Order;
+import jrd.graduationproject.shoppingplatform.pojo.vo.PageParam;
 
 public interface IOrderService {
 
@@ -15,5 +18,7 @@ public interface IOrderService {
 	Order backOrder(String orderid);
 	
 	Order createOrder(Order order);
+
+	Slice<Order> getOrdersBySeller(Order order, String id, PageParam page);
 
 }

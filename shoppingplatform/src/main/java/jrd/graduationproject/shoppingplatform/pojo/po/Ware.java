@@ -1,11 +1,15 @@
 package jrd.graduationproject.shoppingplatform.pojo.po;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.CategoryEnum;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.TypeEnum;
@@ -24,7 +28,7 @@ public class Ware {
 	@Column(length=40,nullable = false)
 	private String ware;
 	// 商品详情表
-	@Column(length=20,nullable = false)
+	@Column(length=20)
 	private String waretable;
 
 	@Column(nullable = false)
@@ -52,6 +56,15 @@ public class Ware {
 
 	@Column(nullable = false,columnDefinition="VARCHAR(32) default '342623J19950718R0302D'")
 	private String seller;
+	
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@org.hibernate.annotations.CreationTimestamp
+	private Date createdate;
+	
+	 @Temporal(TemporalType.TIMESTAMP)
+	 @org.hibernate.annotations.UpdateTimestamp
+	 private Date updatedate;
 
 	public String getId() {
 		return id;
@@ -142,5 +155,22 @@ public class Ware {
 	public void setSeller(String seller) {
 		this.seller = seller;
 	}
+
+	public Date getCreatedate() {
+		return createdate;
+	}
+
+	public void setCreatedate(Date createdate) {
+		this.createdate = createdate;
+	}
+
+	public Date getUpdatedate() {
+		return updatedate;
+	}
+
+	public void setUpdatedate(Date updatedate) {
+		this.updatedate = updatedate;
+	}
+	
 	
 }

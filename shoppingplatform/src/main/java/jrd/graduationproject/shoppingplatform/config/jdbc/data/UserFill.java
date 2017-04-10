@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import jrd.graduationproject.shoppingplatform.dao.jpa.UserJpa;
+import jrd.graduationproject.shoppingplatform.pojo.enumfield.AdminEnum;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.SexEnum;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.StatusEnum;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
@@ -41,6 +42,7 @@ public class UserFill implements CommandLineRunner {
 		user.setBirth(GlobalUtil.formatDate("1995-07-18"));
 		user.setRealname("季睿东");
 		user.setPower(1 + 2 + 4);
+		user.setCard(AdminEnum.ADMIN);
 		userJpa.saveAndFlush(user);
 	}
 

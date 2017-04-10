@@ -5,15 +5,25 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jrd.graduationproject.shoppingplatform.dao.jpa.OrderJpa;
+import jrd.graduationproject.shoppingplatform.dao.jpa.OrderSellerJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.UserJpa;
 import jrd.graduationproject.shoppingplatform.exception.UserOptionErrorException;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.OrderStatusEnum;
 import jrd.graduationproject.shoppingplatform.pojo.po.Order;
+import jrd.graduationproject.shoppingplatform.pojo.po.OrderOfSeller;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
+import jrd.graduationproject.shoppingplatform.pojo.vo.PageParam;
 import jrd.graduationproject.shoppingplatform.service.IOrderService;
 import jrd.graduationproject.shoppingplatform.util.GlobalUtil;
 
@@ -22,6 +32,8 @@ public class OrderServiceImpl implements IOrderService {
 
 	@Autowired
 	private OrderJpa orderJpa;
+	@Autowired
+	private OrderSellerJpa orderSellerJpa;
 	
 	@Autowired
 	private UserJpa userJpa;
@@ -75,6 +87,22 @@ public class OrderServiceImpl implements IOrderService {
 		order.setId(GlobalUtil.getModelID(Order.class));
 		//order.set
 		return orderJpa.save(order);
+	}
+
+	@Override
+	public Slice<Order> getOrdersBySeller(Order order, String id, PageParam page) {
+		Sort sort = new Sort(Sort.Direction.DESC, "update");
+		Pageable pageable = new PageRequest(page.getPagenum() - 1, page.getPagesize(), sort);
+		OrderOfSeller os = new OrderOfSeller();
+		os.setOrder(order.getId());
+		os.setSeller(id);
+		Example<OrderOfSeller> example = Example.of(os); 
+		Page<OrderOfSeller> idpages=orderSellerJpa.findAll(example, pageable);
+		List<OrderOfSeller> orderOfSellers=idpages.getContent();
+		List<String> ids=new ArrayList<>();
+		for(OrderOfSeller orderOfSeller:orderOfSellers)
+			ids.add(orderOfSeller.getOrder());
+		return new PageImpl<Order>(orderJpa.findAll(ids),pageable,idpages.getTotalElements());
 	}
 
 

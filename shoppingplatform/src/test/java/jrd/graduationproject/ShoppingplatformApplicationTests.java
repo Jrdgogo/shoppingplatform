@@ -1,5 +1,7 @@
 package jrd.graduationproject;
 
+import java.io.File;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,17 @@ public class ShoppingplatformApplicationTests {
 		System.out.println(">>>>>>" + jedis.set("name3", "vale", "nx", "ex", 10));
 		System.out.println(">>>>>>" + jedis.set("name4", "vale", "nx", "px", 10));
 		System.out.println(">>>>>>" + jedis.set("name5", "vale", "xx", "px", 10));
+	}
+	@Test
+	public void photo() {
+		String root = "/images/wares/";
+		String path=Thread.currentThread().getContextClassLoader().getResource("static"+root).getFile();
+		
+		File savediv = new File(path, "af");
+        if(!savediv.exists())
+           savediv.mkdirs();
+		System.out.println(savediv.getAbsolutePath());
+		
 	}
 	
 	@Autowired

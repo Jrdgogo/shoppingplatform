@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import jrd.graduationproject.shoppingplatform.pojo.enumfield.AdminEnum;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.SexEnum;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.StatusEnum;
 
@@ -68,17 +69,19 @@ public class User {
 	@Column(columnDefinition="INT default 1")
 	private Integer power;
 	
-
+	@Column(columnDefinition="varchar(32) default 'USER'")
+	@Enumerated(EnumType.STRING)
+	private AdminEnum card;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@org.hibernate.annotations.CreationTimestamp
 	private Date createdate;
 
-	// @Temporal(TemporalType.TIMESTAMP)
-	// @org.hibernate.annotations.UpdateTimestamp
-	// @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-	// @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	// private Date updatedate;
+	 @Temporal(TemporalType.TIMESTAMP)
+	 @org.hibernate.annotations.UpdateTimestamp
+//	 @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+//	 @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	 private Date updatedate;
 	
 	@OneToMany(fetch=FetchType.LAZY,cascade={CascadeType.ALL},
 			mappedBy="user")
@@ -190,6 +193,14 @@ public class User {
 		this.createdate = createdate;
 	}
 
+	public Date getUpdatedate() {
+		return updatedate;
+	}
+
+	public void setUpdatedate(Date updatedate) {
+		this.updatedate = updatedate;
+	}
+
 	public String getRealname() {
 		return realname;
 	}
@@ -263,5 +274,15 @@ public class User {
 		this.shopcars = shopcars;
 	}
 
+	public AdminEnum getCard() {
+		return card;
+	}
+
+	public void setCard(AdminEnum card) {
+		this.card = card;
+	}
+
+	
+	
 
 }

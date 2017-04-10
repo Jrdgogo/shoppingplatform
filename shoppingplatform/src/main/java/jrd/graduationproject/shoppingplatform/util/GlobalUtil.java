@@ -1,5 +1,8 @@
 package jrd.graduationproject.shoppingplatform.util;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -7,9 +10,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+import javax.imageio.ImageIO;
+
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
+import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 
 import jrd.graduationproject.shoppingplatform.exception.category.NotParseException;
 
@@ -21,8 +28,9 @@ public class GlobalUtil {
 	public static String get32bitString() {
 		return UUID.randomUUID().toString().replaceAll("-", "");
 	}
-	public static String getModelID(Class<?> model){
-		return md5(get32bitString(),model.getName());
+
+	public static String getModelID(Class<?> model) {
+		return md5(get32bitString(), model.getName());
 	}
 
 	public static String getCode(String name) {
@@ -51,16 +59,16 @@ public class GlobalUtil {
 		return name;
 	}
 
-
 	/**
 	 * 参数1为原密码，参数2为盐值
 	 */
 	private static final Md5PasswordEncoder en = new Md5PasswordEncoder();
 
 	public static String md5(String password) {
-		return md5(password,password.toLowerCase());
+		return md5(password, password.toLowerCase());
 	}
-	private static String md5(String password,String solt) {
+
+	private static String md5(String password, String solt) {
 		return en.encodePassword(password, solt);
 	}
 
@@ -104,7 +112,6 @@ public class GlobalUtil {
 		return dateFormat(new Date(date));
 	}
 
-
 	public static <T> T toJsonObject(Class<T> clazz, String jsonString) {
 		return JSONObject.parseObject(jsonString, clazz);
 	}
@@ -116,6 +123,7 @@ public class GlobalUtil {
 			throw new NotParseException("日期格式传入错误！请传入yyyy-MM-dd格式");
 		}
 	}
+
 	public static Date formatTime(String date) {
 		try {
 			return timedf.parse(date);
@@ -123,12 +131,38 @@ public class GlobalUtil {
 			throw new NotParseException("日期格式传入错误！请传入yyyy-MM-dd hh:mm:ss格式");
 		}
 	}
-	public static String toJsonString(Object ...agrs) {
-		JSONObject jsonObject=new JSONObject();
-		for(int i=0;i<agrs.length;i++){
-		   jsonObject.put(""+i, agrs[i]);
+
+	public static String toJsonString(Object... agrs) {
+		JSONObject jsonObject = new JSONObject();
+		for (int i = 0; i < agrs.length; i++) {
+			jsonObject.put("" + i, agrs[i]);
 		}
 		return jsonObject.toJSONString();
+	}
+
+	public static String savePhoto(MultipartFile file) throws IOException {
+		String root = "/images/wares/";
+		StringBuffer ware = new StringBuffer(root);
+		byte[] bytes = file.getBytes();
+		String dir = md5(file.getName(), get32bitString());
+		String parent = Thread.currentThread().getContextClassLoader().getResource("static" + root).getFile();
+		String firstDir = dir.substring(0, 2);
+		ware.append(firstDir + "/");
+		File savediv = new File(parent, firstDir);
+
+		String secondDir = dir.substring(2, 4);
+		ware.append(secondDir + "/");
+		savediv = new File(savediv, secondDir);
+
+		if (!savediv.exists())
+			savediv.mkdirs();
+		String photoName = dir.substring(0, 8) + ".jpg";
+		ware.append(photoName);
+		File photo = new File(savediv, photoName);
+
+		BufferedImage bufferedImage = ImageIO.read(new ByteInputStream(bytes, 0, bytes.length));
+		ImageIO.write(bufferedImage, "JPEG", photo);
+		return ware.toString();
 	}
 
 }

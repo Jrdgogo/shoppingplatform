@@ -51,4 +51,15 @@ public enum AdminEnum {
 		return totalPower;
 	}
 
+	public static AdminEnum getAdminByPower(Integer power) {
+		int index=ADMIN.index;
+		while(index>0){
+			if((index&power)==index){
+				return getAdminByIndex(index);
+			}
+			index=index>>1;
+		}
+		return VISITOR;
+	}
+
 }

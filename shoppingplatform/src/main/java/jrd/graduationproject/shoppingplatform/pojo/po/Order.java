@@ -30,6 +30,9 @@ public class Order {
 
 	@Column(nullable = false)
 	private Double price;
+	
+	@Column(nullable = false,columnDefinition="INT default 0")
+	private String type;
 
 	@Column(columnDefinition="INT DEFAULT 0")
 	@Enumerated(EnumType.ORDINAL)
@@ -123,5 +126,17 @@ public class Order {
 	public void setCreatedate(Date createdate) {
 		this.createdate = createdate;
 	}
+
+
+	public String getType() {
+		return type;
+	}
+
+
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	
 	
 }

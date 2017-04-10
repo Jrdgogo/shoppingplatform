@@ -1,7 +1,6 @@
 package jrd.graduationproject.shoppingplatform.service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.data.domain.Slice;
 
@@ -18,16 +17,16 @@ public interface IWareService {
 	List<Commodity> getCommoditysByType(TypeEnum typeEnum);
 
 	Slice<Commodity> getCommoditys(PageParam page);
-	
+
 	Commodity addCommodity(Commodity commodity);
-	
+
 	Ware addWare(Ware ware);
 
 	List<Ware> getExWares(CategoryEnum categoryEnum);
 
 	Slice<Ware> getWares(List<CategoryEnum> categoryEnums, PageParam page);
 
-	Slice<Ware> getWares(PageParam page,Ware ware);
+	Slice<Ware> getWares(PageParam page, Ware ware);
 
 	Commodity getCommodityById(String id);
 
@@ -35,5 +34,6 @@ public interface IWareService {
 
 	Long getUserShopCar(User user);
 
+	void alterWare(Ware ware);
 
 }

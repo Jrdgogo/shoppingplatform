@@ -1,7 +1,9 @@
 package jrd.graduationproject.shoppingplatform.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
+import jrd.graduationproject.shoppingplatform.pojo.enumfield.AdminEnum;
+import jrd.graduationproject.shoppingplatform.pojo.po.Message;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
 import jrd.graduationproject.shoppingplatform.pojo.vo.PageParam;
 
@@ -17,5 +19,11 @@ public interface ISystemService {
 	
 	User freezeUser(User user);
 
-	List<User> findAllAdmin(User user, PageParam page);
+	Page<Message> selectMessage(PageParam page, String id);
+
+	Message handleMessage(String id);
+
+	Page<User> SelectUserByType(AdminEnum adminEnum, PageParam page);
+
+	User activeUser(User user);
 }
