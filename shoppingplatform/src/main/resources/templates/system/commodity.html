@@ -3,13 +3,29 @@
 
 	<head>
 		<meta charset="utf-8" />
+		<link rel="stylesheet" th:href="@{/bower_components/bootstrap/dist/css/bootstrap.min.css}" />
+		<!--<link rel="stylesheet" th:href="@{/bower_components/sidr/dist/stylesheets/jquery.sidr.dark.min.css}" />
+		<link rel="stylesheet" th:href="@{/css/style2.css}" />-->
+		<link rel="stylesheet" th:href="@{/css/main.css}" />
 		<link rel="stylesheet" th:href="@{/css/style.css}" />
 		<link rel="stylesheet" th:href="@{/css/swiper.min.css}" />
-		<script type="text/javascript" t:src="@{/js/jquery-3.1.1.min.js}"></script>
+
+		<!--<script type="text/javascript" t:src="@{/js/jquery-3.1.1.min.js}"></script>-->
+		<!--<script type="text/javascript" th:src="@{/bower_components/jquery/dist/jquery.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/main.js}"></script>
+		<script type="text/javascript" th:src="@{/bower_components/bootstrap/dist/js/bootstrap.js}"></script>-->
+        <style type="text/css">
+        	.show{
+        		display: none !important;
+        		top:95px;
+        	}
+        	
+        </style>
 	</head>
 
-	<body class="bc-f6f6f6">
-		<div>
+	<body class="container">
+		<div class="h_nav" th:include="system/navigate :: top"></div>
+		<div style="margin-top: 10px;">
 			<ul class="bc-6e6568 lists ptb20 c-fff" th:unless="${#maps.isEmpty(categorys)}">
 				<li class="plr20" th:each="entry : ${categorys}">
 					<div th:unless=" ${#lists.isEmpty(entry.value)} ">
@@ -37,13 +53,6 @@
 					</div>
 				</li>
 			</ul>
-		</div>
-		<div>
-		  <form method="post" enctype="multipart/form-data" th:action="@{/system/commodity/add.action}">
-		      <input type="text" name='typeenum'/>
-		      <input type="text" name='name'/>
-		      <input type="text" name='searchkey'/>
-		  </form>
 		</div>
 
 	</body>

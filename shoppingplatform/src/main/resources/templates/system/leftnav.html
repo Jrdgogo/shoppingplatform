@@ -27,13 +27,16 @@
 			<div class="nav">
 				<ul>
 					<li>
-						<a class="selected" style="display: block" th:href="@{/system/commodity/show.action}" target="middle">商品管理</a>
+						<a class="i_ware selected" style="display: block" th:href="@{/system/commodity/show.action}" target="middle">商品管理</a>
 					</li>
 					<li>
-						<a style="display: block" th:href="@{/system/seller/show.action}" target="middle">商家管理</a>
+						<a class="i_admin" style="display: block" th:href="@{/system/admin/show.action}" target="middle">管理员列表</a>
 					</li>
 					<li>
-						<a style="display: block;" th:href="@{/system/user/show.action}" target="middle">用户管理</a>
+						<a class="i_seller" style="display: block" th:href="@{/system/seller/show.action}" target="middle">商家管理</a>
+					</li>
+					<li>
+						<a class="i_user" style="display: block;" th:href="@{/system/user/show.action}" target="middle">用户管理</a>
 					</li>
 				</ul>
 			</div>

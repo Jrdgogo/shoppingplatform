@@ -30,24 +30,16 @@ span{
 
 .nav ul li a{ color:#757d8b; font-size:18px; padding-left:70px;}
 .nav ul li a:hover{ color:#fff;}
-.nav ul li a.i_home{ background:url(../images/home.png) no-repeat 30px center;}
-.nav ul li a.i_screen{ background:url(../images/screen.png) no-repeat 30px center;}
-.nav ul li a.i_clear{ background:url(../images/clear.png) no-repeat 30px center;}
-.nav ul li a.i_warning{ background:url(../images/warning.png) no-repeat 30px center;}
-.nav ul li a.i_refresh{ background:url(../images/refresh.png) no-repeat 30px center;}
-.nav ul li a.i_statistics{ background:url(../images/statistics.png) no-repeat 30px center;}
+.nav ul li a.i_ware{ background:url(../images/manage/ware.png) no-repeat 30px center;}
+.nav ul li a.i_admin{ background:url(../images/manage/home.png) no-repeat 30px center;}
+.nav ul li a.i_seller{ background:url(../images/manage/seller.png) no-repeat 30px center;}
+.nav ul li a.i_user{ background:url(../images/manage/user.png) no-repeat 30px center;}
 
 .nav ul li a.selected{
     border-left: 4px solid #3b97f5; 
     color:#fff;
     background-color: #2f3643
 }
-.nav ul li a.i_home_on{ background:url(../images/home_on.png) no-repeat 30px center #2f3643;}
-.nav ul li a.i_screen_on{ background:url(../images/screen_on.png) no-repeat 30px center #2f3643;}
-.nav ul li a.i_clear_on{ background:url(../images/clear_on.png) no-repeat 30px center #2f3643;}
-.nav ul li a.i_warning_on{ background:url(../images/warning_on.png) no-repeat 30px center #2f3643;}
-.nav ul li a.i_refresh_on{ background:url(../images/refresh_on.png) no-repeat 30px center #2f3643;}
-.nav ul li a.i_statistics_on{ background:url(../images/statistics_on.png) no-repeat 30px center #2f3643;}
 
 
 #loginWindow {
@@ -332,4 +324,14 @@ button, input, select, textarea{ border:1px solid #ddd; padding:5px ;}
     height: 100%;
     z-index: 100; /* 此处的图层要大于页面 */
     display:none;
+}
+
+.msgnumber{
+   display: inline-block;
+   width: 16px;
+   height: 16px;
+   line-height: 16px;
+   background-color: #f10215;
+   color: #fff;
+   border-radius: 10px;
 }

@@ -1,0 +1,35 @@
+/**
+ 时间空间
+*/
+.bootstrap-datetimepicker-widget {
+	z-index: 9999;
+}
+/**
+ 贵族权限边框 
+*/
+.tableborder {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #ddd
+}
+
+.tableborder-right {
+	border-right: 2px solid #ddd;
+}
+
+.tableborder-right-bottom {
+	border-right: 2px solid #ddd;
+	border-bottom: 1px solid #ddd
+}
+
+.tableborder-left {
+	border-left: 1px dashed #000
+}
+
+.tableborder-top {
+	border-top: 1px solid #ddd
+}
+
+.tableborder-bottom {
+	border-bottom: 1px solid #000
+}
