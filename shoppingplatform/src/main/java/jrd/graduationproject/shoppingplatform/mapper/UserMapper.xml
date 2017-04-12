@@ -6,6 +6,7 @@
     <result column="account" property="account" jdbcType="DECIMAL" />
     <result column="age" property="age" jdbcType="INTEGER" />
     <result column="birth" property="birth" jdbcType="DATE" />
+    <result column="card" property="card" jdbcType="VARCHAR" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
     <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
@@ -15,6 +16,7 @@
     <result column="realname" property="realname" jdbcType="VARCHAR" />
     <result column="sex" property="sex" jdbcType="VARCHAR" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
     <result column="status" property="status" jdbcType="INTEGER" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+    <result column="updatedate" property="updatedate" jdbcType="TIMESTAMP" />
     <result column="username" property="username" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="jrd.graduationproject.shoppingplatform.pojo.po.User" extends="BaseResultMap" >
@@ -40,6 +42,25 @@
                   and ${criterion.condition}
                   <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
                     #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.cardCriteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumTypeHandler} and #{criterion.secondValue,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
                   </foreach>
                 </when>
               </choose>
@@ -111,6 +132,25 @@
                 </when>
               </choose>
             </foreach>
+            <foreach collection="criteria.cardCriteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumTypeHandler} and #{criterion.secondValue,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
             <foreach collection="criteria.sexCriteria" item="criterion" >
               <choose >
                 <when test="criterion.noValue" >
@@ -155,8 +195,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, account, age, birth, createdate, email, `password`, paymentpwd, phone, `power`, 
-    realname, sex, `status`, username
+    id, account, age, birth, card, createdate, email, `password`, paymentpwd, phone, 
+    `power`, realname, sex, `status`, updatedate, username
   </sql>
   <sql id="Blob_Column_List" >
     photo
@@ -211,17 +251,21 @@
   </delete>
   <insert id="insert" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.User" >
     insert into `t_user` (id, account, age, 
-      birth, createdate, email, 
-      `password`, paymentpwd, phone, 
-      `power`, realname, sex, 
+      birth, card, 
+      createdate, email, `password`, 
+      paymentpwd, phone, `power`, 
+      realname, sex, 
       `status`, 
-      username, photo)
+      updatedate, username, photo
+      )
     values (#{id,jdbcType=VARCHAR}, #{account,jdbcType=DECIMAL}, #{age,jdbcType=INTEGER}, 
-      #{birth,jdbcType=DATE}, #{createdate,jdbcType=TIMESTAMP}, #{email,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{paymentpwd,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{power,jdbcType=INTEGER}, #{realname,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler}, 
+      #{birth,jdbcType=DATE}, #{card,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler}, 
+      #{createdate,jdbcType=TIMESTAMP}, #{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{paymentpwd,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{power,jdbcType=INTEGER}, 
+      #{realname,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler}, 
       #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, 
-      #{username,jdbcType=VARCHAR}, #{photo,jdbcType=LONGVARBINARY})
+      #{updatedate,jdbcType=TIMESTAMP}, #{username,jdbcType=VARCHAR}, #{photo,jdbcType=LONGVARBINARY}
+      )
   </insert>
   <insert id="insertSelective" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.User" >
     insert into `t_user`
@@ -237,6 +281,9 @@
       </if>
       <if test="birth != null" >
         birth,
+      </if>
+      <if test="card != null" >
+        card,
       </if>
       <if test="createdate != null" >
         createdate,
@@ -265,6 +312,9 @@
       <if test="status != null" >
         `status`,
       </if>
+      <if test="updatedate != null" >
+        updatedate,
+      </if>
       <if test="username != null" >
         username,
       </if>
@@ -284,6 +334,9 @@
       </if>
       <if test="birth != null" >
         #{birth,jdbcType=DATE},
+      </if>
+      <if test="card != null" >
+        #{card,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
       </if>
       <if test="createdate != null" >
         #{createdate,jdbcType=TIMESTAMP},
@@ -311,6 +364,9 @@
       </if>
       <if test="status != null" >
         #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+      </if>
+      <if test="updatedate != null" >
+        #{updatedate,jdbcType=TIMESTAMP},
       </if>
       <if test="username != null" >
         #{username,jdbcType=VARCHAR},
@@ -341,6 +397,9 @@
       <if test="record.birth != null" >
         birth = #{record.birth,jdbcType=DATE},
       </if>
+      <if test="record.card != null" >
+        card = #{record.card,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      </if>
       <if test="record.createdate != null" >
         createdate = #{record.createdate,jdbcType=TIMESTAMP},
       </if>
@@ -368,6 +427,9 @@
       <if test="record.status != null" >
         `status` = #{record.status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
       </if>
+      <if test="record.updatedate != null" >
+        updatedate = #{record.updatedate,jdbcType=TIMESTAMP},
+      </if>
       <if test="record.username != null" >
         username = #{record.username,jdbcType=VARCHAR},
       </if>
@@ -385,6 +447,7 @@
       account = #{record.account,jdbcType=DECIMAL},
       age = #{record.age,jdbcType=INTEGER},
       birth = #{record.birth,jdbcType=DATE},
+      card = #{record.card,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
       createdate = #{record.createdate,jdbcType=TIMESTAMP},
       email = #{record.email,jdbcType=VARCHAR},
       `password` = #{record.password,jdbcType=VARCHAR},
@@ -394,6 +457,7 @@
       realname = #{record.realname,jdbcType=VARCHAR},
       sex = #{record.sex,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
       `status` = #{record.status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+      updatedate = #{record.updatedate,jdbcType=TIMESTAMP},
       username = #{record.username,jdbcType=VARCHAR},
       photo = #{record.photo,jdbcType=LONGVARBINARY}
     <if test="_parameter != null" >
@@ -406,6 +470,7 @@
       account = #{record.account,jdbcType=DECIMAL},
       age = #{record.age,jdbcType=INTEGER},
       birth = #{record.birth,jdbcType=DATE},
+      card = #{record.card,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
       createdate = #{record.createdate,jdbcType=TIMESTAMP},
       email = #{record.email,jdbcType=VARCHAR},
       `password` = #{record.password,jdbcType=VARCHAR},
@@ -415,6 +480,7 @@
       realname = #{record.realname,jdbcType=VARCHAR},
       sex = #{record.sex,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
       `status` = #{record.status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+      updatedate = #{record.updatedate,jdbcType=TIMESTAMP},
       username = #{record.username,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -431,6 +497,9 @@
       </if>
       <if test="birth != null" >
         birth = #{birth,jdbcType=DATE},
+      </if>
+      <if test="card != null" >
+        card = #{card,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
       </if>
       <if test="createdate != null" >
         createdate = #{createdate,jdbcType=TIMESTAMP},
@@ -459,6 +528,9 @@
       <if test="status != null" >
         `status` = #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
       </if>
+      <if test="updatedate != null" >
+        updatedate = #{updatedate,jdbcType=TIMESTAMP},
+      </if>
       <if test="username != null" >
         username = #{username,jdbcType=VARCHAR},
       </if>
@@ -473,6 +545,7 @@
     set account = #{account,jdbcType=DECIMAL},
       age = #{age,jdbcType=INTEGER},
       birth = #{birth,jdbcType=DATE},
+      card = #{card,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
       createdate = #{createdate,jdbcType=TIMESTAMP},
       email = #{email,jdbcType=VARCHAR},
       `password` = #{password,jdbcType=VARCHAR},
@@ -482,6 +555,7 @@
       realname = #{realname,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
       `status` = #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+      updatedate = #{updatedate,jdbcType=TIMESTAMP},
       username = #{username,jdbcType=VARCHAR},
       photo = #{photo,jdbcType=LONGVARBINARY}
     where id = #{id,jdbcType=VARCHAR}
@@ -491,6 +565,7 @@
     set account = #{account,jdbcType=DECIMAL},
       age = #{age,jdbcType=INTEGER},
       birth = #{birth,jdbcType=DATE},
+      card = #{card,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
       createdate = #{createdate,jdbcType=TIMESTAMP},
       email = #{email,jdbcType=VARCHAR},
       `password` = #{password,jdbcType=VARCHAR},
@@ -500,6 +575,7 @@
       realname = #{realname,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
       `status` = #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+      updatedate = #{updatedate,jdbcType=TIMESTAMP},
       username = #{username,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>

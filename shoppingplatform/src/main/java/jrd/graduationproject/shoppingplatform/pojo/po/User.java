@@ -26,22 +26,22 @@ import jrd.graduationproject.shoppingplatform.pojo.enumfield.StatusEnum;
 @Table(name = "t_user")
 public class User {
 	@Id
-	@Column(length=32)
+	@Column(length = 32)
 	private String id;
 
-	@Column(length=40,nullable = false, unique = true)
+	@Column(length = 40, nullable = false, unique = true)
 	private String username;
-	
-	@Column(length=20)
+
+	@Column(length = 20)
 	private String realname;
 
-	@Column(length=32,nullable = false)
+	@Column(length = 32, nullable = false)
 	private String password;
 
-	@Column(columnDefinition="NUMERIC(11,2) DEFAULT 0.00")
+	@Column(columnDefinition = "NUMERIC(11,2) DEFAULT 0.00")
 	private Double account;
 
-	@Column(length=32,nullable = false)
+	@Column(length = 32, nullable = false)
 	private String paymentpwd;
 
 	private Integer age;
@@ -49,27 +49,27 @@ public class User {
 	@Enumerated(EnumType.STRING)
 	private SexEnum sex;
 
-	@Column(columnDefinition="INT DEFAULT 0")
+	@Column(columnDefinition = "INT DEFAULT 0")
 	@Enumerated(EnumType.ORDINAL)
 	private StatusEnum status;
 
 	@Column(nullable = false)
 	private String email;
-	
-	@Column(length=20)
+
+	@Column(length = 20)
 	private String phone;
 
 	@Temporal(TemporalType.DATE)
 	private Date birth;
 
 	@Lob
-	@Basic(fetch=FetchType.LAZY)
+	@Basic(fetch = FetchType.LAZY)
 	private Byte[] photo;
 
-	@Column(columnDefinition="INT default 1")
+	@Column(columnDefinition = "INT default 1")
 	private Integer power;
-	
-	@Column(columnDefinition="varchar(32) default 'USER'")
+
+	@Column(columnDefinition = "varchar(32) default 'USER'")
 	@Enumerated(EnumType.STRING)
 	private AdminEnum card;
 
@@ -77,25 +77,20 @@ public class User {
 	@org.hibernate.annotations.CreationTimestamp
 	private Date createdate;
 
-	 @Temporal(TemporalType.TIMESTAMP)
-	 @org.hibernate.annotations.UpdateTimestamp
-//	 @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-//	 @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	 private Date updatedate;
-	
-	@OneToMany(fetch=FetchType.LAZY,cascade={CascadeType.ALL},
-			mappedBy="user")
-	private Set<UserWareAddr> wareAddrs=new HashSet<>();
-	
-	@OneToMany(fetch=FetchType.LAZY,cascade={CascadeType.ALL},
-			mappedBy="user")
-	private Set<Order> orders=new HashSet<>();
-	
-	@OneToMany(fetch=FetchType.LAZY,cascade={CascadeType.ALL},
-			mappedBy="user")
-	private Set<ShopCar> shopcars=new HashSet<>();
-	
-	
+	@Temporal(TemporalType.TIMESTAMP)
+	@org.hibernate.annotations.UpdateTimestamp
+	// @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+	// @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	private Date updatedate;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, mappedBy = "user")
+	private Set<UserWareAddr> wareAddrs = new HashSet<>();
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, mappedBy = "user")
+	private Set<Order> orders = new HashSet<>();
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, mappedBy = "user")
+	private Set<ShopCar> shopcars = new HashSet<>();
 
 	public String getId() {
 		return id;
@@ -281,8 +276,5 @@ public class User {
 	public void setCard(AdminEnum card) {
 		this.card = card;
 	}
-
-	
-	
 
 }

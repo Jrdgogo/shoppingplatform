@@ -16,9 +16,9 @@ public interface IOrderService {
 	Order cancalOrder(String orderid);
 	
 	Order backOrder(String orderid);
-	
-	Order createOrder(Order order);
 
 	Slice<Order> getOrdersBySeller(Order order, String id, PageParam page);
+
+	Order createOrder(String id, String addr, List<String> wares);
 
 }

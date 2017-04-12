@@ -3,15 +3,18 @@
 <mapper namespace="jrd.graduationproject.shoppingplatform.dao.mybatis.WareMapper" >
   <resultMap id="BaseResultMap" type="jrd.graduationproject.shoppingplatform.pojo.po.Ware" >
     <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="category" property="category" jdbcType="VARCHAR" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
     <result column="commodity" property="commodity" jdbcType="VARCHAR" />
+    <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="photo" property="photo" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="sales" property="sales" jdbcType="INTEGER" />
     <result column="seller" property="seller" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
+    <result column="updatedate" property="updatedate" jdbcType="TIMESTAMP" />
     <result column="ware" property="ware" jdbcType="VARCHAR" />
     <result column="waretable" property="waretable" jdbcType="VARCHAR" />
-    <result column="photo" property="photo" jdbcType="VARCHAR" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="category" property="category" jdbcType="VARCHAR" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
-    <result column="type" property="type" jdbcType="VARCHAR" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -148,7 +151,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, commodity, price, seller, ware, waretable, photo, `name`, category, `type`
+    id, category, commodity, createdate, `name`, photo, price, sales, seller, `type`, 
+    updatedate, ware, waretable
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.WareExample" >
     select
@@ -181,14 +185,18 @@
     </if>
   </delete>
   <insert id="insert" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.Ware" >
-    insert into `t_ware` (id, commodity, price, 
-      seller, ware, waretable, 
-      photo, `name`, category, 
-      `type`)
-    values (#{id,jdbcType=VARCHAR}, #{commodity,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, 
-      #{seller,jdbcType=VARCHAR}, #{ware,jdbcType=VARCHAR}, #{waretable,jdbcType=VARCHAR}, 
-      #{photo,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler}, 
-      #{type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler})
+    insert into `t_ware` (id, category, 
+      commodity, createdate, `name`, 
+      photo, price, sales, 
+      seller, `type`, 
+      updatedate, ware, waretable
+      )
+    values (#{id,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler}, 
+      #{commodity,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, 
+      #{photo,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, #{sales,jdbcType=INTEGER}, 
+      #{seller,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler}, 
+      #{updatedate,jdbcType=TIMESTAMP}, #{ware,jdbcType=VARCHAR}, #{waretable,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.Ware" >
     insert into `t_ware`
@@ -196,14 +204,35 @@
       <if test="id != null" >
         id,
       </if>
+      <if test="category != null" >
+        category,
+      </if>
       <if test="commodity != null" >
         commodity,
+      </if>
+      <if test="createdate != null" >
+        createdate,
+      </if>
+      <if test="name != null" >
+        `name`,
+      </if>
+      <if test="photo != null" >
+        photo,
       </if>
       <if test="price != null" >
         price,
       </if>
+      <if test="sales != null" >
+        sales,
+      </if>
       <if test="seller != null" >
         seller,
+      </if>
+      <if test="type != null" >
+        `type`,
+      </if>
+      <if test="updatedate != null" >
+        updatedate,
       </if>
       <if test="ware != null" >
         ware,
@@ -211,49 +240,46 @@
       <if test="waretable != null" >
         waretable,
       </if>
-      <if test="photo != null" >
-        photo,
-      </if>
-      <if test="name != null" >
-        `name`,
-      </if>
-      <if test="category != null" >
-        category,
-      </if>
-      <if test="type != null" >
-        `type`,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
+      <if test="category != null" >
+        #{category,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      </if>
       <if test="commodity != null" >
         #{commodity,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null" >
+        #{photo,jdbcType=VARCHAR},
       </if>
       <if test="price != null" >
         #{price,jdbcType=DOUBLE},
       </if>
+      <if test="sales != null" >
+        #{sales,jdbcType=INTEGER},
+      </if>
       <if test="seller != null" >
         #{seller,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      </if>
+      <if test="updatedate != null" >
+        #{updatedate,jdbcType=TIMESTAMP},
       </if>
       <if test="ware != null" >
         #{ware,jdbcType=VARCHAR},
       </if>
       <if test="waretable != null" >
         #{waretable,jdbcType=VARCHAR},
-      </if>
-      <if test="photo != null" >
-        #{photo,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="category != null" >
-        #{category,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
-      </if>
-      <if test="type != null" >
-        #{type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
       </if>
     </trim>
   </insert>
@@ -269,32 +295,41 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=VARCHAR},
       </if>
+      <if test="record.category != null" >
+        category = #{record.category,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      </if>
       <if test="record.commodity != null" >
         commodity = #{record.commodity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdate != null" >
+        createdate = #{record.createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.name != null" >
+        `name` = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.photo != null" >
+        photo = #{record.photo,jdbcType=VARCHAR},
       </if>
       <if test="record.price != null" >
         price = #{record.price,jdbcType=DOUBLE},
       </if>
+      <if test="record.sales != null" >
+        sales = #{record.sales,jdbcType=INTEGER},
+      </if>
       <if test="record.seller != null" >
         seller = #{record.seller,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        `type` = #{record.type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      </if>
+      <if test="record.updatedate != null" >
+        updatedate = #{record.updatedate,jdbcType=TIMESTAMP},
       </if>
       <if test="record.ware != null" >
         ware = #{record.ware,jdbcType=VARCHAR},
       </if>
       <if test="record.waretable != null" >
         waretable = #{record.waretable,jdbcType=VARCHAR},
-      </if>
-      <if test="record.photo != null" >
-        photo = #{record.photo,jdbcType=VARCHAR},
-      </if>
-      <if test="record.name != null" >
-        `name` = #{record.name,jdbcType=VARCHAR},
-      </if>
-      <if test="record.category != null" >
-        category = #{record.category,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
-      </if>
-      <if test="record.type != null" >
-        `type` = #{record.type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -304,15 +339,18 @@
   <update id="updateByExample" parameterType="map" >
     update `t_ware`
     set id = #{record.id,jdbcType=VARCHAR},
-      commodity = #{record.commodity,jdbcType=VARCHAR},
-      price = #{record.price,jdbcType=DOUBLE},
-      seller = #{record.seller,jdbcType=VARCHAR},
-      ware = #{record.ware,jdbcType=VARCHAR},
-      waretable = #{record.waretable,jdbcType=VARCHAR},
-      photo = #{record.photo,jdbcType=VARCHAR},
-      `name` = #{record.name,jdbcType=VARCHAR},
       category = #{record.category,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
-      `type` = #{record.type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+      commodity = #{record.commodity,jdbcType=VARCHAR},
+      createdate = #{record.createdate,jdbcType=TIMESTAMP},
+      `name` = #{record.name,jdbcType=VARCHAR},
+      photo = #{record.photo,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DOUBLE},
+      sales = #{record.sales,jdbcType=INTEGER},
+      seller = #{record.seller,jdbcType=VARCHAR},
+      `type` = #{record.type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      updatedate = #{record.updatedate,jdbcType=TIMESTAMP},
+      ware = #{record.ware,jdbcType=VARCHAR},
+      waretable = #{record.waretable,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -320,14 +358,35 @@
   <update id="updateByPrimaryKeySelective" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.Ware" >
     update `t_ware`
     <set >
+      <if test="category != null" >
+        category = #{category,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      </if>
       <if test="commodity != null" >
         commodity = #{commodity,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        createdate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="name != null" >
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null" >
+        photo = #{photo,jdbcType=VARCHAR},
       </if>
       <if test="price != null" >
         price = #{price,jdbcType=DOUBLE},
       </if>
+      <if test="sales != null" >
+        sales = #{sales,jdbcType=INTEGER},
+      </if>
       <if test="seller != null" >
         seller = #{seller,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        `type` = #{type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      </if>
+      <if test="updatedate != null" >
+        updatedate = #{updatedate,jdbcType=TIMESTAMP},
       </if>
       <if test="ware != null" >
         ware = #{ware,jdbcType=VARCHAR},
@@ -335,32 +394,23 @@
       <if test="waretable != null" >
         waretable = #{waretable,jdbcType=VARCHAR},
       </if>
-      <if test="photo != null" >
-        photo = #{photo,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        `name` = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="category != null" >
-        category = #{category,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
-      </if>
-      <if test="type != null" >
-        `type` = #{type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
-      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.Ware" >
     update `t_ware`
-    set commodity = #{commodity,jdbcType=VARCHAR},
-      price = #{price,jdbcType=DOUBLE},
-      seller = #{seller,jdbcType=VARCHAR},
-      ware = #{ware,jdbcType=VARCHAR},
-      waretable = #{waretable,jdbcType=VARCHAR},
-      photo = #{photo,jdbcType=VARCHAR},
+    set category = #{category,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      commodity = #{commodity,jdbcType=VARCHAR},
+      createdate = #{createdate,jdbcType=TIMESTAMP},
       `name` = #{name,jdbcType=VARCHAR},
-      category = #{category,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
-      `type` = #{type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+      photo = #{photo,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      sales = #{sales,jdbcType=INTEGER},
+      seller = #{seller,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+      updatedate = #{updatedate,jdbcType=TIMESTAMP},
+      ware = #{ware,jdbcType=VARCHAR},
+      waretable = #{waretable,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

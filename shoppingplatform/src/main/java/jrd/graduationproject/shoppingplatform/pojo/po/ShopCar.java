@@ -20,6 +20,9 @@ public class ShopCar {
 	@Id
 	@Column(length=32)
 	private String id;
+	
+	@Column(nullable=false,columnDefinition="INT default 1")
+	private Integer warenum;
 
 	@OneToOne(optional=false)
 	@JoinColumn(name="wareid")
@@ -64,5 +67,15 @@ public class ShopCar {
 	public void setCreatedate(Date createdate) {
 		this.createdate = createdate;
 	}
+
+	public Integer getWarenum() {
+		return warenum;
+	}
+
+	public void setWarenum(Integer warenum) {
+		this.warenum = warenum;
+	}
+	
+	
 
 }

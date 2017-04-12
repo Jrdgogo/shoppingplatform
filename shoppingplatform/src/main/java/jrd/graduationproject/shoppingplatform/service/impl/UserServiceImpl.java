@@ -3,6 +3,7 @@ package jrd.graduationproject.shoppingplatform.service.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -14,13 +15,16 @@ import jrd.graduationproject.shoppingplatform.config.mail.MailPublish;
 import jrd.graduationproject.shoppingplatform.config.redis.JedisDataSource;
 import jrd.graduationproject.shoppingplatform.dao.jpa.ShopCarJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.UserJpa;
+import jrd.graduationproject.shoppingplatform.dao.jpa.UserWareAddrJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.WareJpa;
 import jrd.graduationproject.shoppingplatform.dao.mybatis.UserMapper;
+import jrd.graduationproject.shoppingplatform.dao.mybatis.UserWareAddrMapper;
 import jrd.graduationproject.shoppingplatform.exception.UserOptionErrorException;
 import jrd.graduationproject.shoppingplatform.exception.category.NotSaveException;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.StatusEnum;
 import jrd.graduationproject.shoppingplatform.pojo.po.ShopCar;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
+import jrd.graduationproject.shoppingplatform.pojo.po.UserWareAddr;
 import jrd.graduationproject.shoppingplatform.pojo.po.Ware;
 import jrd.graduationproject.shoppingplatform.service.IUserService;
 import jrd.graduationproject.shoppingplatform.util.GlobalUtil;
@@ -33,6 +37,10 @@ public class UserServiceImpl implements IUserService {
 	private UserJpa userJpa;
 	@Autowired
 	private ShopCarJpa shopcarJpa;
+	@Autowired
+	private UserWareAddrJpa userWareAddrJpa;
+	@Autowired
+	private UserWareAddrMapper userWareAddrMapper;
 	@Autowired
 	private WareJpa wareJpa;
 	@Autowired
@@ -138,23 +146,51 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	@Transactional
-	public ShopCar getaddShopCar(String userid, Ware ware) {
+	public ShopCar getaddShopCar(String userid, Ware ware, Integer warenum) {
 		ShopCar shopCar = new ShopCar();
 		shopCar.setUser(userJpa.findOne(userid));
 
-		Long num=shopcarJpa.count(Example.of(shopCar));
-		if(num>20){
+		Long num = shopcarJpa.count(Example.of(shopCar));
+		if (num > 20) {
 			return null;
 		}
 		shopCar.setId(GlobalUtil.getModelID(ShopCar.class));
 		shopCar.setWare(wareJpa.findOne(ware.getId()));
+		shopCar.setWarenum(warenum);
 		return shopcarJpa.save(shopCar);
 	}
 
 	@Override
 	@Transactional
-	public void removeShopCar(ShopCar shopCar) {
-		shopcarJpa.delete(shopCar.getId());
+	public void removeShopCar(List<String> shopcars) {
+		shopcarJpa.delete(shopcarJpa.findAll(shopcars));
+	}
+
+	@Override
+	@Transactional
+	public UserWareAddr addAddr(String id, UserWareAddr addr) {
+		addr.setId(GlobalUtil.getModelID(UserWareAddr.class));
+		User user = userJpa.findOne(id);
+		addr.setUser(user);
+		return userWareAddrJpa.saveAndFlush(addr);
+	}
+
+	@Override
+	@Transactional
+	public UserWareAddr alterAddr(UserWareAddr addr) {
+		userWareAddrMapper.updateByPrimaryKey(addr);
+		return userWareAddrMapper.selectByPrimaryKey(addr.getId());
+	}
+
+	@Override
+	public Set<UserWareAddr> getAllAddr(String id) {
+
+		return userJpa.findOne(id).getWareAddrs();
+	}
+
+	@Override
+	public List<ShopCar> getUserShopCar(List<String> shopcars) {
+		return shopcarJpa.findAll(shopcars);
 	}
 
 }

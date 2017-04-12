@@ -36,4 +36,6 @@ public interface IWareService {
 
 	void alterWare(Ware ware);
 
+	List<Ware> getWares(List<String> wares);
+
 }

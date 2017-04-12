@@ -1,6 +1,7 @@
 package jrd.graduationproject.shoppingplatform.pojo.po;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -50,7 +51,7 @@ public class Order {
 	
 	@OneToMany(cascade={CascadeType.PERSIST,CascadeType.REMOVE},
 			mappedBy="order")
-	private Set<OrderDetail> orderdetails;
+	private Set<OrderDetail> orderdetails=new HashSet<>();
 	
 
 	@Temporal(TemporalType.TIMESTAMP)

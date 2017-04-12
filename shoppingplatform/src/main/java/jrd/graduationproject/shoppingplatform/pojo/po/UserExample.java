@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import jrd.graduationproject.shoppingplatform.pojo.enumfield.AdminEnum;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.SexEnum;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.StatusEnum;
 
@@ -68,6 +69,8 @@ public class UserExample {
     }
 
     protected abstract static class GeneratedCriteria {
+        protected List<Criterion> cardCriteria;
+
         protected List<Criterion> sexCriteria;
 
         protected List<Criterion> statusCriteria;
@@ -79,8 +82,29 @@ public class UserExample {
         protected GeneratedCriteria() {
             super();
             criteria = new ArrayList<Criterion>();
+            cardCriteria = new ArrayList<Criterion>();
             sexCriteria = new ArrayList<Criterion>();
             statusCriteria = new ArrayList<Criterion>();
+        }
+
+        public List<Criterion> getCardCriteria() {
+            return cardCriteria;
+        }
+
+        protected void addCardCriterion(String condition, Object value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            cardCriteria.add(new Criterion(condition, value, "org.apache.ibatis.type.EnumTypeHandler"));
+            allCriteria = null;
+        }
+
+        protected void addCardCriterion(String condition, AdminEnum value1, AdminEnum value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            cardCriteria.add(new Criterion(condition, value1, value2, "org.apache.ibatis.type.EnumTypeHandler"));
+            allCriteria = null;
         }
 
         public List<Criterion> getSexCriteria() {
@@ -125,6 +149,7 @@ public class UserExample {
 
         public boolean isValid() {
             return criteria.size() > 0
+                || cardCriteria.size() > 0
                 || sexCriteria.size() > 0
                 || statusCriteria.size() > 0;
         }
@@ -133,6 +158,7 @@ public class UserExample {
             if (allCriteria == null) {
                 allCriteria = new ArrayList<Criterion>();
                 allCriteria.addAll(criteria);
+                allCriteria.addAll(cardCriteria);
                 allCriteria.addAll(sexCriteria);
                 allCriteria.addAll(statusCriteria);
             }
@@ -440,6 +466,76 @@ public class UserExample {
 
         public Criteria andBirthNotBetween(Date value1, Date value2) {
             addCriterionForJDBCDate("birth not between", value1, value2, "birth");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardIsNull() {
+            addCriterion("card is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardIsNotNull() {
+            addCriterion("card is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardEqualTo(AdminEnum value) {
+            addCardCriterion("card =", value, "card");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardNotEqualTo(AdminEnum value) {
+            addCardCriterion("card <>", value, "card");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardGreaterThan(AdminEnum value) {
+            addCardCriterion("card >", value, "card");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardGreaterThanOrEqualTo(AdminEnum value) {
+            addCardCriterion("card >=", value, "card");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardLessThan(AdminEnum value) {
+            addCardCriterion("card <", value, "card");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardLessThanOrEqualTo(AdminEnum value) {
+            addCardCriterion("card <=", value, "card");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardLike(AdminEnum value) {
+            addCardCriterion("card like", value, "card");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardNotLike(AdminEnum value) {
+            addCardCriterion("card not like", value, "card");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardIn(List<AdminEnum> values) {
+            addCardCriterion("card in", values, "card");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardNotIn(List<AdminEnum> values) {
+            addCardCriterion("card not in", values, "card");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardBetween(AdminEnum value1, AdminEnum value2) {
+            addCardCriterion("card between", value1, value2, "card");
+            return (Criteria) this;
+        }
+
+        public Criteria andCardNotBetween(AdminEnum value1, AdminEnum value2) {
+            addCardCriterion("card not between", value1, value2, "card");
             return (Criteria) this;
         }
 
@@ -1040,6 +1136,66 @@ public class UserExample {
 
         public Criteria andStatusNotBetween(StatusEnum value1, StatusEnum value2) {
             addStatusCriterion("`status` not between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateIsNull() {
+            addCriterion("updatedate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateIsNotNull() {
+            addCriterion("updatedate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateEqualTo(Date value) {
+            addCriterion("updatedate =", value, "updatedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateNotEqualTo(Date value) {
+            addCriterion("updatedate <>", value, "updatedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateGreaterThan(Date value) {
+            addCriterion("updatedate >", value, "updatedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateGreaterThanOrEqualTo(Date value) {
+            addCriterion("updatedate >=", value, "updatedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateLessThan(Date value) {
+            addCriterion("updatedate <", value, "updatedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateLessThanOrEqualTo(Date value) {
+            addCriterion("updatedate <=", value, "updatedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateIn(List<Date> values) {
+            addCriterion("updatedate in", values, "updatedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateNotIn(List<Date> values) {
+            addCriterion("updatedate not in", values, "updatedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateBetween(Date value1, Date value2) {
+            addCriterion("updatedate between", value1, value2, "updatedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateNotBetween(Date value1, Date value2) {
+            addCriterion("updatedate not between", value1, value2, "updatedate");
             return (Criteria) this;
         }
 

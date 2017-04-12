@@ -241,4 +241,10 @@ public class WareServiceImpl implements IWareService {
 		wareMapper.updateByPrimaryKeySelective(ware);
 	}
 
+	@Override
+	public List<Ware> getWares(List<String> wares) {
+		
+		return wareJpa.findAll(wares);
+	}
+
 }

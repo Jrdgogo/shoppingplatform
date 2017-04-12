@@ -62,7 +62,7 @@ public class SellerController {
 		Slice<Order> orders = orderService.getOrdersBySeller(order,id,page);
 		model.addAttribute("orders", orders.getContent());
 		model.addAttribute("page", orders);
-		return "seller/ware";
+		return "seller/order";
 	}
 
 }

@@ -11,7 +11,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import jrd.graduationproject.shoppingplatform.ShoppingplatformApplication;
 import jrd.graduationproject.shoppingplatform.config.redis.JedisDataSource;
 import jrd.graduationproject.shoppingplatform.controller.HomeController;
+import jrd.graduationproject.shoppingplatform.dao.mybatis.UserWareAddrMapper;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
+import jrd.graduationproject.shoppingplatform.pojo.po.UserWareAddr;
 import jrd.graduationproject.shoppingplatform.service.IUserService;
 import redis.clients.jedis.Jedis;
 
@@ -21,7 +23,15 @@ public class ShoppingplatformApplicationTests {
 
 	@Autowired
 	private IUserService userService;
+	
+	@Autowired
+	private UserWareAddrMapper userWareAddrMapper;
 
+	@Test
+	public void idHandle() {
+		UserWareAddr userWareAddr=userWareAddrMapper.selectByPrimaryKey("342623J19950718R0302D");
+	    System.out.println(userWareAddr.getUser().getId());
+	}
 	@Test
 	public void service() {
 		User user = new User();

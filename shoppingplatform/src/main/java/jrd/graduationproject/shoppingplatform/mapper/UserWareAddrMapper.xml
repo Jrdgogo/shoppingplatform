@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="jrd.graduationproject.shoppingplatform.dao.mybatis.UserWareAddrMapper" >
+  <resultMap id="BaseResultMap" type="jrd.graduationproject.shoppingplatform.pojo.po.UserWareAddr" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="addressee" property="addressee" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="wareaddr" property="wareaddr" jdbcType="VARCHAR" />
+    <result column="zipcode" property="zipcode" jdbcType="VARCHAR" />
+    <result column="userid" property="user" jdbcType="VARCHAR" typeHandler="jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.userCriteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler} and #{criterion.secondValue,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.userCriteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler} and #{criterion.secondValue,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, addressee, phone, wareaddr, zipcode, userid
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.UserWareAddrExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `t_user_ware_addr`
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from `t_user_ware_addr`
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from `t_user_ware_addr`
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.UserWareAddrExample" >
+    delete from `t_user_ware_addr`
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.UserWareAddr" >
+    insert into `t_user_ware_addr` (id, addressee, phone, 
+      wareaddr, zipcode, userid
+      )
+    values (#{id,jdbcType=VARCHAR}, #{addressee,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{wareaddr,jdbcType=VARCHAR}, #{zipcode,jdbcType=VARCHAR}, #{user,jdbcType=VARCHAR,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.UserWareAddr" >
+    insert into `t_user_ware_addr`
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="addressee != null" >
+        addressee,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="wareaddr != null" >
+        wareaddr,
+      </if>
+      <if test="zipcode != null" >
+        zipcode,
+      </if>
+      <if test="user != null" >
+        userid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="addressee != null" >
+        #{addressee,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="wareaddr != null" >
+        #{wareaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="zipcode != null" >
+        #{zipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="user != null" >
+        #{user,jdbcType=VARCHAR,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.UserWareAddrExample" resultType="java.lang.Integer" >
+    select count(*) from `t_user_ware_addr`
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update `t_user_ware_addr`
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addressee != null" >
+        addressee = #{record.addressee,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wareaddr != null" >
+        wareaddr = #{record.wareaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zipcode != null" >
+        zipcode = #{record.zipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.user != null" >
+        userid = #{record.user,jdbcType=VARCHAR,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update `t_user_ware_addr`
+    set id = #{record.id,jdbcType=VARCHAR},
+      addressee = #{record.addressee,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      wareaddr = #{record.wareaddr,jdbcType=VARCHAR},
+      zipcode = #{record.zipcode,jdbcType=VARCHAR},
+      userid = #{record.user,jdbcType=VARCHAR,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.UserWareAddr" >
+    update `t_user_ware_addr`
+    <set >
+      <if test="addressee != null" >
+        addressee = #{addressee,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="wareaddr != null" >
+        wareaddr = #{wareaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="zipcode != null" >
+        zipcode = #{zipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="user != null" >
+        userid = #{user,jdbcType=VARCHAR,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.UserWareAddr" >
+    update `t_user_ware_addr`
+    set addressee = #{addressee,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      wareaddr = #{wareaddr,jdbcType=VARCHAR},
+      zipcode = #{zipcode,jdbcType=VARCHAR},
+      userid = #{user,jdbcType=VARCHAR,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,9 +1,11 @@
 package jrd.graduationproject.shoppingplatform.service;
 
 import java.util.List;
+import java.util.Set;
 
 import jrd.graduationproject.shoppingplatform.pojo.po.ShopCar;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
+import jrd.graduationproject.shoppingplatform.pojo.po.UserWareAddr;
 import jrd.graduationproject.shoppingplatform.pojo.po.Ware;
 
 public interface IUserService {
@@ -22,7 +24,15 @@ public interface IUserService {
 
 	List<ShopCar> getUserShopCar(String id);
 
-	ShopCar getaddShopCar(String userid, Ware ware);
+	ShopCar getaddShopCar(String userid, Ware ware, Integer num);
 
-	void removeShopCar(ShopCar shopCar);
+	void removeShopCar(List<String> shopcars);
+
+	UserWareAddr addAddr(String id, UserWareAddr addr);
+
+	UserWareAddr alterAddr(UserWareAddr addr);
+
+	Set<UserWareAddr> getAllAddr(String id);
+
+	List<ShopCar> getUserShopCar(List<String> shopcars);
 }
