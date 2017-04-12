@@ -1,20 +1,27 @@
 package jrd.graduationproject.shoppingplatform.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jrd.graduationproject.shoppingplatform.config.mail.MailPublish;
 import jrd.graduationproject.shoppingplatform.config.redis.JedisDataSource;
+import jrd.graduationproject.shoppingplatform.dao.jpa.ShopCarJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.UserJpa;
+import jrd.graduationproject.shoppingplatform.dao.jpa.WareJpa;
 import jrd.graduationproject.shoppingplatform.dao.mybatis.UserMapper;
 import jrd.graduationproject.shoppingplatform.exception.UserOptionErrorException;
 import jrd.graduationproject.shoppingplatform.exception.category.NotSaveException;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.StatusEnum;
+import jrd.graduationproject.shoppingplatform.pojo.po.ShopCar;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
+import jrd.graduationproject.shoppingplatform.pojo.po.Ware;
 import jrd.graduationproject.shoppingplatform.service.IUserService;
 import jrd.graduationproject.shoppingplatform.util.GlobalUtil;
 import redis.clients.jedis.Jedis;
@@ -24,6 +31,10 @@ public class UserServiceImpl implements IUserService {
 
 	@Autowired
 	private UserJpa userJpa;
+	@Autowired
+	private ShopCarJpa shopcarJpa;
+	@Autowired
+	private WareJpa wareJpa;
 	@Autowired
 	private UserMapper userMapper;
 	@Autowired
@@ -118,6 +129,32 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public User getUserInfo(String id) {
 		return userJpa.findOne(id);
+	}
+
+	@Override
+	public List<ShopCar> getUserShopCar(String id) {
+		return shopcarJpa.findAll(new Sort(Sort.Direction.DESC, "createdate"));
+	}
+
+	@Override
+	@Transactional
+	public ShopCar getaddShopCar(String userid, Ware ware) {
+		ShopCar shopCar = new ShopCar();
+		shopCar.setUser(userJpa.findOne(userid));
+
+		Long num=shopcarJpa.count(Example.of(shopCar));
+		if(num>20){
+			return null;
+		}
+		shopCar.setId(GlobalUtil.getModelID(ShopCar.class));
+		shopCar.setWare(wareJpa.findOne(ware.getId()));
+		return shopcarJpa.save(shopCar);
+	}
+
+	@Override
+	@Transactional
+	public void removeShopCar(ShopCar shopCar) {
+		shopcarJpa.delete(shopCar.getId());
 	}
 
 }

@@ -1,6 +1,10 @@
 package jrd.graduationproject.shoppingplatform.service;
 
+import java.util.List;
+
+import jrd.graduationproject.shoppingplatform.pojo.po.ShopCar;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
+import jrd.graduationproject.shoppingplatform.pojo.po.Ware;
 
 public interface IUserService {
 
@@ -15,4 +19,10 @@ public interface IUserService {
 	User alterUserInfo(User user);
 
 	User getUserInfo(String id);
+
+	List<ShopCar> getUserShopCar(String id);
+
+	ShopCar getaddShopCar(String userid, Ware ware);
+
+	void removeShopCar(ShopCar shopCar);
 }
