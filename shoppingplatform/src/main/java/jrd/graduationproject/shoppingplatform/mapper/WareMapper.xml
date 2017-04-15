@@ -11,6 +11,7 @@
     <result column="price" property="price" jdbcType="DOUBLE" />
     <result column="sales" property="sales" jdbcType="INTEGER" />
     <result column="seller" property="seller" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="VARCHAR" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
     <result column="updatedate" property="updatedate" jdbcType="TIMESTAMP" />
     <result column="ware" property="ware" jdbcType="VARCHAR" />
@@ -151,8 +152,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, category, commodity, createdate, `name`, photo, price, sales, seller, `type`, 
-    updatedate, ware, waretable
+    id, category, commodity, createdate, `name`, photo, price, sales, seller, `status`, 
+    `type`, updatedate, ware, waretable
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="jrd.graduationproject.shoppingplatform.pojo.po.WareExample" >
     select
@@ -188,13 +189,13 @@
     insert into `t_ware` (id, category, 
       commodity, createdate, `name`, 
       photo, price, sales, 
-      seller, `type`, 
+      seller, `status`, `type`, 
       updatedate, ware, waretable
       )
     values (#{id,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler}, 
       #{commodity,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, 
       #{photo,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, #{sales,jdbcType=INTEGER}, 
-      #{seller,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler}, 
+      #{seller,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler}, 
       #{updatedate,jdbcType=TIMESTAMP}, #{ware,jdbcType=VARCHAR}, #{waretable,jdbcType=VARCHAR}
       )
   </insert>
@@ -227,6 +228,9 @@
       </if>
       <if test="seller != null" >
         seller,
+      </if>
+      <if test="status != null" >
+        `status`,
       </if>
       <if test="type != null" >
         `type`,
@@ -268,6 +272,9 @@
       </if>
       <if test="seller != null" >
         #{seller,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
         #{type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
@@ -319,6 +326,9 @@
       <if test="record.seller != null" >
         seller = #{record.seller,jdbcType=VARCHAR},
       </if>
+      <if test="record.status != null" >
+        `status` = #{record.status,jdbcType=INTEGER},
+      </if>
       <if test="record.type != null" >
         `type` = #{record.type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
       </if>
@@ -347,6 +357,7 @@
       price = #{record.price,jdbcType=DOUBLE},
       sales = #{record.sales,jdbcType=INTEGER},
       seller = #{record.seller,jdbcType=VARCHAR},
+      `status` = #{record.status,jdbcType=INTEGER},
       `type` = #{record.type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
       updatedate = #{record.updatedate,jdbcType=TIMESTAMP},
       ware = #{record.ware,jdbcType=VARCHAR},
@@ -382,6 +393,9 @@
       <if test="seller != null" >
         seller = #{seller,jdbcType=VARCHAR},
       </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
       <if test="type != null" >
         `type` = #{type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
       </if>
@@ -407,6 +421,7 @@
       price = #{price,jdbcType=DOUBLE},
       sales = #{sales,jdbcType=INTEGER},
       seller = #{seller,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=INTEGER},
       `type` = #{type,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
       updatedate = #{updatedate,jdbcType=TIMESTAMP},
       ware = #{ware,jdbcType=VARCHAR},

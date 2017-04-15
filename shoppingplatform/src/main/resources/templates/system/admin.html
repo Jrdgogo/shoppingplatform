@@ -30,16 +30,16 @@
 					<div class="mao-content" style="display:block;">
 						<ul class="nav nav-tabs s_tab">
 							<li class="headnav selected" style="cursor: pointer">
-								<a>用户列表</a>
+								<a>管理员列表</a>
 							</li>
 						</ul>
 						<div id="custom-toolbar" class="container">
 							<div class="serch_ttl">搜索条件</div>
-							<form class="form-horizontal" id="searchform" data-th-action="@{/system/user/show.action}">
+							<form class="form-horizontal" id="searchform" data-th-action="@{/system/admin/show.action}">
 								<div class="row">
 									<div class="col-md-6">
 										<span style="width:80px;margin-left:8px;">名称:</span>
-										<input style="width: 314px;" type="text" name="username" placeholder="用户名称" />
+										<input style="width: 314px;" type="text" name="username" placeholder="管理员名称" />
 									</div>
 								</div>
 								<div style="margin-top: 40px;margin-bottom: 40px;">
@@ -48,7 +48,7 @@
 							</form>
 						</div>
 						<div style="margin-top: 20px;min-height:1000px;" data-th-unless="${#lists.isEmpty(users)}">
-							<div class="serch_ttl">用户列表</div>
+							<div class="serch_ttl">管理员列表</div>
 							<table id="table-pagination" data-toggle="table" class="table table-bordered table-hover" data-method="post" data-click-to-select="true" data-side-pagination="server" data-pagination="true">
 								<thead>
 									<tr>
@@ -60,7 +60,6 @@
 										<th data-align="center">邮箱</th>
 										<th data-align="center">联系方式</th>
 										<th data-align="center">创建时间</th>
-										<th data-align="center">状态</th>
 										<th data-formatter="operateFormatter" data-align="center">操作</th>
 									</tr>
 								</thead>
@@ -74,11 +73,8 @@
 										<td data-align="center" data-th-text="${user.email}"></td>
 										<td data-align="center" data-th-text="${user.phone}"></td>
 										<td data-align="center" data-th-text="${user.createdate}"></td>
-										<td data-align="center" data-th-text="${user.status.desc}"></td>
 										<td>
-											<a data-th-if="${user.status.index==1}" data-th-href="@{/system/user/freeze.action(id=${user.id})}" style="color: red;">冻结</a>
-											
-											<a data-th-if="${user.status.index!=1}" data-th-href="@{/system/user/active.action(id=${user.id})}" style="color: green;">激活</a>
+											<a data-th-if="${User.id=='342623J19950718R0302D'&amp;&amp;user.id!=User.id}" data-th-href="@{/system/admin/cancel.action(id=${user.id})}">取消管理员身份</a>
 										</td>
 									</tr>
 								</tbody>
@@ -86,21 +82,21 @@
 							<ul class="pagination" style="float: right;" th:object="${page}">
 								<!-- 上一页 -->
 								<li class="page-item" data-th-classappend="*{first} ? 'disabled' : ''">
-									<a th:href="*{first} ? 'javascript:void(0)':@{/system/user/show.action(pagenum=${page.number})}" class="page-link" aria-label="Previous">
+									<a th:href="*{first} ? 'javascript:void(0)':@{/system/admin/show.action(pagenum=${page.number})}" class="page-link" aria-label="Previous">
 										<span aria-hidden="true">«</span>
 									</a>
 								</li>
 
 								<!-- 迭代生成页码 -->
 								<li class="page-item" data-th-each="i : ${#numbers.sequence(1, page.totalPages)}" data-th-classappend="${(page.number + 1) eq i} ? 'active' : ''">
-									<a class="page-link" th:href="${(page.number + 1) eq i} ?'javascript:void(0)':@{/system/user/show.action(pagenum=${i})}" th:if="${i}-${page.number}+4 > 0">
+									<a class="page-link" th:href="${(page.number + 1) eq i} ?'javascript:void(0)':@{/system/admin/show.action(pagenum=${i})}" th:if="${i}-${page.number}+4 > 0">
 										<span data-th-text="${i}"></span>
 									</a>
 								</li>
 
 								<!-- 下一页 -->
 								<li class="page-item" data-th-classappend="*{last} ? 'disabled' : ''">
-									<a th:href="*{last} ? 'javascript:void(0)':@{/system/user/show.action(pagenum=${page.number}+2)}" class="page-link" aria-label="Next">
+									<a th:href="*{last} ? 'javascript:void(0)':@{/system/admin/show.action(pagenum=${page.number}+2)}" class="page-link" aria-label="Next">
 										<span aria-hidden="true">»</span>
 									</a>
 								</li>

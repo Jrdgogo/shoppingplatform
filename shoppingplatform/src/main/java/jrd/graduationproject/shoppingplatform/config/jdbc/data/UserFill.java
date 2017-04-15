@@ -46,6 +46,7 @@ public class UserFill implements CommandLineRunner {
 		user.setPhone("15576254691");
 		user.setBirth(GlobalUtil.formatDate("1995-07-18"));
 		user.setRealname("季睿东");
+		user.setPhoto("/images/photo/01/ab/self.png");
 		user.setPower(1 + 2 + 4);
 		user.setCard(AdminEnum.ADMIN);
 		user=userJpa.saveAndFlush(user);

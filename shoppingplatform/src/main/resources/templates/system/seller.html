@@ -1,10 +1,103 @@
-<!DOCTYPE html>
+<!DOCTYPE html >
 <html>
+
 	<head>
-		<meta charset="UTF-8">
-		<title></title>
+		<meta charset="utf-8" />
+
+		<link rel="stylesheet" th:href="@{/js/bower_components/bootstrap/dist/css/bootstrap.min.css}" />
+		<link rel="stylesheet" th:href="@{/js/bower_components/sidr/dist/stylesheets/jquery.sidr.dark.min.css}" />
+		<link rel="stylesheet" th:href="@{/css/style2.css}" />
+		<link rel="stylesheet" th:href="@{/css/main.css}" />
+		<link rel="stylesheet" th:href="@{/js/jquery-layer/skin/layer.css}" />
+
+		<script type="text/javascript" th:src="@{/js/bower_components/jquery/dist/jquery.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/jquery-layer/layer.js}"></script>
+		<style type="text/css">
+			.mao-content {
+				margin: 0 0;
+				margin-top: 20px;
+				padding: 20px 40px;
+			}
+		</style>
 	</head>
+
 	<body>
-		seller
+		<!-- begin -->
+		<div class="container-fluid" style="margin-top: 0px;">
+			<div class="row-fluid">
+				<div class="container">
+					<div class="h_nav" th:include="system/navigate :: top"></div>
+					<div class="mao-content" style="display:block;">
+						<ul class="nav nav-tabs s_tab">
+							<li class="headnav selected" style="cursor: pointer">
+								<a>商家列表</a>
+							</li>
+						</ul>
+						<div id="custom-toolbar" class="container">
+							<div class="serch_ttl">搜索条件</div>
+							<form class="form-horizontal" id="searchform" data-th-action="@{/system/seller/show.action}">
+								<div class="row">
+									<div class="col-md-6">
+										<span style="width:80px;margin-left:8px;">名称:</span>
+										<input style="width: 314px;" type="text" name="username" placeholder="商家名称" />
+									</div>
+								</div>
+								<div style="margin-top: 40px;margin-bottom: 40px;">
+									<input value="搜索" type="submit" data-loading-text="正在搜索..." class="btn btn_blue" autocomplete="off" />
+								</div>
+							</form>
+						</div>
+						<div style="margin-top: 20px;min-height:1000px;" data-th-unless="${#lists.isEmpty(sellers)}">
+							<div class="serch_ttl">商家列表</div>
+							<table id="table-pagination" data-toggle="table" class="table table-bordered table-hover" data-method="post" data-click-to-select="true" data-side-pagination="server" data-pagination="true">
+								<thead>
+									<tr>
+										<th data-align="center">商标</th>
+										<th data-align="center">名称</th>
+										<th data-align="center">负责人</th>
+										<th data-align="center">联系方式</th>
+										<th data-formatter="operateFormatter" data-align="center">操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr data-th-each="seller,ss:${sellers}">
+										<td data-align="center"><img data-th-src="${seller.logo}" style="width: 80px;height: 30px;border-radius: 0.6rem;"></img></td>
+										<td data-align="center" data-th-text="${seller.name}"></td>
+										<td data-align="center" data-th-text="${seller.user.username}"></td>
+										<td data-align="center" data-th-text="${seller.user.phone}"></td>
+										<td>
+											<a data-th-href="@{/system/seller/cancel.action(id=${seller.id})}">移除入驻商家</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<ul class="pagination" style="float: right;" th:object="${page}">
+								<!-- 上一页 -->
+								<li class="page-item" data-th-classappend="*{first} ? 'disabled' : ''">
+									<a th:href="*{first} ? 'javascript:void(0)':@{/system/seller/show.action(pagenum=${page.number})}" class="page-link" aria-label="Previous">
+										<span aria-hidden="true">«</span>
+									</a>
+								</li>
+
+								<!-- 迭代生成页码 -->
+								<li class="page-item" data-th-each="i : ${#numbers.sequence(1, page.totalPages)}" data-th-classappend="${(page.number + 1) eq i} ? 'active' : ''">
+									<a class="page-link" th:href="${(page.number + 1) eq i} ?'javascript:void(0)':@{/system/seller/show.action(pagenum=${i})}" th:if="${i}-${page.number}+4 > 0">
+										<span data-th-text="${i}"></span>
+									</a>
+								</li>
+
+								<!-- 下一页 -->
+								<li class="page-item" data-th-classappend="*{last} ? 'disabled' : ''">
+									<a th:href="*{last} ? 'javascript:void(0)':@{/system/seller/show.action(pagenum=${page.number}+2)}" class="page-link" aria-label="Next">
+										<span aria-hidden="true">»</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</body>
+
 </html>

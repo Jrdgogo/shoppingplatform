@@ -34,6 +34,7 @@ public class ShopCar {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@org.hibernate.annotations.CreationTimestamp
+	@Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
 	private Date createdate;
 
 	public String getId() {

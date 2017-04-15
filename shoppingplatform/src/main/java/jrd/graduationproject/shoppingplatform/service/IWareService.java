@@ -20,7 +20,7 @@ public interface IWareService {
 
 	Commodity addCommodity(Commodity commodity);
 
-	Ware addWare(Ware ware);
+	Boolean addWare(Ware ware);
 
 	List<Ware> getExWares(CategoryEnum categoryEnum);
 
@@ -37,5 +37,7 @@ public interface IWareService {
 	void alterWare(Ware ware);
 
 	List<Ware> getWares(List<String> wares);
+
+	Ware allorWare(String id);
 
 }

@@ -96,7 +96,7 @@ public class OrderServiceImpl implements IOrderService {
 
 	@Override
 	public Slice<Order> getOrdersBySeller(Order order, String id, PageParam page) {
-		Sort sort = new Sort(Sort.Direction.DESC, "update");
+		Sort sort = new Sort(Sort.Direction.DESC, "updatedate");
 		Pageable pageable = new PageRequest(page.getPagenum() - 1, page.getPagesize(), sort);
 		OrderOfSeller os = new OrderOfSeller();
 		os.setOrderid(order.getId());

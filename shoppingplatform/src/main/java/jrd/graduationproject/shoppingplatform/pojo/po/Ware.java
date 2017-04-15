@@ -33,9 +33,12 @@ public class Ware {
 
 	@Column(nullable = false)
 	private Double price;
-	
+	//销售量
 	@Column(nullable = false,columnDefinition="INT default 0")
 	private Integer sales ;
+	//状态  0未审核  1销售  2下架  3封存
+	@Column(nullable = false,columnDefinition="INT default 0")
+	private Integer status ;
 	
 	@Column(nullable = false)
 	private String photo;
@@ -60,10 +63,12 @@ public class Ware {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@org.hibernate.annotations.CreationTimestamp
+	@Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
 	private Date createdate;
 	
 	 @Temporal(TemporalType.TIMESTAMP)
 	 @org.hibernate.annotations.UpdateTimestamp
+	 @Column(columnDefinition = "timestamp ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	 private Date updatedate;
 
 	public String getId() {
@@ -171,6 +176,13 @@ public class Ware {
 	public void setUpdatedate(Date updatedate) {
 		this.updatedate = updatedate;
 	}
-	
-	
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
 }

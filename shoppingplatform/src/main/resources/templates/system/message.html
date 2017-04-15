@@ -1,0 +1,83 @@
+<!DOCTYPE html >
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+
+		<link rel="stylesheet" th:href="@{/js/bower_components/bootstrap/dist/css/bootstrap.min.css}" />
+		<link rel="stylesheet" th:href="@{/js/bower_components/sidr/dist/stylesheets/jquery.sidr.dark.min.css}" />
+		<link rel="stylesheet" th:href="@{/css/style2.css}" />
+		<link rel="stylesheet" th:href="@{/css/main.css}" />
+		<link rel="stylesheet" th:href="@{/js/jquery-layer/skin/layer.css}" />
+
+		<script type="text/javascript" th:src="@{/js/bower_components/jquery/dist/jquery.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/jquery-layer/layer.js}"></script>
+		<style type="text/css">
+			.mao-content {
+				margin: 0 0;
+				margin-top: 20px;
+				padding: 20px 40px;
+			}
+			
+			.modal {
+				top: 200px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!-- begin -->
+		<div class="container-fluid" style="margin-top: 0px;height: 2500px;">
+			<div class="row-fluid">
+				<div class="container">
+					<div class="h_nav" th:include="system/navigate :: top"></div>
+					<div class="mao-content" style="display:block;">
+						<legend>消息列表 </legend>
+						<div class="container">
+							<div id="messageTablePage">
+								<div th:if=" ${#lists.isEmpty(message)} " style="color: #337AB7;">当前无消息</div>
+								<div class="list-group" id="msgList" th:unless=" ${#lists.isEmpty(message)} ">
+									<a class="list-group-item active"></a>
+									<span class="list-group-item" style="cursor: pointer;" th:each="msg,ms:${message}">
+										<h4 class="list-group-item-heading">
+											<span th:text="${msg.msg}"></span>
+									        <span style="color: red;" th:if="${!msg.status}">（未处理）</span>
+									    </h4>
+									    <p class="list-group-item-text" align="right"  th:if="${!msg.status}" style="font-size: medium;">
+									    	<a th:href="@{/system/message/handle.action(id=${msg.id},type=${msg.type},status=true,typeid=${msg.typeid})}" style="color: #337AB7;">认同</a>
+									    	|
+									    	<a th:href="@{/system/message/handle.action(id=${msg.id},type=${msg.type},status=false,typeid=${msg.typeid})}" style="color: #337AB7;">忽略</a>
+									    </p>
+									</span>
+								</div>
+								<ul class="pagination" style="float: right;" th:object="${page}" th:unless=" ${#lists.isEmpty(message)} ">
+									<!-- 上一页 -->
+									<li class="page-item" data-th-classappend="*{first} ? 'disabled' : ''">
+										<a th:href="*{first} ? 'javascript:void(0)':@{/system/message/show.action(pagenum=${page.number})}" class="page-link" aria-label="Previous">
+											<span aria-hidden="true">«</span>
+										</a>
+									</li>
+
+									<!-- 迭代生成页码 -->
+									<li class="page-item" data-th-each="i : ${#numbers.sequence(1, page.totalPages)}" data-th-classappend="${(page.number + 1) eq i} ? 'active' : ''">
+										<a class="page-link" th:href="${(page.number + 1) eq i} ?'javascript:void(0)':@{/system/message/show.action(pagenum=${i})}" th:if="${i}-${page.number}+4 > 0">
+											<span data-th-text="${i}"></span>
+										</a>
+									</li>
+
+									<!-- 下一页 -->
+									<li class="page-item" data-th-classappend="*{last} ? 'disabled' : ''">
+										<a th:href="*{last} ? 'javascript:void(0)':@{/system/message/show.action(pagenum=${page.number}+2)}" class="page-link" aria-label="Next">
+											<span aria-hidden="true">»</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>

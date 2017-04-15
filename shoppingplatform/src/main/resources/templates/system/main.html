@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html style="height:100%">
+<html style="height:100%;overflow-x:hidden;overflow-y:hidden">
 
 	<head>
 		<meta charset="UTF-8" />
 		<title>任意购</title>
+		<script type="text/javascript" th:src="@{/js/bower_components/jquery/dist/jquery.min.js}"></script>
 	</head>
 
 	<body style="height:100%;width:100% ;padding:0;margin:0;border:0">
@@ -12,7 +13,7 @@
             </iframe>
 		</div>
 		<div style="height:100%;width:85%;float:left;">
-			<iframe name="middle" th:src="@{/system/commodity/show.action}" scrolling="no" style="height:100%;padding:0;border:0;width:1150px">
+			<iframe name="middle" th:src="@{/system/commodity/show.action}" style="height:100%;padding:0;border:0;width:1150px">
             </iframe>
 		</div>
 	</body>

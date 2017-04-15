@@ -3,6 +3,7 @@ package jrd.graduationproject.shoppingplatform.service;
 import java.util.List;
 import java.util.Set;
 
+import jrd.graduationproject.shoppingplatform.pojo.po.Seller;
 import jrd.graduationproject.shoppingplatform.pojo.po.ShopCar;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
 import jrd.graduationproject.shoppingplatform.pojo.po.UserWareAddr;
@@ -35,4 +36,6 @@ public interface IUserService {
 	Set<UserWareAddr> getAllAddr(String id);
 
 	List<ShopCar> getUserShopCar(List<String> shopcars);
+
+	void applySeller(Seller seller, String id);
 }

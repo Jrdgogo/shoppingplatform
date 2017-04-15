@@ -14,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -40,7 +39,7 @@ public class Order {
 	private OrderStatusEnum status;
 	
 	//级联
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name="wareaddr")
 	private UserWareAddr wareaddr;
 	
@@ -56,6 +55,7 @@ public class Order {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@org.hibernate.annotations.CreationTimestamp
+	@Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
 	private Date createdate;
 
 

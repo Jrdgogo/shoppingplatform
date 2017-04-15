@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import jrd.graduationproject.shoppingplatform.dao.jpa.SellerJpa;
+import jrd.graduationproject.shoppingplatform.dao.jpa.UserJpa;
 import jrd.graduationproject.shoppingplatform.pojo.po.Seller;
 
 @Component
@@ -15,6 +16,8 @@ public class SellerFill implements CommandLineRunner {
 
 	@Autowired
 	private SellerJpa sellerJpa;
+	@Autowired
+	private UserJpa userJpa;
 
 	@Override
 	@Transactional
@@ -25,7 +28,10 @@ public class SellerFill implements CommandLineRunner {
 
 		Seller seller = new Seller();
 		seller.setId(id);
+		seller.setUser(userJpa.findOne(id));
 		seller.setName("自营");
+		seller.setStatus(true);
+		seller.setLogo("/images/photo/01/ab/self.png");
 		sellerJpa.saveAndFlush(seller);
 	}
 

@@ -1,5 +1,6 @@
 package jrd.graduationproject.shoppingplatform.service.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jrd.graduationproject.shoppingplatform.config.mail.MailPublish;
 import jrd.graduationproject.shoppingplatform.config.redis.JedisDataSource;
+import jrd.graduationproject.shoppingplatform.dao.jpa.SellerJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.ShopCarJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.UserJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.UserWareAddrJpa;
@@ -22,6 +24,7 @@ import jrd.graduationproject.shoppingplatform.dao.mybatis.UserWareAddrMapper;
 import jrd.graduationproject.shoppingplatform.exception.UserOptionErrorException;
 import jrd.graduationproject.shoppingplatform.exception.category.NotSaveException;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.StatusEnum;
+import jrd.graduationproject.shoppingplatform.pojo.po.Seller;
 import jrd.graduationproject.shoppingplatform.pojo.po.ShopCar;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
 import jrd.graduationproject.shoppingplatform.pojo.po.UserWareAddr;
@@ -37,6 +40,8 @@ public class UserServiceImpl implements IUserService {
 	private UserJpa userJpa;
 	@Autowired
 	private ShopCarJpa shopcarJpa;
+	@Autowired
+	private SellerJpa sellerJpa;
 	@Autowired
 	private UserWareAddrJpa userWareAddrJpa;
 	@Autowired
@@ -103,7 +108,8 @@ public class UserServiceImpl implements IUserService {
 		Jedis jedis = jedisDataSource.getJedis();
 		try {
 			ActiveCode(user, jedis);
-			return userJpa.saveAndFlush(user);
+			userMapper.insertSelective(user);
+			return userMapper.selectByPrimaryKey(user.getId());
 		} catch (RuntimeException e) {
 			throw e;
 		} finally {
@@ -157,6 +163,7 @@ public class UserServiceImpl implements IUserService {
 		shopCar.setId(GlobalUtil.getModelID(ShopCar.class));
 		shopCar.setWare(wareJpa.findOne(ware.getId()));
 		shopCar.setWarenum(warenum);
+		shopCar.setCreatedate(new Date());
 		return shopcarJpa.save(shopCar);
 	}
 
@@ -191,6 +198,18 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public List<ShopCar> getUserShopCar(List<String> shopcars) {
 		return shopcarJpa.findAll(shopcars);
+	}
+
+	@Override
+	@Transactional
+	public void applySeller(Seller seller, String id) {
+		seller.setId(id);
+		seller.setStatus(false);
+		
+		seller.setUser(userJpa.findOne(id));
+		
+		sellerJpa.saveAndFlush(seller);
+		
 	}
 
 }

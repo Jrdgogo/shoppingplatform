@@ -5,8 +5,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,18 +26,19 @@ public class Message {
 	@Column(columnDefinition="BIT default 0")
 	private Boolean status;
 	
-	@OneToOne(optional=false)
-	@JoinColumn(name="userid")
-	private User user;
+	@Column(length=32,nullable=false)
+	private String typeid;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@org.hibernate.annotations.CreationTimestamp
+	@Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
 	private Date createdate;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@org.hibernate.annotations.UpdateTimestamp
 	// @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	// @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@Column(columnDefinition = "timestamp ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Date updatedate;
 
 	public String getId() {
@@ -90,12 +89,12 @@ public class Message {
 		this.updatedate = updatedate;
 	}
 
-	public User getUser() {
-		return user;
+	public String getTypeid() {
+		return typeid;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setTypeid(String typeid) {
+		this.typeid = typeid;
 	}	
 
 }

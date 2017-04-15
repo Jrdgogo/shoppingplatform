@@ -8,7 +8,6 @@ public class CategoryEnumConverter implements Converter<String, CategoryEnum> {
 
 	@Override
 	public CategoryEnum convert(String source) {
-		System.out.println(source);
 		return CategoryEnum.getCategoryByCode(source);
 	}
 

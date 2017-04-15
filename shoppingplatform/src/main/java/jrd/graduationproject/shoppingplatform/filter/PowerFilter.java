@@ -21,7 +21,7 @@ import jrd.graduationproject.shoppingplatform.pojo.po.User;
  */
 public class PowerFilter implements Filter {
 
-	//private Logger logger = LoggerFactory.getLogger(PowerFilter.class);
+	// private Logger logger = LoggerFactory.getLogger(PowerFilter.class);
 
 	/**
 	 * Default constructor.
@@ -35,13 +35,13 @@ public class PowerFilter implements Filter {
 	public void destroy() {
 	}
 
-//	private static final Map<String, Integer> POWER_URI = new HashMap<>();
-//
-//	static {
-//		for (ModuleEnum moduleEnum : ModuleEnum.values()) {
-//			POWER_URI.put(moduleEnum.getDesc(), moduleEnum.getIndex());
-//		}
-//	}
+	// private static final Map<String, Integer> POWER_URI = new HashMap<>();
+	//
+	// static {
+	// for (ModuleEnum moduleEnum : ModuleEnum.values()) {
+	// POWER_URI.put(moduleEnum.getDesc(), moduleEnum.getIndex());
+	// }
+	// }
 
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
@@ -62,18 +62,19 @@ public class PowerFilter implements Filter {
 				User user = (User) session.getAttribute("User");
 				Integer userPower = user.getPower();
 				Integer rolePower = AdminEnum.getModulePowerByRolePower(userPower);
-				if ((power & rolePower) != power) {
-					// 无权限
-					String local=req.getContextPath();
-					if(!local.endsWith("/"))
-						local=local+"/";
-					resp.sendRedirect(local);
+				if ((power & rolePower) == power) {
+					chain.doFilter(request, response);
 					return;
 				}
 			}
 		} catch (Exception e) {
 		}
-		chain.doFilter(request, response);
+		// 无权限
+		String local = req.getContextPath();
+		if (!local.endsWith("/"))
+			local = local + "/";
+		resp.sendRedirect(local);
+		return;
 	}
 
 	/**

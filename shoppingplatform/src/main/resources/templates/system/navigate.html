@@ -1,7 +1,7 @@
 <div th:fragment="top">
 	<div class="h_con">
 		<dl class="user_h">
-			<dt><img th:src="@{/images/manage/wk.png}"></img></dt>
+			<dt><img th:src="${User.photo}" style="width: 80px;height: 40px;border-radius: 0.6rem;"></img></dt>
 			<dd>
 				<p class="user_name" th:text="${User.username}"></p>
 				<div class="progress">
@@ -12,8 +12,8 @@
 			</dd>
 		</dl>
 		<a th:href="@{/system/message/show.action}"><img th:src="@{/images/manage/mess.png}" /> 消息
-			<span class="msgnumber">2</span>
+			<span class="msgnumber" th:unless="${msgnumber==null||msgnumber==0}" th:text="${msgnumber}">2</span>
 		</a>
-		<a th:href="@{/home/logout.action}"><img th:src="@{/images/manage/out.png}" />退出</a>
+		<a th:href="@{/home/logout.action}" target="_top"><img th:src="@{/images/manage/out.png}" />退出</a>
 	</div>
 </div>

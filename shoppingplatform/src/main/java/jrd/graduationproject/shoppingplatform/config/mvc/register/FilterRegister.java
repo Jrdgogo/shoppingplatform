@@ -26,7 +26,7 @@ public class FilterRegister {
 	public FilterRegistrationBean powerFilterRegistration() {
 		FilterRegistrationBean registration = new FilterRegistrationBean();
 		registration.setFilter(new PowerFilter());
-		registration.addUrlPatterns("/*");
+		registration.addUrlPatterns("/system/*","/user/*","/shop/*");
 		registration.setName("powerFilter");
 		registration.setOrder(2);
 		return registration;

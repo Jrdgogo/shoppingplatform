@@ -16,7 +16,7 @@
 					<a href="" data-toggle="modal" data-target="#myModal-zc" class="c-f10215 ftr" th:if="${User == null }" th:href="@{/public/welcome.html}">
 						免费注册
 					</a>
-					<a href="" data-toggle="modal" data-target="#myModal-dlu" class="mr10 ftr c-999" th:href="${User == null}?@{/public/welcome.html}:''" th:text="${User != null}? '你好,'+${User.username}:'你好,请登录'">
+					<a href="" data-toggle="modal" data-target="#myModal-dlu" class="mr10 ftr c-999" th:href="${User == null}?@{/public/welcome.html}:@{/user/userinfo.html}" th:text="${User != null}? '你好,'+${User.username}:'你好,请登录'">
 						你好，请登录
 					</a>
 				</div>

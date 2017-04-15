@@ -1,6 +1,7 @@
 package jrd.graduationproject.shoppingplatform.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -20,12 +21,16 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
 import jrd.graduationproject.shoppingplatform.dao.jpa.CommodityJpa;
+import jrd.graduationproject.shoppingplatform.dao.jpa.MessageJpa;
+import jrd.graduationproject.shoppingplatform.dao.jpa.SellerJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.ShopCarJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.WareJpa;
 import jrd.graduationproject.shoppingplatform.dao.mybatis.WareMapper;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.CategoryEnum;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.TypeEnum;
 import jrd.graduationproject.shoppingplatform.pojo.po.Commodity;
+import jrd.graduationproject.shoppingplatform.pojo.po.Message;
+import jrd.graduationproject.shoppingplatform.pojo.po.Seller;
 import jrd.graduationproject.shoppingplatform.pojo.po.ShopCar;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
 import jrd.graduationproject.shoppingplatform.pojo.po.Ware;
@@ -46,7 +51,11 @@ public class WareServiceImpl implements IWareService {
 	@Autowired
 	private WareJpa wareJpa;
 	@Autowired
+	private SellerJpa sellerJpa;
+	@Autowired
 	private WareMapper wareMapper;
+	@Autowired
+	private MessageJpa messageJpa;
 
 	@Override
 	public List<Commodity> getCommoditysByType(TypeEnum typeEnum) {
@@ -74,9 +83,21 @@ public class WareServiceImpl implements IWareService {
 
 	@Override
 	@Transactional
-	public Ware addWare(Ware ware) {
+	public Boolean addWare(Ware ware) {
 		ware.setId(GlobalUtil.getModelID(Ware.class));
-		return wareJpa.saveAndFlush(ware);
+		wareMapper.insertSelective(ware);
+		
+		Message entity = new Message();
+		Seller seller=sellerJpa.findOne(ware.getSeller());
+		entity.setTypeid(seller.getId());
+		entity.setId(GlobalUtil.getModelID(Message.class));
+		entity.setCreatedate(new Date());
+		entity.setUpdatedate(new Date());
+		entity.setType(2);
+		entity.setStatus(false);
+		entity.setMsg("商家："+seller.getName() + "申请商家商品："+ware.getName()+"^-^");
+
+		return messageJpa.saveAndFlush(entity) != null;
 	}
 
 	@Override
@@ -89,6 +110,7 @@ public class WareServiceImpl implements IWareService {
 			for (Commodity commodity : commodities) {
 
 				Ware probe = new Ware();
+				probe.setStatus(1);
 				probe.setCommodity(commodity.getId());
 				Example<Ware> example = Example.of(probe);
 				Pageable pageable = new PageRequest(1, needNum);
@@ -133,6 +155,7 @@ public class WareServiceImpl implements IWareService {
 	@Override
 	public Slice<Ware> getWares(List<CategoryEnum> categoryEnums, PageParam page) {
 		WareExample wareExample = new WareExample();
+		wareExample.createCriteria().andStatusEqualTo(1);
 		for (CategoryEnum categoryEnum : categoryEnums) {
 			wareExample.or().andCategoryEqualTo(categoryEnum);
 		}
@@ -148,6 +171,7 @@ public class WareServiceImpl implements IWareService {
 		Sort sort = new Sort(Sort.Direction.DESC, "sales");
 		Pageable pageable = new PageRequest(page.getPagenum() - 1, page.getPagesize(), sort);
 
+		probe.setStatus(1);
 		Example<Ware> example = Example.of(probe);
 		return wareJpa.findAll(example, pageable);
 	}
@@ -195,6 +219,7 @@ public class WareServiceImpl implements IWareService {
 	private void fullSelect(WareExample wareExample, WareQuery ware) {
 		WareExample.Criteria criteria = wareExample.or();
 
+		criteria.andStatusEqualTo(1);
 		if (ware.getId() != null)
 			criteria.andIdEqualTo(ware.getId());
 		if (ware.getName() != null)
@@ -243,8 +268,17 @@ public class WareServiceImpl implements IWareService {
 
 	@Override
 	public List<Ware> getWares(List<String> wares) {
-		
+
 		return wareJpa.findAll(wares);
+	}
+
+	@Override
+	public Ware allorWare(String id) {
+		Ware ware=new Ware();
+		ware.setId(id);
+		ware.setStatus(1);
+		wareMapper.updateByPrimaryKeySelective(ware);
+		return ware;
 	}
 
 }

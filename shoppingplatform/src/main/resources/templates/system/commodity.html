@@ -3,24 +3,140 @@
 
 	<head>
 		<meta charset="utf-8" />
-		<link rel="stylesheet" th:href="@{/bower_components/bootstrap/dist/css/bootstrap.min.css}" />
-		<!--<link rel="stylesheet" th:href="@{/bower_components/sidr/dist/stylesheets/jquery.sidr.dark.min.css}" />
-		<link rel="stylesheet" th:href="@{/css/style2.css}" />-->
+		<link rel="stylesheet" th:href="@{/js/bower_components/bootstrap/dist/css/bootstrap.min.css}" />
+		<link rel="stylesheet" th:href="@{/js/bower_components/sidr/dist/stylesheets/jquery.sidr.dark.min.css}" />
+		<link rel="stylesheet" th:href="@{/css/style2.css}" />
 		<link rel="stylesheet" th:href="@{/css/main.css}" />
 		<link rel="stylesheet" th:href="@{/css/style.css}" />
 		<link rel="stylesheet" th:href="@{/css/swiper.min.css}" />
+		<link rel="stylesheet" th:href="@{/js/jquery-layer/skin/layer.css}" />
+		<link rel="stylesheet" th:href="@{/js/jquery-layer/skin/layer.ext.css}" />
 
-		<!--<script type="text/javascript" t:src="@{/js/jquery-3.1.1.min.js}"></script>-->
-		<!--<script type="text/javascript" th:src="@{/bower_components/jquery/dist/jquery.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/bower_components/jquery/dist/jquery.min.js}"></script>
+
+		<script type="text/javascript" th:src="@{/js/jquery-layer/layer.js}"></script>
+		<script type="text/javascript" th:src="@{/js/jquery-layer/extend/layer.ext.js}"></script>
 		<script type="text/javascript" th:src="@{/js/main.js}"></script>
-		<script type="text/javascript" th:src="@{/bower_components/bootstrap/dist/js/bootstrap.js}"></script>-->
-        <style type="text/css">
-        	.show{
-        		display: none !important;
-        		top:95px;
-        	}
-        	
-        </style>
+		<script type="text/javascript" th:src="@{/js/bower_components/bootstrap/dist/js/bootstrap.js}"></script>
+		<style type="text/css">
+			.show {
+				display: none !important;
+				top: 95px;
+			}
+			
+			a.details:visited {
+				color: #337ab7;
+				text-decoration: none;
+			}
+			/* 表格优化 */
+			
+			.fixed-table-pagination .page-list {
+				display: none;
+			}
+			
+			.fixed-table-pagination .pagination-detail {
+				display: none;
+			}
+			
+			.fixed-table-pagination .pagination {
+				display: none;
+			}
+			
+			.fixed-table-body {
+				position: relative;
+			}
+			
+			.fixed-table-loading {
+				display: none;
+				position: absolute;
+				top: 42px;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				z-index: 99;
+				background-color: #fff;
+				text-align: center;
+			}
+			
+			.keyWords {
+				max-width: 500px;
+			}
+			
+			.BeiZhu {
+				max-width: 200px;
+			}
+			
+			.modal {
+				top: 200px;
+			}
+			
+			.mao-content {
+				margin: 0 0;
+				margin-top: 20px;
+				padding: 20px 40px;
+			}
+			
+			#newsearch {
+				background-color: #FFFFFF;
+			}
+		</style>
+		<script type="text/javascript">
+			// 分类选择点击事件
+			$(function() {
+				var catagory;
+				var desc;
+				var type;
+				$('#area_confirm').click(function() {
+					$('#areas').modal('hide');
+					if(!catagory || !type) {
+						$('#areasSelect').text('点击选择');
+						$('#catagory').val("");
+						$('#ctype').val("");
+					} else {
+						$('#areasSelect').text(desc);
+						$('#catagory').val(catagory);
+						$('#ctype').val(type);
+					}
+				});
+
+				$(document).on('click', '#xz_con li a', function() {
+					desc = $(this).text();
+					type = $(this).attr('value');
+					catagory = $(this).parent().children('label').attr('value');
+					$('#xz_con li a').attr('class', '');
+					$(this).attr('class', 'selected');
+
+				});
+
+				$('#xz_con li a').mouseover(function() {
+					if($(this).attr("class") == 'selected') {
+						var span = $(this).children('span').attr('class');
+						if(!span) {
+							var $span = '<span id="removeselected" class=" glyphicon glyphicon-remove" style="color:red;position:absolute;right:0;top:0;"></span>'
+							$(this).append($span);
+						} else {
+							$(this).children('span').show();
+						}
+					}
+				});
+
+				$('#xz_con li a').mouseout(function() {
+					if($(this).attr("class") == 'selected') {
+						$(this).children('span').hide();
+					}
+				});
+
+				$(document).on('click', '#removeselected', function(event) {
+					type = null;
+					catagory = null;
+					desc = '点击选择';
+					$(this).parent('a').attr('class', '');
+					$(this).hide();
+					event.stopPropagation();
+					return false;
+				});
+			});
+		</script>
 	</head>
 
 	<body class="container">
@@ -30,22 +146,19 @@
 				<li class="plr20" th:each="entry : ${categorys}">
 					<div th:unless=" ${#lists.isEmpty(entry.value)} ">
 						<a href=" " class="c-fff " th:each="category,cs: ${entry.value}" th:href="@{/public/ware.action(wtype='category',id=${category.code})}">
-							<span th:text="${category.name}">手机</span>
-							<span th:text="${cs.index &lt; cs.size-1}? '/': '' ">/</span>
+							<span th:text="${category.name}">手机</span> <span th:text="${cs.index &lt; cs.size-1}? '/': '' ">/</span>
 						</a>
 					</div>
 					<div class="show bc-f7f7f7 bs-d8d8d8 p20 " th:unless="${#lists.isEmpty(types[entry.key])}">
 						<div class="mt10 " th:each="type,ts:${types[entry.key]}">
 							<div class="show-left tar ">
 								<a href=" " class=" " th:text="${type.name}" th:href="@{/public/ware.action(wtype='type',id=${type.code})}">
-									空调 >
-								</a>
+									空调 > </a>
 							</div>
 							<div class="show-right ml30 " th:unless="${#lists.isEmpty(commoditys[type.code])}">
 								|
 								<a href=" " class="mr10 " th:each="commodity,cos:${commoditys[type.code]}" th:href="@{/public/ware.action(wtype='commodity',id=${commodity.id})}">
-									<span th:text="${commodity.name}">壁挂式空调</span>
-									<span th:text="${cos.index &lt; cos.size-1}? '|': '' ">|</span>
+									<span th:text="${commodity.name}">壁挂式空调</span> <span th:text="${cos.index &lt; cos.size-1}? '|': '' ">|</span>
 								</a>
 
 							</div>
@@ -54,7 +167,93 @@
 				</li>
 			</ul>
 		</div>
+		<div id="areas" class="xz_box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-dlu" aria-hidden="true">
+			<div id="confirm" class="xz_ttl">
+				<span id="sftitle">选择类别</span><span id="area_confirm" class="xz_btn">确定</span>
+			</div>
+			<div id="test1" class="xzbox1" th:unless="${#maps.isEmpty(select)}">
+				<ul id="xz_con" class="xz_con">
+					<li th:each="ct,cts:${select}">
+						<label th:value="${ct.key.code}" th:text="${ct.key.name}+'>'">华东</label>
+						<a th:each="t,ts:${ct.value}" th:value="${t.code}" th:text="${t.name}">
+							山东
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="mao-content-2" class="mao-content" style="display: block;">
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs s_tab">
+				<li id="newsearch" class="headnav selected" style="cursor: pointer">
+					<a aria-controls="home">添加商品</a>
+				</li>
+			</ul>
+			<!-- Tab panes -->
+			<div class="tab-content" id="newsearchpage">
+				<div role="tabpanel" class="tab-pane active" id="home">
+					<div class="serch_ttl">添加条件</div>
+					<div class="container-fluid" style="margin-top: 15px;">
+						<form id="form" th:action="@{/system/commodity/add.action}" method="post">
+							<div class="row">
+								<div class="col-md-6">
+									<div>大类选择：
+										<span id="areasSelect" class="sf_xz" data-toggle="modal" data-target="#areas">点击选择</span>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div style="margin-top: 10px;display: inline;">商品门类：
+										<input name="typeenum.categoryEnum" type="text" readonly="true" id="catagory" />
+									</div>
+									<div style="margin-top: 10px;display: inline;">商品大类：
+										<input name="typeenum" type="text" readonly="true" id="ctype" />
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div style="margin-top: 10px;">商品小类：
+										<input name="name" type="text" />
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div style="margin-top: 10px;">关键字：
+										<textarea name="searchkey" style="width: 314px;resize: none;" placeholder="多个关键字以空格分隔"></textarea>
+									</div>
+								</div>
+							</div>
+							<div class="btn_con">
 
+								<input type="submit" id="myButton" value="添加" data-loading-text="正在添加..." class="btn btn_blue" autocomplete="off">&nbsp;&nbsp;&nbsp;&nbsp;
+								</input>
+
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div id="searchResult" th:if="${newCommodity!=null}">
+				<div class="serch_ttl">添加结果</div>
+				<div class="row table-responsive" style="padding: 0 15px;margin-top: 20px;">
+					<table class="table table-bordered table-hover order-data-rows">
+						<thead>
+							<tr>
+								<th>商品门类</th>
+								<th>商品大类</th>
+								<th>商品小类</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td th:text="${newCommodity.typeenum.categoryEnum.name}"></td>
+								<td th:text="${newCommodity.typeenum.name}"></td>
+								<td th:text="${newCommodity.name}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 	</body>
 
 </html>

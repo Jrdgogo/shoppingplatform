@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,6 +15,7 @@ import javax.imageio.ImageIO;
 
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.WebUtils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
@@ -141,11 +143,12 @@ public class GlobalUtil {
 	}
 
 	public static String savePhoto(MultipartFile file) throws IOException {
-		String root = "/images/wares/";
+		String root = "/images/photo/";
 		StringBuffer ware = new StringBuffer(root);
 		byte[] bytes = file.getBytes();
 		String dir = md5(file.getName(), get32bitString());
-		String parent = Thread.currentThread().getContextClassLoader().getResource("static" + root).getFile();
+		URL url=Thread.currentThread().getContextClassLoader().getResource("");
+		String parent = url.getFile()+"static"+root;
 		String firstDir = dir.substring(0, 2);
 		ware.append(firstDir + "/");
 		File savediv = new File(parent, firstDir);

@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +11,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -25,6 +23,7 @@ import jrd.graduationproject.shoppingplatform.pojo.enumfield.StatusEnum;
 @Entity
 @Table(name = "t_user")
 public class User {
+
 	@Id
 	@Column(length = 32)
 	private String id;
@@ -56,15 +55,13 @@ public class User {
 	@Column(nullable = false)
 	private String email;
 
-	@Column(length = 20)
 	private String phone;
 
 	@Temporal(TemporalType.DATE)
 	private Date birth;
 
-	@Lob
-	@Basic(fetch = FetchType.LAZY)
-	private Byte[] photo;
+	@Column(length = 20,columnDefinition="VARCHAR(80) default '/images/photo/01/ab/defaultuser.jpg'")
+	private String photo;
 
 	@Column(columnDefinition = "INT default 1")
 	private Integer power;
@@ -75,12 +72,14 @@ public class User {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@org.hibernate.annotations.CreationTimestamp
+	@Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
 	private Date createdate;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@org.hibernate.annotations.UpdateTimestamp
 	// @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	// @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@Column(columnDefinition = "timestamp ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Date updatedate;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, mappedBy = "user")
@@ -172,11 +171,11 @@ public class User {
 		this.phone = phone;
 	}
 
-	public Byte[] getPhoto() {
+	public String getPhoto() {
 		return photo;
 	}
 
-	public void setPhoto(Byte[] photo) {
+	public void setPhoto(String photo) {
 		this.photo = photo;
 	}
 
