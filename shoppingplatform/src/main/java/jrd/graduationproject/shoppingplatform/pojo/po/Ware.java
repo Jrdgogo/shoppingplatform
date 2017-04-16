@@ -22,10 +22,10 @@ public class Ware {
 	@Column(length=32)
 	private String id;
 	// 商品描述
-	@Column(length=20,nullable = false)
+	@Column(length=40,nullable = false)
 	private String name;
 	// 商品描述
-	@Column(length=40,nullable = false)
+	@Column(length=255,nullable = false)
 	private String ware;
 	// 商品详情表
 	@Column(length=20)

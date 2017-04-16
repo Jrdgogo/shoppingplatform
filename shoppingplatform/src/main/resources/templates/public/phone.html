@@ -89,11 +89,11 @@
 				<div class="f14 b-b-ddd p20" th:unless="${#lists.isEmpty(wares)}">
 					<div class="sortbox mb50" th:each="row :${wares}">
 						<!--放了四个-->
-						<div class="sortlists p10" th:each="ware :${row}">
+						<div class="sortlists p10" th:each="ware :${row}" style="width: 200px;height: 200px;">
 							<a href="" class=""><img th:src="@{${ware.photo}}" alt="" class="img-googs" /></a>
 							<div class="c-f10215 mt5">¥<span class="f18" th:text="${ware.price}">1799.00</span></div>
 							<div class="mt5 f12">
-								<a href="" class="c-666 describe" title="双镜头，大内存，长续航！【点我给你看颜值，戳我到会场！】" th:text="${ware.name}+' '+${ware.ware}">荣耀 畅玩6X 4GB 32GB 全网通4G手机 高配版 玫瑰金</a>
+								<a style="color: black;" href="" class="c-666 describe" title="快带我回家^-^" th:text="${ware.name}+' '+${ware.ware}">荣耀 畅玩6X 4GB 32GB 全网通4G手机 高配版 玫瑰金</a>
 							</div>
 						</div>
 					</div>

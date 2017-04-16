@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class ShoppingplatformApplication {
 
 	public static void main(String[] args) {
+		//org.apache.ibatis.logging.LogFactory.useLog4JLogging();
 		SpringApplication.run(ShoppingplatformApplication.class, args);
 	}
 }

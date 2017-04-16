@@ -1,6 +1,10 @@
 package jrd.graduationproject.shoppingplatform.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -8,13 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import jrd.graduationproject.shoppingplatform.pojo.enumfield.CategoryEnum;
+import jrd.graduationproject.shoppingplatform.pojo.enumfield.TypeEnum;
+import jrd.graduationproject.shoppingplatform.pojo.po.Commodity;
 import jrd.graduationproject.shoppingplatform.pojo.po.Order;
+import jrd.graduationproject.shoppingplatform.pojo.po.Seller;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
 import jrd.graduationproject.shoppingplatform.pojo.po.Ware;
 import jrd.graduationproject.shoppingplatform.pojo.vo.PageParam;
@@ -29,24 +37,23 @@ public class SellerController {
 
 	@Autowired
 	private IWareService wareService;
+	@Autowired
 	private IOrderService orderService;
 
-	@ResponseBody
 	@RequestMapping(value = "/ware/add.controller", method = RequestMethod.POST)
-	public Boolean addWare(Model model, Ware ware, HttpSession session, MultipartFile file)
-			throws IOException {
-		User user=(User) session.getAttribute("User");
-		String id=user.getId();
+	public String addWare(Model model, Ware ware, HttpSession session, MultipartFile file) throws IOException {
+		User user = (User) session.getAttribute("User");
+		String id = user.getId();
 		ware.setSeller(id);
 		ware.setPhoto(GlobalUtil.savePhoto(file));
-		return wareService.addWare(ware);
+		model.addAttribute("add", wareService.addWare(ware));
+		return showWare(id, new PageParam(), new WareQuery(), model);
 	}
 
 	@RequestMapping(value = "/ware/alter.controller", method = RequestMethod.POST)
-	public String alterWare(Model model, Ware ware, HttpSession session, MultipartFile file)
-			throws IOException {
-		User user=(User) session.getAttribute("User");
-		String id=user.getId();
+	public String alterWare(Model model, Ware ware, HttpSession session, MultipartFile file) throws IOException {
+		User user = (User) session.getAttribute("User");
+		String id = user.getId();
 		ware.setSeller(id);
 		if (!file.isEmpty())
 			ware.setPhoto(GlobalUtil.savePhoto(file));
@@ -56,21 +63,54 @@ public class SellerController {
 
 	@RequestMapping(value = "/ware/show.action")
 	public String showWare(@RequestParam("sessionUserId") String id, PageParam page, WareQuery query, Model model) {
-		query.getOrderby().put("update", "DESC");
+		query.getOrderby().put("updatedate", "DESC");
+		query.getOrderby().put("", "CASE status WHEN 0 THEN 1 WHEN 1 THEN 1 WHEN 2 THEN 2 ELSE 3 END");
 		query.setSeller(id);
+		query.setStatus(-1);
 		Slice<Ware> wares = wareService.getWares(page, query);
-		model.addAttribute("wares", wares.getContent());
+		model.addAttribute("wares", splitWare(wares.getContent()));
 		model.addAttribute("page", wares);
-		return "seller/ware";
+		Map<TypeEnum, List<Commodity>> map = new LinkedHashMap<>();
+		for (CategoryEnum categoryEnum : CategoryEnum.values()) {
+			for (TypeEnum typeEnum : TypeEnum.getTypesByCategory(categoryEnum))
+				map.put(typeEnum, wareService.getCommoditysByType(typeEnum));
+		}
+		model.addAttribute("select", map);
+		Seller seller = wareService.getSeller(id);
+		model.addAttribute("seller", seller);
+
+		return "shop/ware";
 	}
-	
+
+	private List<List<Ware>> splitWare(List<Ware> content) {
+		List<List<Ware>> wares = new ArrayList<>();
+		int fromIndex = 0;
+		int step = 5;
+		while (fromIndex < content.size()) {
+			int toIndex = fromIndex + step;
+			if (toIndex > content.size())
+				toIndex = content.size();
+			wares.add(content.subList(fromIndex, toIndex));
+			fromIndex = toIndex;
+		}
+
+		return wares;
+	}
+
 	@RequestMapping(value = "/order/show.action")
-	public String showWare(@RequestParam("sessionUserId") String id,Order order,PageParam page,Model model) {
-	
-		Slice<Order> orders = orderService.getOrdersBySeller(order,id,page);
+	public String showOrder(@RequestParam("sessionUserId") String id, Order order, PageParam page, Model model) {
+
+		Slice<Order> orders = orderService.getOrdersBySeller(order, id, page);
 		model.addAttribute("orders", orders.getContent());
 		model.addAttribute("page", orders);
-		return "seller/order";
+		Seller seller = wareService.getSeller(id);
+		model.addAttribute("seller", seller);
+		return "shop/order";
+	}
+
+	@RequestMapping("/{path}.html")
+	public String punlicHtml(@PathVariable(value = "path", required = true) String path) {
+		return "shop/" + path;
 	}
 
 }

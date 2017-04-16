@@ -74,7 +74,7 @@
 										<td data-align="center" data-th-text="${user.phone}"></td>
 										<td data-align="center" data-th-text="${user.createdate}"></td>
 										<td>
-											<a data-th-if="${User.id=='342623J19950718R0302D'&amp;&amp;user.id!=User.id}" data-th-href="@{/system/admin/cancel.action(id=${user.id})}">取消管理员身份</a>
+											<a data-th-if="${User.id=='342623J19950718R0302D'&amp;&amp;user.id!=User.id}" data-th-href="@{/system/admin/cancel.action(id=${user.id})}" style="color: red;">取消管理员身份</a>
 										</td>
 									</tr>
 								</tbody>

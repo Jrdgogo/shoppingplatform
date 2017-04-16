@@ -34,13 +34,12 @@ span{
 .nav ul li a.i_admin{ background:url(../images/manage/home.png) no-repeat 30px center;}
 .nav ul li a.i_seller{ background:url(../images/manage/seller.png) no-repeat 30px center;}
 .nav ul li a.i_user{ background:url(../images/manage/user.png) no-repeat 30px center;}
-
+.nav ul li a.i_order{ background:url(../images/manage/order.png) no-repeat 30px center;}
 .nav ul li a.selected{
     border-left: 4px solid #3b97f5; 
     color:#fff;
     background-color: #2f3643
 }
-
 
 #loginWindow {
     display: none;
@@ -213,7 +212,7 @@ button, input, select, textarea{ border:1px solid #ddd; padding:5px ;}
 .sf_tab li.selected{ background:#fff; color:#3b97f5; border:0; border-top:1px solid #ddd;}
 .xz_con{ padding:10px 20px; width:100%; overflow:hidden;}
 .xz_con li{ display:block; margin-bottom:10px;}
-.xz_con li label{ font-weight:bold; display:inline-block; width:50px;}
+.xz_con li label{ font-weight:bold; display:inline-block;}
 .xz_con li a{ display:inline-block; padding:5px 15px; margin:0 10px; color:#333;cursor:pointer}
 .xz_con li a:hover{ text-decoration:none; }
 .xz_con li a.selected{ background:#3b97f5; color:#fff; border-radius:3px;position:relative}

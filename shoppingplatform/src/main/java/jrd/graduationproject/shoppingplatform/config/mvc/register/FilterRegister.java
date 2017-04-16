@@ -26,7 +26,7 @@ public class FilterRegister {
 	public FilterRegistrationBean powerFilterRegistration() {
 		FilterRegistrationBean registration = new FilterRegistrationBean();
 		registration.setFilter(new PowerFilter());
-		registration.addUrlPatterns("/system/*","/user/*","/shop/*");
+		registration.addUrlPatterns("/system/*", "/user/*", "/shop/*");
 		registration.setName("powerFilter");
 		registration.setOrder(2);
 		return registration;
@@ -36,7 +36,7 @@ public class FilterRegister {
 	public FilterRegistrationBean paramFilterRegistration() {
 		FilterRegistrationBean registration = new FilterRegistrationBean();
 		registration.setFilter(new ParamFilter());
-		registration.addUrlPatterns("*.action","*.html","*.ajax");
+		registration.addUrlPatterns("*.action", "*.html", "*.ajax");
 		registration.setName("paramFilter");
 		registration.setOrder(3);
 		return registration;
@@ -51,5 +51,5 @@ public class FilterRegister {
 		registration.setOrder(4);
 		return registration;
 	}
-	
+
 }

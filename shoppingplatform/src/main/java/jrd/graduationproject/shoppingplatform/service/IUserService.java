@@ -38,4 +38,6 @@ public interface IUserService {
 	List<ShopCar> getUserShopCar(List<String> shopcars);
 
 	void applySeller(Seller seller, String id);
+
+	User getUserByName_cookiePwd(User user);
 }

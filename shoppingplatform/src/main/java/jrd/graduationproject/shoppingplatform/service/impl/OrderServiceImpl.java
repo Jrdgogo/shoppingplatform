@@ -6,7 +6,6 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -96,18 +95,17 @@ public class OrderServiceImpl implements IOrderService {
 
 	@Override
 	public Slice<Order> getOrdersBySeller(Order order, String id, PageParam page) {
-		Sort sort = new Sort(Sort.Direction.DESC, "updatedate");
+		Sort sort = new Sort(Sort.Direction.DESC, "createdate");
 		Pageable pageable = new PageRequest(page.getPagenum() - 1, page.getPagesize(), sort);
 		OrderOfSeller os = new OrderOfSeller();
 		os.setOrderid(order.getId());
 		os.setSellerid(id);
 		Example<OrderOfSeller> example = Example.of(os);
-		Page<OrderOfSeller> idpages = orderSellerJpa.findAll(example, pageable);
-		List<OrderOfSeller> orderOfSellers = idpages.getContent();
+		List<OrderOfSeller> orderOfSellers = orderSellerJpa.findAll(example);
 		List<String> ids = new ArrayList<>();
 		for (OrderOfSeller orderOfSeller : orderOfSellers)
 			ids.add(orderOfSeller.getOrderid());
-		return new PageImpl<Order>(orderJpa.findAll(ids), pageable, idpages.getTotalElements());
+		return new PageImpl<Order>(orderJpa.findAll(ids), pageable, orderOfSellers.size());
 	}
 
 	@Override

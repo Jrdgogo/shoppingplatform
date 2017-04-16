@@ -7,6 +7,7 @@ import org.springframework.data.domain.Slice;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.CategoryEnum;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.TypeEnum;
 import jrd.graduationproject.shoppingplatform.pojo.po.Commodity;
+import jrd.graduationproject.shoppingplatform.pojo.po.Seller;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
 import jrd.graduationproject.shoppingplatform.pojo.po.Ware;
 import jrd.graduationproject.shoppingplatform.pojo.vo.PageParam;
@@ -20,7 +21,7 @@ public interface IWareService {
 
 	Commodity addCommodity(Commodity commodity);
 
-	Boolean addWare(Ware ware);
+	String addWare(Ware ware);
 
 	List<Ware> getExWares(CategoryEnum categoryEnum);
 
@@ -39,5 +40,7 @@ public interface IWareService {
 	List<Ware> getWares(List<String> wares);
 
 	Ware allorWare(String id);
+
+	Seller getSeller(String id);
 
 }

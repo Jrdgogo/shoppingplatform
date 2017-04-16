@@ -83,21 +83,27 @@ public class WareServiceImpl implements IWareService {
 
 	@Override
 	@Transactional
-	public Boolean addWare(Ware ware) {
+	public String addWare(Ware ware) {
 		ware.setId(GlobalUtil.getModelID(Ware.class));
+		Commodity commodity = commodityJpa.findOne(ware.getCommodity());
+		TypeEnum type = commodity.getTypeenum();
+		ware.setType(type);
+		ware.setCategory(type.getCategoryEnum());
+
 		wareMapper.insertSelective(ware);
-		
+
 		Message entity = new Message();
-		Seller seller=sellerJpa.findOne(ware.getSeller());
-		entity.setTypeid(seller.getId());
+		Seller seller = sellerJpa.findOne(ware.getSeller());
+		entity.setTypeid(ware.getId());
 		entity.setId(GlobalUtil.getModelID(Message.class));
 		entity.setCreatedate(new Date());
 		entity.setUpdatedate(new Date());
-		entity.setType(2);
+		entity.setType(3);
 		entity.setStatus(false);
-		entity.setMsg("商家："+seller.getName() + "申请商家商品："+ware.getName()+"^-^");
+		entity.setMsg("商家：" + seller.getName() + "申请商家商品：" + ware.getName() + "^-^");
 
-		return messageJpa.saveAndFlush(entity) != null;
+		messageJpa.saveAndFlush(entity);
+		return ware.getId();
 	}
 
 	@Override
@@ -219,7 +225,10 @@ public class WareServiceImpl implements IWareService {
 	private void fullSelect(WareExample wareExample, WareQuery ware) {
 		WareExample.Criteria criteria = wareExample.or();
 
-		criteria.andStatusEqualTo(1);
+		if (ware.getStatus() == null)
+			criteria.andStatusEqualTo(1);
+		else if(ware.getStatus()>-1)
+			criteria.andStatusEqualTo(ware.getStatus());
 		if (ware.getId() != null)
 			criteria.andIdEqualTo(ware.getId());
 		if (ware.getName() != null)
@@ -242,8 +251,8 @@ public class WareServiceImpl implements IWareService {
 			Between values = entry.getValue();
 			if ("price".equals(path)) {
 				if (values.getLessthen() != null && values.getGreaterthen() != null)
-					criteria.andPriceBetween(Double.valueOf(values.getLessthen()),
-							Double.valueOf(values.getGreaterthen()));
+					criteria.andPriceBetween(Double.valueOf(values.getGreaterthen()),
+							Double.valueOf(values.getLessthen()));
 				else if (values.getLessthen() != null)
 					criteria.andPriceLessThan(Double.valueOf(values.getLessthen()));
 				else if (values.getGreaterthen() != null)
@@ -274,11 +283,17 @@ public class WareServiceImpl implements IWareService {
 
 	@Override
 	public Ware allorWare(String id) {
-		Ware ware=new Ware();
+		Ware ware = new Ware();
 		ware.setId(id);
 		ware.setStatus(1);
 		wareMapper.updateByPrimaryKeySelective(ware);
 		return ware;
+	}
+
+	@Override
+	public Seller getSeller(String id) {
+
+		return sellerJpa.findOne(id);
 	}
 
 }

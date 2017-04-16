@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" th:href="@{/js/bower_components/bootstrap/dist/css/bootstrap.min.css}" />
+		<link rel="stylesheet" th:href="@{/js/bower_components/sidr/dist/stylesheets/jquery.sidr.dark.min.css}" />
+		<link rel="stylesheet" th:href="@{/css/style2.css}" />
+		<link rel="stylesheet" th:href="@{/css/main.css}" />
+		<link rel="stylesheet" th:href="@{/css/style.css}" />
+		<link rel="stylesheet" th:href="@{/css/swiper.min.css}" />
+		<link rel="stylesheet" th:href="@{/js/jquery-layer/skin/layer.css}" />
+		<link rel="stylesheet" th:href="@{/js/jquery-layer/skin/layer.ext.css}" />
+
+		<script type="text/javascript" th:src="@{/js/bower_components/jquery/dist/jquery.min.js}"></script>
+
+		<script type="text/javascript" th:src="@{/js/jquery-layer/layer.js}"></script>
+		<script type="text/javascript" th:src="@{/js/jquery-layer/extend/layer.ext.js}"></script>
+		<script type="text/javascript" th:src="@{/js/main.js}"></script>
+		<script type="text/javascript" th:src="@{/js/bower_components/bootstrap/dist/js/bootstrap.js}"></script>
+		<style type="text/css">
+			.show {
+				display: none !important;
+				top: 95px;
+			}
+			
+			a.details:visited {
+				color: #337ab7;
+				text-decoration: none;
+			}
+			
+			.keyWords {
+				max-width: 500px;
+			}
+			
+			
+			.mao-content {
+				margin: 0 0;
+				margin-top: 20px;
+				padding: 20px 40px;
+			}
+			
+			#newsearch {
+				background-color: #FFFFFF;
+			}
+		</style>
+		<script type="text/javascript">
+			// 分类选择点击事件
+			$(function() {
+				var catagory;
+				var desc;
+				$('#area_confirm').click(function() {
+					$('#areas').modal('hide');
+					if(!catagory) {
+						$('#areasSelect').text('点击选择');
+						$('#catagory').val("");
+					} else {
+						$('#areasSelect').text(desc);
+						$('#catagory').val(catagory);
+					}
+				});
+
+				$(document).on('click', '#xz_con li a', function() {
+					desc = $(this).text();
+					catagory = $(this).attr('value');
+					$('#xz_con li a').attr('class', '');
+					$(this).attr('class', 'selected');
+
+				});
+
+				$('#xz_con li a').mouseover(function() {
+					if($(this).attr("class") == 'selected') {
+						var span = $(this).children('span').attr('class');
+						if(!span) {
+							var $span = '<span id="removeselected" class=" glyphicon glyphicon-remove" style="color:red;position:absolute;right:0;top:0;"></span>'
+							$(this).append($span);
+						} else {
+							$(this).children('span').show();
+						}
+					}
+				});
+
+				$('#xz_con li a').mouseout(function() {
+					if($(this).attr("class") == 'selected') {
+						$(this).children('span').hide();
+					}
+				});
+
+				$(document).on('click', '#removeselected', function(event) {
+					catagory = null;
+					desc = '点击选择';
+					$(this).parent('a').attr('class', '');
+					$(this).hide();
+					event.stopPropagation();
+					return false;
+				});
+			});
+		</script>
+		<style type="text/css">
+		  #areas{
+		  	top:10px;
+		  	width: 90%;
+		  	left: 5%;
+		  }
+		  .add{
+		  	border-color: yellow;
+		  }
+		</style>
+	</head>
+
+	<body class="container">
+		<div class="h_nav" th:include="shop/navigate :: top"></div>
+
+		<div id="areas" class="xz_box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-dlu" aria-hidden="true" style="margin-top: 10px;overflow-y: auto;">
+			<div id="confirm" class="xz_ttl">
+				<span id="sftitle">选择类别</span><span id="area_confirm" class="xz_btn">确定</span>
+			</div>
+			<div id="test1" class="xzbox1" th:unless="${#maps.isEmpty(select)}">
+				<ul id="xz_con" class="xz_con">
+					<li th:each="ct,cts:${select}">
+						<label th:value="${ct.key.code}" th:text="${ct.key.name}+'>'">华东</label>
+						<a th:each="t,ts:${ct.value}" th:value="${t.id}" th:text="${t.name}">
+							山东
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="mao-content-2" class="mao-content" style="display: block;">
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs s_tab">
+				<li id="newsearch" class="headnav selected" style="cursor: pointer">
+					<a aria-controls="home">添加商品</a>
+				</li>
+			</ul>
+			<!-- Tab panes -->
+			<div class="tab-content" id="newsearchpage">
+				<div role="tabpanel" class="tab-pane active" id="home">
+					<div class="serch_ttl">添加条件</div>
+					<div class="container-fluid" style="margin-top: 15px;">
+						<form id="form" th:action="@{/shop/ware/add.controller}" method="post" enctype="multipart/form-data">
+							<div class="row">
+								<div class="col-md-6">
+									<div>类别选择：
+										<span id="areasSelect" class="sf_xz" data-toggle="modal" data-target="#areas">点击选择</span>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div style="margin-top: 10px;display: inline;">商品小类：
+										<input name="commodity" type="text" readonly="true" id="catagory" style="width: 280px;"/>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div style="margin-top: 10px;">商品名：
+										<input name="name" type="text" />
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div style="margin-top: 10px;">商品描述：
+										<textarea name="ware" style="width: 314px;resize: none;" placeholder="多个关键字以空格分隔"></textarea>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div style="margin-top: 10px;">销售价格：
+										<input name="price" type="text" />
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div style="margin-top: 10px;">商品展示图：
+										<input name="file" type="file" placeholder="商品展示图片" style="display: inline-block;"/>
+									</div>
+								</div>
+							</div>
+							<div class="btn_con">
+
+								<input type="submit" id="myButton" value="添加" data-loading-text="正在添加..." class="btn btn_blue" autocomplete="off">&nbsp;&nbsp;&nbsp;&nbsp;
+								</input>
+
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="f14 b-b-ddd p20" th:unless="${#lists.isEmpty(wares)}">
+				<div class="sortbox mb50" th:each="row :${wares}">
+					<!--放了四个-->
+					<div th:each="ware :${row}" data-th-class="${ware.id==add?'add sortlists p10':'sortlists p10'}" style="width: 200px;height: 200px;">
+						<a href="" class=""><img th:src="@{${ware.photo}}" alt="" class="img-googs" /></a>
+						<div class="c-f10215 mt5">
+							¥
+							<span class="f18" th:text="${ware.price}">1799.00</span>
+							<span class="f18" data-th-if="${ware.status==0}" th:text="(等待审核)" style="color: blue;">1799.00</span>
+							<span class="f18" data-th-if="${ware.status==1}" th:text="(正在热销中)" style="color: green;">1799.00</span>
+							<span class="f18" data-th-if="${ware.status==2}" th:text="(已下架)" style="color: yellow;">1799.00</span>
+							<span class="f18" data-th-if="${ware.status==3}" th:text="(未合格)" style="color: red;">1799.00</span>
+						</div>
+						<div class="mt5 f12">
+							<a style="color: black;" href="" class="c-666 describe" title="欢迎上架商品" th:text="${ware.name}+' '+${ware.ware}">荣耀 畅玩6X 4GB 32GB 全网通4G手机 高配版 玫瑰金</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>

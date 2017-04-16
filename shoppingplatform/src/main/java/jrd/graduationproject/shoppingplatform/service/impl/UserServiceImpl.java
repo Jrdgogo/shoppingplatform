@@ -205,11 +205,16 @@ public class UserServiceImpl implements IUserService {
 	public void applySeller(Seller seller, String id) {
 		seller.setId(id);
 		seller.setStatus(false);
-		
+
 		seller.setUser(userJpa.findOne(id));
-		
+
 		sellerJpa.saveAndFlush(seller);
-		
+
+	}
+
+	@Override
+	public User getUserByName_cookiePwd(User user) {
+		return userJpa.findByUsernameAndPassword(user.getUsername(), user.getPassword());
 	}
 
 }

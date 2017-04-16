@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import jrd.graduationproject.shoppingplatform.dao.jpa.MessageJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.SellerJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.UserJpa;
+import jrd.graduationproject.shoppingplatform.dao.jpa.WareJpa;
 import jrd.graduationproject.shoppingplatform.dao.mybatis.UserMapper;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.AdminEnum;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.StatusEnum;
@@ -35,6 +36,8 @@ public class SystemServiceImpl implements ISystemService {
 	private SellerJpa sellerJpa;
 	@Autowired
 	private MessageJpa messageJpa;
+	@Autowired
+	private WareJpa wareJpa;
 
 	@Override
 	@Transactional
@@ -104,6 +107,8 @@ public class SystemServiceImpl implements ISystemService {
 		user.setCard(AdminEnum.getAdminByPower(user.getPower()));
 		userMapper.updateByPrimaryKeySelective(user);
 
+		wareJpa.createWareBySeller(seller.getId());
+		
 		sellerJpa.delete(seller.getId());
 	}
 
@@ -137,7 +142,7 @@ public class SystemServiceImpl implements ISystemService {
 		if (!validateSuperAdmin(id))
 			message.setType(1);
 		Example<Message> example = Example.of(message);
-		Pageable pageable = new PageRequest(page.getPagenum() - 1, 1, sort);
+		Pageable pageable = new PageRequest(page.getPagenum() - 1, page.getPagesize(), sort);
 		return messageJpa.findAll(example, pageable);
 	}
 
@@ -199,8 +204,9 @@ public class SystemServiceImpl implements ISystemService {
 
 	@Override
 	public Page<Seller> SelectSeller(PageParam page, Seller seller) {
-		Sort sort = new Sort(Sort.Direction.DESC, "status");
-		Pageable pageable = new PageRequest(page.getPagenum() - 1, page.getPagesize(), sort);
+		//Sort sort = new Sort(Sort.Direction.DESC, "status");
+		Pageable pageable = new PageRequest(page.getPagenum() - 1, page.getPagesize());
+		seller.setStatus(true);
 		Example<Seller> example = Example.of(seller);
 		return sellerJpa.findAll(example, pageable);
 	}

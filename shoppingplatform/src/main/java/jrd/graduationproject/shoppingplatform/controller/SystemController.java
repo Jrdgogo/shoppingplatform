@@ -123,19 +123,17 @@ public class SystemController {
 	}
 
 	@RequestMapping(value = "/message/handle.action")
-	public String messageHandle(Model model, Message msg,
-			@RequestParam("sessionUserId") String id) {
+	public String messageHandle(Model model, Message msg, @RequestParam("sessionUserId") String id) {
 		if (msg.getStatus()) {
 			if (msg.getType() == 1) {
 				Seller seller = new Seller();
 				seller.setId(msg.getTypeid());
 				return grantSeller(model, seller, msg.getId(), id);
-			} else if (msg.getType() == 2){
-				User user=new User();
+			} else if (msg.getType() == 2) {
+				User user = new User();
 				user.setId(msg.getTypeid());
 				return grantAdmin(model, id, user, msg.getId());
-			}
-			else if (msg.getType() == 3)
+			} else if (msg.getType() == 3)
 				wareService.allorWare(msg.getTypeid());
 		}
 		systemService.handleMessage(msg.getId());
@@ -143,10 +141,11 @@ public class SystemController {
 	}
 
 	@RequestMapping(value = "/admin/show.action")
-	public String showAdmin(Model model, PageParam page, User user) {
+	public String showAdmin(Model model, PageParam page, User user, @RequestParam("sessionUserId") String id) {
 		Page<User> p = systemService.SelectUserByType(AdminEnum.ADMIN, page, user);
 		model.addAttribute("users", p.getContent());
 		model.addAttribute("page", p);
+		model.addAttribute("msgnumber", systemService.countMessage(id));
 		return "system/admin";
 	}
 
@@ -155,7 +154,7 @@ public class SystemController {
 		User admin = new User();
 		admin.setId(id);
 		user = systemService.cancelAdmin(admin, user);
-		return showAdmin(model, new PageParam(), new User());
+		return showAdmin(model, new PageParam(), new User(), id);
 	}
 
 	@RequestMapping(value = "/seller/add.action")
@@ -167,37 +166,39 @@ public class SystemController {
 	}
 
 	@RequestMapping(value = "/seller/show.action")
-	public String showSeller(Model model, PageParam page, Seller seller) {
+	public String showSeller(Model model, PageParam page, Seller seller, @RequestParam("sessionUserId") String id) {
 		Page<Seller> p = systemService.SelectSeller(page, seller);
 		model.addAttribute("sellers", p.getContent());
 		model.addAttribute("page", p);
+		model.addAttribute("msgnumber", systemService.countMessage(id));
 		return "system/seller";
 	}
 
 	@RequestMapping(value = "/seller/cancel.action")
-	public String cancelSeller(Model model, Seller seller) {
+	public String cancelSeller(Model model, Seller seller, @RequestParam("sessionUserId") String id) {
 		systemService.cancelSeller(seller);
-		return showSeller(model, new PageParam(), new Seller());
+		return showSeller(model, new PageParam(), new Seller(), id);
 	}
 
 	@RequestMapping(value = "/user/show.action")
-	public String showUser(Model model, PageParam page, User user) {
+	public String showUser(Model model, PageParam page, User user, @RequestParam("sessionUserId") String id) {
 		Page<User> p = systemService.SelectUserByType(AdminEnum.USER, page, user);
 		model.addAttribute("users", p.getContent());
 		model.addAttribute("page", p);
+		model.addAttribute("msgnumber", systemService.countMessage(id));
 		return "system/user";
 	}
 
 	@RequestMapping(value = "/user/freeze.action")
-	public String freezeUser(Model model, User user) {
+	public String freezeUser(Model model, User user, @RequestParam("sessionUserId") String id) {
 		user = systemService.freezeUser(user);
-		return showUser(model, new PageParam(), new User());
+		return showUser(model, new PageParam(), new User(), id);
 	}
 
 	@RequestMapping(value = "/user/active.action")
-	public String activeUser(Model model, User user) {
+	public String activeUser(Model model, User user, @RequestParam("sessionUserId") String id) {
 		user = systemService.activeUser(user);
-		return showUser(model, new PageParam(), new User());
+		return showUser(model, new PageParam(), new User(), id);
 	}
 
 	@RequestMapping("/{path}.html")

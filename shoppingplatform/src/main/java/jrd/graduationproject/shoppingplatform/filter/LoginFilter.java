@@ -26,11 +26,10 @@ public class LoginFilter implements Filter {
 
 	private Logger logger = LoggerFactory.getLogger(LoginFilter.class);
 
-
 	public void destroy() {
 	}
 
-	private static final String[] IGNORE_URI = { "/css", "/js","/img", "/images", "/home", "/public","/favicon.ico"};
+	private static final String[] IGNORE_URI = { "/css", "/js", "/img", "/images", "/home", "/public", "/favicon.ico" };
 
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
@@ -50,11 +49,16 @@ public class LoginFilter implements Filter {
 			flag = cookieHave(req, session);
 
 		if (flag) {
-			String local=req.getContextPath();
-			if(!local.endsWith("/"))
-				local=local+"/";
+			String local = req.getContextPath();
+			if (!local.endsWith("/"))
+				local = local + "/";
 			resp.sendRedirect(local);
 			return;
+		}
+		User user = (User) session.getAttribute("User");
+		if (user != null) {
+			user = userService.getUserInfo(user.getId());
+			session.setAttribute("User", user);
 		}
 		chain.doFilter(request, response);
 	}
@@ -76,10 +80,10 @@ public class LoginFilter implements Filter {
 		user.setUsername(name);
 		user.setPassword(value);
 
-		user = userService.getUserByName_Pwd(user);
+		user = userService.getUserByName_cookiePwd(user);
 		if (user != null && user.getStatus() != null && user.getStatus().getIndex() == 1) {
 			session.setAttribute("User", user);
-			session.setMaxInactiveInterval(60 * 60);
+			session.setMaxInactiveInterval(60 * 60 * 24);
 			logger.info(user.getUsername() + "通过cookie自动登录了！");
 			return false;
 		}

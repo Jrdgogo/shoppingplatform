@@ -33,7 +33,7 @@ public class PublicController {
 
 	@RequestMapping("/ware.action")
 	public String wareHtml(@RequestParam(value = "wtype", required = false) String type,
-			@RequestParam(value = "id", required = false) String id, Model model, PageParam page, Ware ware,HttpSession session) {
+			@RequestParam(value = "cid", required = false) String id, Model model, PageParam page, Ware ware,HttpSession session) {
 
 		User user = (User) session.getAttribute("User");
 		select(type, id, model, page, ware,user);
@@ -84,7 +84,7 @@ public class PublicController {
 			Commodity commodity = wareService.getCommodityById(id);
 			model.addAttribute("keyword", commodity.getName());
 		}
-		model.addAttribute("wareurl", "/public/ware/select.action?wtype=" + type + "&id=" + id + "&");
+		model.addAttribute("wareurl", "/public/ware/select.action?wtype=" + type + "&cid=" + id + "&");
 		if(user!=null){
 			model.addAttribute("User", user);
 		    model.addAttribute("shopcar", wareService.getUserShopCar(user));
@@ -92,7 +92,7 @@ public class PublicController {
 	}
 
 	@RequestMapping("/ware/select.action")
-	public String wareSelectHtml(@RequestParam(value = "wtype") String type, @RequestParam(value = "id") String id,
+	public String wareSelectHtml(@RequestParam(value = "wtype") String type, @RequestParam(value = "cid") String id,
 			WareQuery query, Model model, PageParam page,HttpSession session) {
 
 		User user = (User) session.getAttribute("User");

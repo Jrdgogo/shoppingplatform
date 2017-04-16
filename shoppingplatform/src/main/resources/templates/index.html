@@ -30,7 +30,7 @@
 							<ul class="bc-6e6568 lists ptb20 c-fff" th:unless="${#maps.isEmpty(categorys)}">
 								<li class="plr20" th:each="entry : ${categorys}">
 									<div th:unless=" ${#lists.isEmpty(entry.value)} ">
-										<a href=" " class="c-fff " th:each="category,cs: ${entry.value}" th:href="@{/public/ware.action(wtype='category',id=${category.code})}">
+										<a href=" " class="c-fff " th:each="category,cs: ${entry.value}" th:href="@{/public/ware.action(wtype='category',cid=${category.code})}">
 											<span th:text="${category.name}">手机</span>
 											<span th:text="${cs.index &lt; cs.size-1}? '/': '' ">/</span>
 										</a>
@@ -38,13 +38,13 @@
 									<div class="show bc-f7f7f7 bs-d8d8d8 p20 " th:unless="${#lists.isEmpty(types[entry.key])}">
 										<div class="mt10 " th:each="type,ts:${types[entry.key]}">
 											<div class="show-left tar ">
-												<a href=" " class=" " th:text="${type.name}" th:href="@{/public/ware.action(wtype='type',id=${type.code})}">
+												<a href=" " class=" " th:text="${type.name}" th:href="@{/public/ware.action(wtype='type',cid=${type.code})}">
 													空调 >
 												</a>
 											</div>
 											<div class="show-right ml30 " th:unless="${#lists.isEmpty(commoditys[type.code])}">
 												|
-												<a href=" " class="mr10 " th:each="commodity,cos:${commoditys[type.code]}" th:href="@{/public/ware.action(wtype='commodity',id=${commodity.id})}">
+												<a href=" " class="mr10 " th:each="commodity,cos:${commoditys[type.code]}" th:href="@{/public/ware.action(wtype='commodity',cid=${commodity.id})}">
 													<span th:text="${commodity.name}">壁挂式空调</span>
 													<span th:text="${cos.index &lt; cos.size-1}? '|': '' ">|</span>
 												</a>
@@ -97,40 +97,37 @@
 						</div>
 					</div>
 				</div>
-
-				<div class="layer2 tac mb50 " th:unless="${#maps.isEmpty(wares)}">
-					<!--家电馆-->
-					<div class="div-w49 tal mtb10 " th:each="wareEntry:${wares}">
-						<div class="title p15 c-fff " style="background-color: #744E8B; " th:text="${wareEntry.key}">家电馆</div>
-						<div class="bc-fff p15 ">
-							<a href=" " class="c-666 " th:object="${wareEntry.value[0]}">
-								<img src="img/jdg.jpg " alt=" " class="img-w160h268 " th:src="@{*{photo}}" />
-							</a>
-
-							<div class="group">
-								<div class="div-w46 bc-fff b-e3e4e5 " style="padding: 4px; " th:each="ware,ws:${wareEntry.value}">
-									<a href=" " class="c-666 " th:if="${ws.index &gt; 0 and ws.index &lt; 5 }">
-										<span style="color: #744e8b; " th:text="${ware.name}">电视电影</span>
-										<br />
-										<span style="font-size: 10px; " th:text="${ware.ware}"></span>
-										<img src="img/tv.jpg " alt=" " class="ftr img-w100h80 " th:src="@{${ware.photo}}" />
-									</a>
-								</div>
-
-							</div>
-							<div class="c-666 ">
-								<a href=" " class=" " th:each="ware,ws:${wareEntry.value}">
-									<img src="img/sd.jpg " class="img-w160 " th:if="${ws.index &gt; 4 }" th:src="@{${ware.photo}}" />
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-
 			</div>
-
 		</div>
 
+		<div class="layer2 tac mb50 " th:unless="${#maps.isEmpty(wares)}">
+			<!--家电馆-->
+			<div class="div-w49 tal mtb10 " th:each="wareEntry:${wares}" style="width: 48%;float: left;margin-left: 25px;">
+				<div class="title p15 c-fff " style="background-color: #744E8B;width: 590px;" th:text="${wareEntry.key}">家电馆</div>
+				<div class="bc-fff p15 " style="width: 590px;height: 465px;">
+					<a href=" " class="c-666 " th:object="${wareEntry.value[0]}">
+						<img src="img/jdg.jpg " alt=" " class="img-w160h268 " th:src="@{*{photo}}" style="width: 193px;height: 260px;" />
+					</a>
+
+					<div class="group" style="width: 380px;height: 280px;">
+						<div class="div-w46 bc-fff b-e3e4e5 " th:each="ware,ws:${wareEntry.value}" th:if="${ws.index &gt; 0 and ws.index &lt; 5 }" style="width: 188px;height: 130px;float: left;">
+							<a href=" " class="c-666 ">
+								<span style="color: #744e8b; padding: 4px;" th:text="${ware.name}">电视电影</span>
+								<br />
+								<span style="font-size: 10px;display:inline-block;width: 50px;height: 50px;overflow: hidden; padding: 4px;" th:text="${ware.ware}"></span>
+								<img src="img/tv.jpg " alt=" " class="ftr img-w100h80 " th:src="@{${ware.photo}}" />
+							</a>
+						</div>
+
+					</div>
+					<div class="c-666 ">
+						<a href=" " class=" " th:each="ware,ws:${wareEntry.value}">
+							<img src="img/sd.jpg " class="img-w160 " th:if="${ws.index &gt; 4 }" th:src="@{${ware.photo}}" style="width: 193px;height: 130px;" />
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
 		<!-- Swiper JS -->
 		<script src="js/swiper.min.js "></script>
 
