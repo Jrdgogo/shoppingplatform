@@ -1,6 +1,8 @@
 package jrd.graduationproject.shoppingplatform.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -38,16 +40,16 @@ public class OrderServiceImpl implements IOrderService {
 	private OrderJpa orderJpa;
 	@Autowired
 	private OrderSellerJpa orderSellerJpa;
-//	@Autowired
-//	private WareJpa wareJpa;
+	// @Autowired
+	// private WareJpa wareJpa;
 	@Autowired
 	private ShopCarJpa shopCarJpa;
 	@Autowired
 	private UserJpa userJpa;
 	@Autowired
 	private UserWareAddrJpa userWareAddrJpa;
-//	@Autowired
-//	private SellerJpa sellerJpa;
+	// @Autowired
+	// private SellerJpa sellerJpa;
 
 	@Override
 	public List<Order> getOrdersbyUserId(String id) {
@@ -97,15 +99,55 @@ public class OrderServiceImpl implements IOrderService {
 	public Slice<Order> getOrdersBySeller(Order order, String id, PageParam page) {
 		Sort sort = new Sort(Sort.Direction.DESC, "createdate");
 		Pageable pageable = new PageRequest(page.getPagenum() - 1, page.getPagesize(), sort);
+
+		List<Order> orw = new ArrayList<>();
+
 		OrderOfSeller os = new OrderOfSeller();
 		os.setOrderid(order.getId());
 		os.setSellerid(id);
 		Example<OrderOfSeller> example = Example.of(os);
 		List<OrderOfSeller> orderOfSellers = orderSellerJpa.findAll(example);
+
 		List<String> ids = new ArrayList<>();
 		for (OrderOfSeller orderOfSeller : orderOfSellers)
 			ids.add(orderOfSeller.getOrderid());
-		return new PageImpl<Order>(orderJpa.findAll(ids), pageable, orderOfSellers.size());
+		List<Order> orders = orderJpa.findAll(ids);
+
+		for (Order o : orders) {
+
+			if (order.getCreatedate() != null) {
+				if (!between(o.getCreatedate(), order.getCreatedate()))
+					continue;
+			}
+			Set<OrderDetail> details = o.getOrderdetails();
+			Set<OrderDetail> orderdetails = new HashSet<>();
+			for (OrderDetail detail : details) {
+				String seller = detail.getWare().getSeller();
+				if (id.equals(seller))
+					orderdetails.add(detail);
+			}
+			o.setOrderdetails(orderdetails);
+			orw.add(order);
+		}
+		if (!orw.isEmpty()) {
+			orw.sort((o1, o2) -> (int) (o1.getCreatedate().getTime() - o2.getCreatedate().getTime()));
+			int fi = (page.getPagenum() - 1) * page.getPagesize();
+			int ei = page.getPagenum() * page.getPagesize();
+			if (ei <= orw.size())
+				return new PageImpl<Order>(orw.subList(fi, ei), pageable, orw.size());
+			else if (ei > orw.size() && fi < orw.size())
+				return new PageImpl<Order>(orw.subList(fi, orw.size()), pageable, orw.size());
+			else if (fi >= orw.size())
+				return new PageImpl<Order>(new ArrayList<>(), pageable, orw.size());
+		}
+		return new PageImpl<Order>(orw, pageable, orw.size());
+	}
+
+	private boolean between(Date createdate, Date createdate2) {
+		Date before = GlobalUtil.formatDate(GlobalUtil.dateFormat(createdate2));
+		Date after = new Date(before.getTime() + 1000 * 60 * 60 * 24);
+
+		return before.getTime() <= createdate.getTime() && after.getTime() >= createdate.getTime();
 	}
 
 	@Override
@@ -121,7 +163,7 @@ public class OrderServiceImpl implements IOrderService {
 
 		for (ShopCar shopCar : shopCars) {
 			Ware ware = shopCar.getWare();
-			money += ware.getPrice()*shopCar.getWarenum();
+			money += ware.getPrice() * shopCar.getWarenum();
 			String seller = ware.getSeller();
 			OrderOfSeller entity = new OrderOfSeller();
 			entity.setId(GlobalUtil.getModelID(OrderOfSeller.class));
