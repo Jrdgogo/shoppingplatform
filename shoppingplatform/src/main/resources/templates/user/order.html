@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8" />
+		<title></title>
+		<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+		<link rel="stylesheet" th:href="@{/css/common.css}" />
+
+		<link rel="stylesheet" data-th-href="@{/css/style.css}" />
+		<link rel="stylesheet" data-th-href="@{/css/swiper.min.css}" />
+		<link rel="stylesheet" th:href="@{/js/bower_components/bootstrap/dist/css/bootstrap.min.css}" />
+		<script data-th-src="@{/js/jquery-3.1.1.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+		<style type="text/css">
+			.checkout-steps {
+				background-color: #fff;
+				padding: 0 20px;
+				border: 1px solid #f0f0f0;
+			}
+			
+			li {
+				list-style: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="bg">
+			<div class="header bc-e3e4e5 vc">
+				<div class="m0a" style="width: 80%;">
+					<a href="" class="c-f10215 ftr" th:if="${User == null }" th:href="@{/public/welcome.html}">
+						免费注册
+					</a>
+					<a href="" class="mr10 ftr c-999" th:href="${User == null}?@{/public/welcome.html}:''" th:text="${User != null}? '你好,'+${User.username}:'你好,请登录'">
+						你好，请登录
+					</a>
+				</div>
+				<div>
+					<a href="" th:href="@{/}" style="margin-right: 10px; font-size: 18px;">
+						首页
+					</a>
+				</div>
+			</div>
+			<div class="container m0a ptb20 b-b-b1191a">
+				<img style="float: left;" th:src="@{/img/logo.png}" alt="" class="img-w200" />
+				<div style="float: left;color: black;font-size: 28px;">结算页</div>
+			</div>
+
+			<div class="container m0a ptb10 mt10 bc-f2f2f2 b-b-b1191a" style="font-size: 0;">
+				<span class="f14 c-fff bc-b1191a comment p10" style="color: black;font-size: 28px;">填写并核对订单信息</span>
+			</div>
+
+			<div class="container m0a ptb10 mt10 mb50">
+				<div class="checkout-steps">
+					<div class="step-tit" style="display: block;width: 950px;height: 40px;">
+						<h3 style="float: left">收货人信息</h3 >
+						<a  style="float: right;padding-top: 20px;"  data-toggle="modal" data-target="#myModal-zc">新增收货地址</a>
+					</div>
+					<div class="step-cont" >
+						<ul id="consignee-list">
+							<li style="display: block; margin:10px 0px;" data-th-unless="${#sets.isEmpty(addrs)}" data-th-each="addr,ai:${addrs}" data-th-value="${addr.id}">
+								<div class="addr-detail" style="padding-left: 40px; font-size: 14px;">
+									<span class="addr-name selected" data-th-text="${addr.addressee}">季睿东</span>
+									<span class="addr-info selected" data-th-text="${addr.wareaddr}">湖南 益阳市 赫山区 龙岭工业园湖南省益阳市赫山区湖南城市学院</span>
+									<span class="addr-tel selected" data-th-text="${addr.phone}">155****4691</span>
+									<span style="float: right;">
+									   <a style="color: black;">编辑</a>
+								    </span>
+								</div>
+								
+							</li>
+
+						</ul>
+					</div>
+				</div>
+				<div class="checkout-steps" style="margin-top: 20px;">
+					<div class="step-tit">
+						<h3>支付方式</h3>
+					</div>
+					<div class="step-cont">
+						<ul id="consignee-list">
+							<li style="padding-left: 110px;">
+								<span class="selected">账户余额
+							</span></li>
+						</ul>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<!-- 模态框（Modal）zc -->
+		<div class="modal fade" id="myModal-zc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-zc" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<form class="form-horizontal" role="form">
+						<div class="modal-header">
+							<!-- 关闭按钮 -->
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="myModalLabel-zc">
+				                  |添加收货地址
+				            </h4>
+						</div>
+
+						<div class="modal-body">
+							<!-- 水平表单 -->
+
+							<div class="form-group">
+								<label for="zcname" class="col-md-3 control-label">收件人：</label>
+								<div class="col-md-9">
+									<input type="text" class="form-control" id="zcname" placeholder="请输入收件人" />
+								</div>
+							</div><br/>
+							<div class="form-group">
+								<label for="password-zc" class="col-md-3 control-label">地址：</label>
+								<div class="col-md-9">
+									<input type="password" class="form-control" id="password-zc" placeholder="请输入地址" />
+								</div>
+							</div><br/>
+							<div class="form-group">
+								<label for="pwdcheck" class="col-md-3 control-label">邮政编号：</label>
+								<div class="col-md-9">
+									<input type="password" class="form-control" id="pwdcheck" placeholder="请输入编号" />
+								</div>
+							</div><br/>
+							<div class="form-group">
+								<label class="col-md-3 control-label">联系方式：</label>
+								<div class="col-md-9">
+									<input type="text" class="form-control" id="email" placeholder="请输入联系方式，必填" />
+								</div>
+							</div><br/>
+
+						</div>
+						<div class="modal-footer">
+							<input type="submit" class="btn btn-default">保存</input>
+							<button type="button" class="btn btn-primary" data-dismiss="modal" id="zcclose">关闭</button>
+						</div>
+					</form>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		</div>
+		<!-- Swiper JS -->
+		<script data-th-src="@{/js/swiper.min.js}"></script>
+
+		<!-- Initialize Swiper -->
+		<script>
+			var swiper = new Swiper('.swiper-container', {
+				pagination: '.swiper-pagination',
+				nextButton: '.swiper-button-next',
+				prevButton: '.swiper-button-prev',
+				paginationClickable: true,
+				spaceBetween: 30,
+				centeredSlides: true,
+				autoplay: 8000,
+				loop: true,
+				autoplayDisableOnInteraction: false
+			});
+		</script>
+
+	</body>
+
+</html>

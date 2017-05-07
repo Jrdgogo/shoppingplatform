@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8" />
+		<title></title>
+		<link rel="stylesheet" data-th-href="@{/css/style.css}" />
+		<link rel="stylesheet" data-th-href="@{/css/swiper.min.css}" />
+		<link rel="stylesheet" th:href="@{/js/bower_components/bootstrap/dist/css/bootstrap.min.css}" />
+		<script data-th-src="@{/js/jquery-3.1.1.min.js}"></script>
+		<script type="text/javascript">
+			/*<![CDATA[*/
+			$(function() {
+
+				var $check = $(".single");
+
+				for(var i = 0; i < $check.length; i++) {
+					var inp = $($check.get(i));
+					if(inp.val()==$(".allprice").attr('value'))
+					   inp.prop('checked', true);
+
+				}
+
+				$(".paynumber").on("click", function() {
+					var text = $(this).text();
+					var number;
+					if(text == "-") {
+						number = Number($(this).next(".paynumberinput").val());
+						number = number - 1;
+					} else {
+						number = Number($(this).prev(".paynumberinput").val());
+						number = number + 1;
+					}
+
+					if(number < 1)
+						number = 1;
+
+					if(text == "-")
+						$(this).next(".paynumberinput").val(number);
+					else
+						$(this).prev(".paynumberinput").val(number);
+					var ss = $(this).parent().prev(".tdprice");
+					var pr = Number(ss.text());
+					$(this).parent().next(".tdprices").text("¥" + (number * pr).toFixed(2));
+					it();
+				});
+				$(".paynumberinput").on("change", function() {
+					var number = Number($(this).val());
+					if(isNaN(number))
+						number = 1;
+
+					if(number < 1)
+						number = 1;
+					$(this).val(number);
+					var ss = $(this).parent().prev(".tdprice");
+					var pr = Number(ss.text());
+					$(this).parent().next(".tdprices").text("¥" + (number * pr).toFixed(2));
+					it();
+				});
+				$(".single").on("click", function() {
+					it();
+					var $check = $(".single");
+					var n = 0;
+					for(var i = 0; i < $check.length; i++) {
+						if($($check.get(i)).prop('checked'))
+							n++;
+					}
+					if(n == $check.length) {
+						$(".all").prop("indeterminate", false);
+						$(".all").prop('checked', true);
+					} else if(n == 0) {
+						$(".all").prop("indeterminate", false);
+						$(".all").prop('checked', false);
+					} else
+						$(".all").prop("indeterminate", true);
+				});
+				$(".all").on("click", function() {
+					var $check = $(".single");
+					if($(".all").prop('checked'))
+						for(var i = 0; i < $check.length; i++) {
+							$($check.get(i)).prop('checked', true);
+						}
+					else
+						for(var i = 0; i < $check.length; i++) {
+							$($check.get(i)).prop('checked', false);
+						}
+
+					it();
+				});
+
+				$(".del").on("click", function() {
+					var id = "";
+					var $check = $(".single");
+
+					for(var i = 0; i < $check.length; i++) {
+						var inp = $($check.get(i));
+						if(!inp.prop('checked'))
+							continue;
+
+						if(id != "")
+							id += "&";
+						else
+							id += "?";
+						id += "id=" + inp.val();
+					}
+					if(id != "")
+						window.location.href = "/user/shopcar/remove.action" + id;
+				});
+				
+				$(".settlement").on("click", function() {
+					var id = "";
+					var $check = $(".single");
+
+					for(var i = 0; i < $check.length; i++) {
+						var inp = $($check.get(i));
+						if(!inp.prop('checked'))
+							continue;
+
+						if(id != "")
+							id += "&";
+						else
+							id += "?";
+						id += "id=" + inp.val();
+					}
+					if(id != "")
+						window.location.href = "/user/order/settlement.action" + id;
+				});
+
+			});
+
+			function it() {
+				var $check = $(".single");
+				var number = 0;
+
+				for(var i = 0; i < $check.length; i++) {
+					var inp = $($check.get(i));
+					if(inp.prop('checked')) {
+						var ss = inp.parent().siblings(".tdprices");
+						number += Number(ss.text().substr(1).replace(',', '.'));
+					}
+				}
+				$(".allprice").text("¥" + number.toFixed(2));
+			}
+			/*]]>*/
+		</script>
+		<style type="text/css">
+			table {
+				width: 970px;
+			}
+			
+			td th {
+				padding: 10px;
+				margin: 10px;
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="bg">
+			<div class="header bc-e3e4e5 vc">
+				<div class="m0a" style="width: 80%;">
+					<a href="" class="c-f10215 ftr" th:if="${User == null }" th:href="@{/public/welcome.html}">
+						免费注册
+					</a>
+					<a href="" class="mr10 ftr c-999" th:href="${User == null}?@{/public/welcome.html}:''" th:text="${User != null}? '你好,'+${User.username}:'你好,请登录'">
+						你好，请登录
+					</a>
+				</div>
+				<div>
+					<a href="" th:href="@{/}" style="margin-right: 10px; font-size: 18px;">
+						首页
+					</a>
+				</div>
+			</div>
+			<div class="container m0a ptb20 b-b-b1191a">
+				<img th:src="@{/img/logo.png}" alt="" class="img-w200" />
+				<div class="ml80 tac" style="display: inline-block;">
+					<input type="text" class="input-search" placeholder="请输入搜索关键词" />
+					<a href="" class="a-search-icon bc-f10215"><img th:src="@{/img/search.png}" alt="" class="" /></a>
+				</div>
+			</div>
+
+			<div class="container m0a ptb10 mt10 bc-f2f2f2 b-b-b1191a" style="font-size: 0;">
+				<span class="f14 c-fff bc-b1191a comment p10" style="color: white;font-size: 28px;background-color: red;">购物车</span>
+			</div>
+
+			<div class="container m0a ptb10 mt10 mb50">
+				<!--商品-->
+				<table data-th-unless="${#lists.isEmpty(shopcars)}">
+					<tr style="width: 100%;">
+						<th style="width: 5%;"><input type="checkbox" class="all" />全部</th>
+						<th style="width: 60%;">商品</th>
+						<th style="width: 5%;">单价</th>
+						<th style="width: 20%;">数量</th>
+						<th style="width: 5%;">小计</th>
+						<th style="width: 5%;">操作</th>
+					</tr>
+					<tr style="width: 100%;" data-th-each="shpcar,si:${shopcars}">
+						<td style="width: 5%;"><input type="checkbox" class="single" data-th-attr="value=${shpcar.id}" /></td>
+						<td style="width: 60%;">
+							<div data-th-Object="${shpcar.ware}" style="width: 400px;">
+								<img src="img/slide3.jpg" class="img-wh40 br20" data-th-src="*{photo}" style="width: 80px;height: 80px;"/>
+								<span data-th-text="*{name}+*{ware}">绿***罪</span>
+							</div>
+						</td>
+						<td style="width: 5%;" class="name f12 tdprice" data-th-text="${shpcar.ware.price}">绿***罪</td>
+						<td style="width: 20%;"><span class="plr15 bc-f2f2f2 b-e3e4e5 paynumber">-</span>
+							<input class="ptb5 paynumberinput" type="text" data-th-attr="value=${shpcar.warenum}" style="width: 30px;" />
+							<span class="plr15 bc-f2f2f2 b-e3e4e5 paynumber">+</span></td>
+						<td style="width: 5%;" class="tdprices" data-th-text="'¥'+(${#numbers.formatDecimal((shpcar.ware.price*shpcar.warenum),1,2)})"></td>
+						<td style="width: 5%;">
+							<a data-th-href="@{/user/shopcar/remove.action(id=${shpcar.id})}">删除</a>
+						</td>
+					</tr>
+				</table>
+				<div data-th-unless="${#lists.isEmpty(shopcars)}">
+					<a href="javascript::void(0)" style="margin-left: 20px;color: red;" class="del">删除选中项</a>
+					<a href="javascript::void(0)" style="float: right;display: inline-block; width: 96px;height: 40px; background-color: red;text-align: center;padding-top: 16px;color: white;" class="settlement">去结算</a>
+					<span data-th-text="${shopcar}!=null?'¥'+(${#numbers.formatDecimal((shopcar.ware.price*shopcar.warenum),1,2)}):'¥ 0'" class="allprice" style="color: red; font-size: 18px;float: right;" data-th-value="${shopcar}!=null?${shopcar.id}:''"></span>
+					<span style="float: right;">总价：</span>
+				</div>
+				<div data-th-if="${#lists.isEmpty(shopcars)}">
+					还没有选中的商品,
+					<a data-th-href="@{/}">去看看</a>
+				</div>
+				<!--<ul class="pagination" style="float: right;" th:object="${page}" th:unless=" ${#lists.isEmpty(message)} ">
+					
+					<li class="page-item" data-th-classappend="*{first} ? 'disabled' : ''">
+						<a th:href="*{first} ? 'javascript:void(0)':@{/system/message/show.action(pagenum=${page.number})}" class="page-link" aria-label="Previous">
+							<span aria-hidden="true">«</span>
+						</a>
+					</li>
+
+					
+					<li class="page-item" data-th-each="i : ${#numbers.sequence(1, page.totalPages)}" data-th-classappend="${(page.number + 1) eq i} ? 'active' : ''">
+						<a class="page-link" th:href="${(page.number + 1) eq i} ?'javascript:void(0)':@{/system/message/show.action(pagenum=${i})}" th:if="${i}-${page.number}+4 > 0">
+							<span data-th-text="${i}"></span>
+						</a>
+					</li>
+
+					
+					<li class="page-item" data-th-classappend="*{last} ? 'disabled' : ''">
+						<a th:href="*{last} ? 'javascript:void(0)':@{/system/message/show.action(pagenum=${page.number}+2)}" class="page-link" aria-label="Next">
+							<span aria-hidden="true">»</span>
+						</a>
+					</li>
+				</ul>-->
+
+			</div>
+
+		</div>
+
+		<!-- Swiper JS -->
+		<script data-th-src="@{/js/swiper.min.js}"></script>
+
+		<!-- Initialize Swiper -->
+		<script>
+			var swiper = new Swiper('.swiper-container', {
+				pagination: '.swiper-pagination',
+				nextButton: '.swiper-button-next',
+				prevButton: '.swiper-button-prev',
+				paginationClickable: true,
+				spaceBetween: 30,
+				centeredSlides: true,
+				autoplay: 8000,
+				loop: true,
+				autoplayDisableOnInteraction: false
+			});
+		</script>
+
+	</body>
+
+</html>

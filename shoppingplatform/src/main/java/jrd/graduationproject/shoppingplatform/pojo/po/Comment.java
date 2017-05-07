@@ -2,7 +2,6 @@ package jrd.graduationproject.shoppingplatform.pojo.po;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,28 +13,27 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "t_shopcar")
-public class ShopCar {
-	
+@Table(name = "t_comment")
+public class Comment {
 	@Id
 	@Column(length=32)
 	private String id;
-	
-	@Column(nullable=false,columnDefinition="INT default 1")
-	private Integer warenum;
 
-	@ManyToOne(optional=false,cascade={CascadeType.DETACH})
-	@JoinColumn(name="wareid")
-	private Ware ware;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="userid")
-	private User user;
+	@Column(length=1000)
+	private String cdesc;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@org.hibernate.annotations.CreationTimestamp
 	@Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
 	private Date createdate;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="wareid")
+	private Ware ware;
+	
+	@ManyToOne
+	@JoinColumn(name="userid")
+	private User user;
 
 	public String getId() {
 		return id;
@@ -45,20 +43,12 @@ public class ShopCar {
 		this.id = id;
 	}
 
-	public Ware getWare() {
-		return ware;
+	public String getCdesc() {
+		return cdesc;
 	}
 
-	public void setWare(Ware ware) {
-		this.ware = ware;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
+	public void setCdesc(String cdesc) {
+		this.cdesc = cdesc;
 	}
 
 	public Date getCreatedate() {
@@ -69,14 +59,21 @@ public class ShopCar {
 		this.createdate = createdate;
 	}
 
-	public Integer getWarenum() {
-		return warenum;
+	public User getUser() {
+		return user;
 	}
 
-	public void setWarenum(Integer warenum) {
-		this.warenum = warenum;
+	public void setUser(User user) {
+		this.user = user;
 	}
-	
-	
 
+	public Ware getWare() {
+		return ware;
+	}
+
+	public void setWare(Ware ware) {
+		this.ware = ware;
+	}
+
+	
 }

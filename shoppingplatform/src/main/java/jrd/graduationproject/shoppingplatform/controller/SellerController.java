@@ -109,7 +109,7 @@ public class SellerController {
 	}
 
 	@RequestMapping("/{path}.html")
-	public String punlicHtml(@PathVariable(value = "path", required = true) String path) {
+	public String publicHtml(@PathVariable(value = "path", required = true) String path) {
 		return "shop/" + path;
 	}
 

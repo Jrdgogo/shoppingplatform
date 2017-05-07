@@ -19,6 +19,7 @@ import jrd.graduationproject.shoppingplatform.dao.jpa.ShopCarJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.UserJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.UserWareAddrJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.WareJpa;
+import jrd.graduationproject.shoppingplatform.dao.mybatis.ShopCarMapper;
 import jrd.graduationproject.shoppingplatform.dao.mybatis.UserMapper;
 import jrd.graduationproject.shoppingplatform.dao.mybatis.UserWareAddrMapper;
 import jrd.graduationproject.shoppingplatform.exception.UserOptionErrorException;
@@ -40,6 +41,8 @@ public class UserServiceImpl implements IUserService {
 	private UserJpa userJpa;
 	@Autowired
 	private ShopCarJpa shopcarJpa;
+	@Autowired
+	private ShopCarMapper shopcarMapper;
 	@Autowired
 	private SellerJpa sellerJpa;
 	@Autowired
@@ -170,7 +173,8 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	@Transactional
 	public void removeShopCar(List<String> shopcars) {
-		shopcarJpa.delete(shopcarJpa.findAll(shopcars));
+		for(String id:shopcars)
+		   shopcarMapper.deleteByPrimaryKey(id);
 	}
 
 	@Override

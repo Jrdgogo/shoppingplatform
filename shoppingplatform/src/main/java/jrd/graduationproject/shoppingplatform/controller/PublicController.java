@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.CategoryEnum;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.TypeEnum;
+import jrd.graduationproject.shoppingplatform.pojo.po.Comment;
 import jrd.graduationproject.shoppingplatform.pojo.po.Commodity;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
 import jrd.graduationproject.shoppingplatform.pojo.po.Ware;
 import jrd.graduationproject.shoppingplatform.pojo.vo.Between;
 import jrd.graduationproject.shoppingplatform.pojo.vo.PageParam;
 import jrd.graduationproject.shoppingplatform.pojo.vo.WareQuery;
+import jrd.graduationproject.shoppingplatform.service.IUserService;
 import jrd.graduationproject.shoppingplatform.service.IWareService;
 
 @Controller
@@ -31,12 +33,16 @@ public class PublicController {
 	@Autowired
 	private IWareService wareService;
 
+	@Autowired
+	private IUserService userService;
+
 	@RequestMapping("/ware.action")
 	public String wareHtml(@RequestParam(value = "wtype", required = false) String type,
-			@RequestParam(value = "cid", required = false) String id, Model model, PageParam page, Ware ware,HttpSession session) {
+			@RequestParam(value = "cid", required = false) String id, Model model, PageParam page, Ware ware,
+			HttpSession session) {
 
 		User user = (User) session.getAttribute("User");
-		select(type, id, model, page, ware,user);
+		select(type, id, model, page, ware, user);
 		Slice<Ware> slice = wareService.getWares(page, ware);
 		model.addAttribute("wares", splitWare(slice.getContent()));
 		model.addAttribute("page", slice);
@@ -85,18 +91,18 @@ public class PublicController {
 			model.addAttribute("keyword", commodity.getName());
 		}
 		model.addAttribute("wareurl", "/public/ware/select.action?wtype=" + type + "&cid=" + id + "&");
-		if(user!=null){
+		if (user != null) {
 			model.addAttribute("User", user);
-		    model.addAttribute("shopcar", wareService.getUserShopCar(user));
+			model.addAttribute("shopcar", wareService.getUserShopCar(user));
 		}
 	}
 
 	@RequestMapping("/ware/select.action")
 	public String wareSelectHtml(@RequestParam(value = "wtype") String type, @RequestParam(value = "cid") String id,
-			WareQuery query, Model model, PageParam page,HttpSession session) {
+			WareQuery query, Model model, PageParam page, HttpSession session) {
 
 		User user = (User) session.getAttribute("User");
-		select(type, id, model, page, query,user);
+		select(type, id, model, page, query, user);
 		Slice<Ware> slice = wareService.getWares(page, query);
 		model.addAttribute("wares", splitWare(slice.getContent()));
 		model.addAttribute("page", slice);
@@ -185,6 +191,27 @@ public class PublicController {
 		if (between.getLessthen() != null)
 			query += "&pricebetween['price'].lessthen=" + between.getLessthen();
 		return query;
+	}
+
+	@RequestMapping("/pay.action")
+	public String wareHtml(Model model, @RequestParam("wareid") String id, HttpSession session,PageParam page) {
+		User user = (User) session.getAttribute("User");
+		model.addAttribute("User", user);
+
+		Ware ware = wareService.findWarebyId(id);
+		model.addAttribute("ware", ware);
+
+		Commodity commodity = wareService.getCommodityById(ware.getCommodity());
+		model.addAttribute("keyword", commodity.getName());
+		if (user != null){
+			model.addAttribute("addrs", userService.getAllAddr(user.getId()));
+			model.addAttribute("shopcar", wareService.getUserShopCar(user));
+		}
+		Slice<Comment> comments=wareService.getCommentbyWare(page, ware);
+		model.addAttribute("comments",comments.getContent());
+		
+		model.addAttribute("page",comments);
+		return "public/pay";
 	}
 
 }

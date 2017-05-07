@@ -29,7 +29,7 @@ public class LoginFilter implements Filter {
 	public void destroy() {
 	}
 
-	private static final String[] IGNORE_URI = { "/css", "/js", "/img", "/images", "/home", "/public", "/favicon.ico" };
+	private static final String[] IGNORE_URI = { "/css", "/js", "/img", "/images", "/home", "/public", "/favicon.ico","/error"};
 
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
@@ -43,10 +43,22 @@ public class LoginFilter implements Filter {
 		boolean flag = ignoreUrl(req);
 
 		HttpSession session = req.getSession();
+		User user = (User) session.getAttribute("User");
 		if (flag)
 			flag = sessionHave(session);
+		
+		if(user==null){
+			sessionHave(session);
+		    user = (User) session.getAttribute("User");
+        }
+		
 		if (flag)
 			flag = cookieHave(req, session);
+		    
+		if(user==null){
+			cookieHave(req, session);
+		    user = (User) session.getAttribute("User");
+	    }
 
 		if (flag) {
 			String local = req.getContextPath();
@@ -55,7 +67,6 @@ public class LoginFilter implements Filter {
 			resp.sendRedirect(local);
 			return;
 		}
-		User user = (User) session.getAttribute("User");
 		if (user != null) {
 			user = userService.getUserInfo(user.getId());
 			session.setAttribute("User", user);

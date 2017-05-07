@@ -62,14 +62,14 @@
 						<a href=" " class="a-search-icon bc-f10215 ">
 							<img th:src="@{/img/search.png}" alt=" " class=" " />
 						</a>
-						<span class="span-shop bc-fff ml30 plr30 c-f10215 b-e3e4e5 " th:if="${User !=null}"> 
+						<a class="span-shop bc-fff ml30 plr30 c-f10215 b-e3e4e5" th:if="${User !=null}" data-th-href="@{/user/shopcar/Info.action}"> 
 							<img th:src="@{/img/shopping.png}" alt=" " class="mr5 " /> 
 							我的购物车
 							<span class="number bc-f10215 c-fff br8 " 
 								th:text="${shopcar}">
 								2
 							</span>
-						</span>
+						</a>
 						<!--轮播图-->
 						<div class="lunbo mt87 " style="background-color: orange; ">
 							<!-- Swiper -->
@@ -105,13 +105,13 @@
 			<div class="div-w49 tal mtb10 " th:each="wareEntry:${wares}" style="width: 48%;float: left;margin-left: 25px;">
 				<div class="title p15 c-fff " style="background-color: #744E8B;width: 590px;" th:text="${wareEntry.key}">家电馆</div>
 				<div class="bc-fff p15 " style="width: 590px;height: 465px;">
-					<a href=" " class="c-666 " th:object="${wareEntry.value[0]}">
+					<a href=" " class="c-666 " th:object="${wareEntry.value[0]}" data-th-href="@{/public/pay.action(wareid=*{id})}">
 						<img src="img/jdg.jpg " alt=" " class="img-w160h268 " th:src="@{*{photo}}" style="width: 193px;height: 260px;" />
 					</a>
 
 					<div class="group" style="width: 380px;height: 280px;">
 						<div class="div-w46 bc-fff b-e3e4e5 " th:each="ware,ws:${wareEntry.value}" th:if="${ws.index &gt; 0 and ws.index &lt; 5 }" style="width: 188px;height: 130px;float: left;">
-							<a href=" " class="c-666 ">
+							<a href=" " class="c-666 " data-th-href="@{/public/pay.action(wareid=${ware.id})}">
 								<span style="color: #744e8b; padding: 4px;" th:text="${ware.name}">电视电影</span>
 								<br />
 								<span style="font-size: 10px;display:inline-block;width: 50px;height: 50px;overflow: hidden; padding: 4px;" th:text="${ware.ware}"></span>
@@ -121,7 +121,7 @@
 
 					</div>
 					<div class="c-666 ">
-						<a href=" " class=" " th:each="ware,ws:${wareEntry.value}">
+						<a href=" " class=" " th:each="ware,ws:${wareEntry.value}" data-th-href="@{/public/pay.action(wareid=${ware.id})}">
 							<img src="img/sd.jpg " class="img-w160 " th:if="${ws.index &gt; 4 }" th:src="@{${ware.photo}}" style="width: 193px;height: 130px;" />
 						</a>
 					</div>

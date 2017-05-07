@@ -30,17 +30,22 @@
 						你好，请登录
 					</a>
 				</div>
+				<div>
+					<a href="" th:href="@{/}" style="margin-right: 10px; font-size: 18px;">
+						首页
+					</a>
+				</div>
 			</div>
 			<div class="container m0a ptb20 b-b-b1191a">
 				<img th:src="@{/img/logo.png}" alt="" class="img-w200" />
 				<div class="ml80 tac" style="display: inline-block;">
 					<input type="text" class="input-search" placeholder="请输入搜索关键词" />
 					<a href="" class="a-search-icon bc-f10215"><img th:src="@{/img/search.png}" alt="" class="" /></a>
-					<span class="span-shop bc-fff ml30 plr30 c-f10215 b-e3e4e5" th:if="${User !=null}">
+					<a class="span-shop bc-fff ml30 plr30 c-f10215 b-e3e4e5" th:if="${User !=null}" data-th-href="@{/user/shopcar/Info.action}">
 			    	<img th:src="@{/img/shopping.png}" alt="" class="mr5" />
 			    	我的购物车
 			    	<span class="number bc-f10215 c-fff br8" th:text="${shopcar}">2</span>
-					</span>
+					</a>
 				</div>
 			</div>
 
@@ -90,10 +95,10 @@
 					<div class="sortbox mb50" th:each="row :${wares}">
 						<!--放了四个-->
 						<div class="sortlists p10" th:each="ware :${row}" style="width: 200px;height: 200px;">
-							<a href="" class=""><img th:src="@{${ware.photo}}" alt="" class="img-googs" /></a>
+							<a data-th-href="@{/public/pay.action(wareid=${ware.id})}" class=""><img th:src="@{${ware.photo}}" alt="" class="img-googs" /></a>
 							<div class="c-f10215 mt5">¥<span class="f18" th:text="${ware.price}">1799.00</span></div>
 							<div class="mt5 f12">
-								<a style="color: black;" href="" class="c-666 describe" title="快带我回家^-^" th:text="${ware.name}+' '+${ware.ware}">荣耀 畅玩6X 4GB 32GB 全网通4G手机 高配版 玫瑰金</a>
+								<a style="color: black;" data-th-href="@{/public/pay.action(wareid=${ware.id})}" class="c-666 describe" title="快带我回家^-^" th:text="${ware.name}+' '+${ware.ware}">荣耀 畅玩6X 4GB 32GB 全网通4G手机 高配版 玫瑰金</a>
 							</div>
 						</div>
 					</div>

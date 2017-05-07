@@ -94,5 +94,5 @@ public class IndexController {
 	public String punlicHtml(@PathVariable(value = "path", required = true) String path) {
 		return "public/" + path;
 	}
-	
+			
 }

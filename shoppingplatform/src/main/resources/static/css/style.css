@@ -423,4 +423,28 @@ a{
 .describe:hover{
    color: #f10215;
 }
-
+/*pay.html*/
+.div-w35{
+   display: inline-block;
+   width: 35%;
+}
+.goods,.comment{
+   vertical-align: top;
+}
+.name{
+   vertical-align:top;
+   position: relative;
+   top:15px;
+}
+.img-wh40{
+   width: 40px;
+   height: 40px;
+}
+.div-w15{
+  display: inline-block;
+  width: 15%;
+}
+.div-w75{
+  display: inline-block;
+  width: 75%;
+}

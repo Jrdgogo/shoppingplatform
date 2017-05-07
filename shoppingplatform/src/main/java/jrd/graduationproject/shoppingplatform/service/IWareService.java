@@ -6,6 +6,7 @@ import org.springframework.data.domain.Slice;
 
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.CategoryEnum;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.TypeEnum;
+import jrd.graduationproject.shoppingplatform.pojo.po.Comment;
 import jrd.graduationproject.shoppingplatform.pojo.po.Commodity;
 import jrd.graduationproject.shoppingplatform.pojo.po.Seller;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
@@ -42,5 +43,9 @@ public interface IWareService {
 	Ware allorWare(String id);
 
 	Seller getSeller(String id);
+	
+	Ware findWarebyId(String id);
+	
+	Slice<Comment> getCommentbyWare(PageParam page,Ware ware);
 
 }

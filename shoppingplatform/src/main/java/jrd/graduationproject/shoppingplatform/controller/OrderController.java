@@ -1,5 +1,6 @@
 package jrd.graduationproject.shoppingplatform.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,18 +26,24 @@ public class OrderController {
 //	private IWareService wareService;
 
 	@RequestMapping(value = "/settlement.action")
-	public String Settlement(@RequestParam("id") List<String> shopcars, @RequestParam("sessionUserId") String id,
+	public String Settlement(@RequestParam("id") String[] shopcars, @RequestParam("sessionUserId") String id,
 			Model model) {
 		model.addAttribute("addrs", userService.getAllAddr(id));
-		List<ShopCar> shopCars = userService.getUserShopCar(shopcars);
+		List<String> shop_cars=new ArrayList<>();
+		for(String e:shopcars)
+		  shop_cars.add(e);
+		List<ShopCar> shopCars = userService.getUserShopCar(shop_cars);
 		Double money = 0.0;
+		StringBuffer shopcarparam=new StringBuffer();
 		for (ShopCar shopCar : shopCars) {
 
+			shopcarparam.append("&shopcarid="+shopCar.getId());
 			Ware ware = shopCar.getWare();
 			money += ware.getPrice() * shopCar.getWarenum();
 		}
 		model.addAttribute("ShopCar", shopCars);
 		model.addAttribute("money", money);
+		model.addAttribute("shopcarparam", shopcarparam.toString().substring(1));
 		return "user/order";
 	}
 

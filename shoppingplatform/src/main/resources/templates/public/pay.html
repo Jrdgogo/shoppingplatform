@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8" />
+		<title></title>
+		<link rel="stylesheet" data-th-href="@{/css/style.css}" />
+		<link rel="stylesheet" data-th-href="@{/css/swiper.min.css}" />
+		<link rel="stylesheet" th:href="@{/js/bower_components/bootstrap/dist/css/bootstrap.min.css}" />
+		<script data-th-src="@{/js/jquery-3.1.1.min.js}"></script>
+		<script type="text/javascript">
+			$(function() {
+				$(".paynumber").on("click", function() {
+					var text=$(this).text();
+					var number=Number($("#paynumber").val());
+					if(text=="-")
+						number=number-1;
+					else
+					   number=number+1;
+					/*<![CDATA[*/   
+					if(number < 1)
+					   number=1;
+					/*]]>*/   
+					$("#paynumber").val(number);   
+				});
+				$("#paynumber").on("change", function() {
+					var number=Number($("#paynumber").val());
+					if(isNaN(number))
+						number=1;
+					   
+					/*<![CDATA[*/   
+					if(number < 1)
+					   number=1;
+					/*]]>*/ 
+					$("#paynumber").val(number);   
+				});
+				$(".shopcar").on("click", function() {
+					var id=$(this).attr("value");
+					var num=$("#paynumber").val();
+					/*<![CDATA[*/  
+					window.location.href="/user/shopcar/add.action?id="+id+"&num="+num;
+					/*]]>*/ 
+				});
+
+			});
+		</script>
+	</head>
+
+	<body>
+		<div class="bg">
+			<div class="header bc-e3e4e5 vc">
+				<div class="m0a" style="width: 80%;">
+					<a href="" class="c-f10215 ftr" th:if="${User == null }" th:href="@{/public/welcome.html}">
+						免费注册
+					</a>
+					<a href="" class="mr10 ftr c-999" th:href="${User == null}?@{/public/welcome.html}:''" th:text="${User != null}? '你好,'+${User.username}:'你好,请登录'">
+						你好，请登录
+					</a>
+				</div>
+				<div>
+					<a href="" th:href="@{/}" style="margin-right: 10px; font-size: 18px;">
+						首页
+					</a>
+				</div>
+			</div>
+			<div class="container m0a ptb20 b-b-b1191a">
+				<img th:src="@{/img/logo.png}" alt="" class="img-w200" />
+				<div class="ml80 tac" style="display: inline-block;">
+					<input type="text" class="input-search" placeholder="请输入搜索关键词" />
+					<a href="" class="a-search-icon bc-f10215"><img th:src="@{/img/search.png}" alt="" class="" /></a>
+					<a class="span-shop bc-fff ml30 plr30 c-f10215 b-e3e4e5" th:if="${User !=null}" data-th-href="@{/user/shopcar/Info.action}">
+			    	<img th:src="@{/img/shopping.png}" alt="" class="mr5" />
+			    	我的购物车
+			    	<span class="number bc-f10215 c-fff br8" th:text="${shopcar}==null?0:${shopcar}">2</span>
+					</a>
+				</div>
+			</div>
+
+			<div class="container m0a ptb5 pl5 mt10 bc-f2f2f2">
+				<a href="phone.html" class="list-a f14 c-666" data-th-text="${keyword}">手机 ></a> &gt;
+				<span class="f14 c-666" title="华为荣耀畅玩6X" data-th-text="${ware.name}">华为荣耀畅玩6X</span>
+			</div>
+
+			<div class="container m0a ptb20 mt10">
+				<!--轮播图-->
+				<div class="lunbo div-w35 ml30" style="background-color: orange;">
+					<!-- Swiper -->
+					<div class="swiper-container swiper-container1 bs-eee">
+						<div class="swiper-wrapper">
+							<div class="swiper-slide"><img src="img/rongyao6x.jpg" data-th-src="@{${ware.photo}}" /></div>
+						</div>
+
+					</div>
+				</div>
+				<!--右侧详细信息-->
+				<div class="div-w49 ml30 goods">
+					<div class="c-666 fwb mtb10" data-th-text="${ware.name}+${ware.ware}">荣耀 畅玩6X 4GB 32GB 全网通4G手机 高配版 铂光金</div>
+					<div class="bc-f3f3f3 p10 mtb10">
+						<div class="">
+							<span class="c-999 f14">价格</span>
+							<span class="c-f10215 f14">￥<span class="f18" data-th-text="${ware.price}">1299.00</span></span>
+						</div>
+					</div>
+					<div class="plr10 mtb10">
+						<span class="c-999 f14 mr5">配 送 至 </span>
+						<select name="">
+							<option value="" selected="selected">选择配送地址</option>
+							<option value="" data-th-unless="${#sets.isEmpty(addrs)}" data-th-each="addr,ai:${addrs}" data-th-text="${addr.wareaddr}" data-th-value="${addr.id}">北京朝阳区管庄</option>
+						</select>
+					</div>
+					<div class="plr10 mtb20">
+						<span class="plr15 bc-f2f2f2 b-e3e4e5 paynumber">-</span>
+						<input class="ptb5" type="text" id="paynumber" value="1" />
+						<span class="plr15 bc-f2f2f2 b-e3e4e5 paynumber">+</span>
+						<span class="b-f10215 bc-f10215 p10 c-fff fwb ml30 shopcar" data-th-attr="value=${ware.id}">加入购物车</span>
+					</div>
+					<div class="plr10 mtb10">
+						<span class="c-999 f14 mr5">温馨提示</span>
+						<span class="c-666 f12">·支持7天无理由退货</span>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="container m0a ptb10 mt10 bc-f2f2f2 b-b-b1191a" style="font-size: 0;">
+				<span class="f14 c-fff bc-b1191a comment p10">商品评价</span>
+			</div>
+
+			<div class="container m0a ptb10 mt10 mb50">
+				<!--评价一-->
+				<div class="b-b-ddd ptb10" data-th-unless="${#lists.isEmpty(comments)}" data-th-each="comment,ci:${comments}">
+					<div class="div-w15 plr30" data-th-Object="${comment.user}">
+						<img src="img/slide3.jpg" class="img-wh40 br20" data-th-src="*{photo}" />
+						<span class="name f12" data-th-text="*{username}">绿***罪</span>
+					</div>
+					<div class="div-w75 ptb10 comment">
+						<div class="f14 c-333 mb10" data-th-text="${comment.desc}">
+							上午下单下午就收到了，京东的物流速度是666！！！华为荣耀6X手机也是666！！！后置的双摄像头+800万前置自拍，无论是自拍还是拍女神拍美景拍美食都美美哒；华为自家麒麟655芯片、大内存4GB+64GB、3340mAh大电池，无论性能还是续航，都超级棒！2.5D弧面玻璃+背面弧度，既掌握舒适又美观，够6的荣耀6X！
+						</div>
+						<span class="c-999 f12 ftr" data-th-text="${#dates.format(comment.createdate,'yyyy-MM-dd hh:mm')}">2016-10-25 17:09</span>
+					</div>
+				</div>
+				<ul class="pagination" style="float: right;" th:object="${page}" th:unless=" ${#lists.isEmpty(message)} ">
+					<!-- 上一页 -->
+					<li class="page-item" data-th-classappend="*{first} ? 'disabled' : ''">
+						<a th:href="*{first} ? 'javascript:void(0)':@{/system/message/show.action(pagenum=${page.number})}" class="page-link" aria-label="Previous">
+							<span aria-hidden="true">«</span>
+						</a>
+					</li>
+
+					<!-- 迭代生成页码 -->
+					<li class="page-item" data-th-each="i : ${#numbers.sequence(1, page.totalPages)}" data-th-classappend="${(page.number + 1) eq i} ? 'active' : ''">
+						<a class="page-link" th:href="${(page.number + 1) eq i} ?'javascript:void(0)':@{/system/message/show.action(pagenum=${i})}" th:if="${i}-${page.number}+4 > 0">
+							<span data-th-text="${i}"></span>
+						</a>
+					</li>
+
+					<!-- 下一页 -->
+					<li class="page-item" data-th-classappend="*{last} ? 'disabled' : ''">
+						<a th:href="*{last} ? 'javascript:void(0)':@{/system/message/show.action(pagenum=${page.number}+2)}" class="page-link" aria-label="Next">
+							<span aria-hidden="true">»</span>
+						</a>
+					</li>
+				</ul>
+
+			</div>
+
+		</div>
+
+		<!-- Swiper JS -->
+		<script data-th-src="@{/js/swiper.min.js}"></script>
+
+		<!-- Initialize Swiper -->
+		<script>
+			var swiper = new Swiper('.swiper-container', {
+				pagination: '.swiper-pagination',
+				nextButton: '.swiper-button-next',
+				prevButton: '.swiper-button-prev',
+				paginationClickable: true,
+				spaceBetween: 30,
+				centeredSlides: true,
+				autoplay: 8000,
+				loop: true,
+				autoplayDisableOnInteraction: false
+			});
+		</script>
+
+	</body>
+
+</html>

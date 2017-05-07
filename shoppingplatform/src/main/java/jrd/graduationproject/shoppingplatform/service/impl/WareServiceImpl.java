@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
+import jrd.graduationproject.shoppingplatform.dao.jpa.CommentJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.CommodityJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.MessageJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.SellerJpa;
@@ -28,6 +29,7 @@ import jrd.graduationproject.shoppingplatform.dao.jpa.WareJpa;
 import jrd.graduationproject.shoppingplatform.dao.mybatis.WareMapper;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.CategoryEnum;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.TypeEnum;
+import jrd.graduationproject.shoppingplatform.pojo.po.Comment;
 import jrd.graduationproject.shoppingplatform.pojo.po.Commodity;
 import jrd.graduationproject.shoppingplatform.pojo.po.Message;
 import jrd.graduationproject.shoppingplatform.pojo.po.Seller;
@@ -56,6 +58,8 @@ public class WareServiceImpl implements IWareService {
 	private WareMapper wareMapper;
 	@Autowired
 	private MessageJpa messageJpa;
+	@Autowired
+	private CommentJpa commentJpa;
 
 	@Override
 	public List<Commodity> getCommoditysByType(TypeEnum typeEnum) {
@@ -227,7 +231,7 @@ public class WareServiceImpl implements IWareService {
 
 		if (ware.getStatus() == null)
 			criteria.andStatusEqualTo(1);
-		else if(ware.getStatus()>-1)
+		else if (ware.getStatus() > -1)
 			criteria.andStatusEqualTo(ware.getStatus());
 		if (ware.getId() != null)
 			criteria.andIdEqualTo(ware.getId());
@@ -265,7 +269,7 @@ public class WareServiceImpl implements IWareService {
 	@Override
 	public Long getUserShopCar(User user) {
 		ShopCar probe = new ShopCar();
-		probe.setId(user.getId());
+		probe.setUser(user);
 		Example<ShopCar> example = Example.of(probe);
 		return shopCarJpa.count(example);
 	}
@@ -294,6 +298,23 @@ public class WareServiceImpl implements IWareService {
 	public Seller getSeller(String id) {
 
 		return sellerJpa.findOne(id);
+	}
+
+	@Override
+	public Ware findWarebyId(String id) {
+
+		return wareJpa.findOne(id);
+	}
+
+	@Override
+	public Slice<Comment> getCommentbyWare(PageParam page, Ware ware) {
+		Sort sort = new Sort(Sort.Direction.DESC, "createdate");
+		Pageable pageable = new PageRequest(page.getPagenum() - 1, page.getPagesize(), sort);
+
+		Comment probe = new Comment();
+		probe.setWare(ware);
+		Example<Comment> example = Example.of(probe);
+		return commentJpa.findAll(example, pageable);
 	}
 
 }
