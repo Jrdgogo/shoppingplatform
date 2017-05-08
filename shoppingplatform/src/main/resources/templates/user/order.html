@@ -37,7 +37,29 @@
 						data: "addrid=" + addrid + "&shopcarid=" + shopcarid,
 						/*]]>*/
 						success: function(data, textStatus, jqXHR) {
-                           
+							$("#orderId").text(data.id);
+                            $("#outprice").text(data.price);
+                            $('#ticketModal').modal('show');
+						},
+						error: function(XMLHttpRequest, textStatus, errorThrown) {
+
+							alert(XMLHttpRequest.responseText);
+						}
+
+					});
+				});
+				$("#buy").on("click",function(){
+					$('#ticketModal').modal('hide');
+					$.ajax({
+						type: "post",
+						url: "/user/order/defrayOrder.ajax",
+						dataType: "json",
+						/*<![CDATA[*/
+						data: "orderid=" + $("#orderId").text(),
+						/*]]>*/
+						success: function(data, textStatus, jqXHR) {
+							if(data)
+							  alert("支付成功！");
 						},
 						error: function(XMLHttpRequest, textStatus, errorThrown) {
 
@@ -268,6 +290,33 @@
 			</div>
 			<!-- /.modal -->
 		</div>
+		<!-- 订单提交  模态框（Modal） -->
+		<div class="modal fade" id="ticketModal" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						<h4 class="modal-title">订单提交</h4>
+					</div>
+					<div class="modal-body">
+						<div class="">
+							<span class="mr20">订单号:</span><span class="" id='orderId'></span>
+						</div>
+						
+						<div class="">
+							<span class="mr20">订单总额:</span><span class="" id='outprice'>90</span>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" id='buy'>立即支付</button>
+					    <button type="button" class="btn btn-primary" data-dismiss="modal" id="zcclose">关闭</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
 		<!-- Swiper JS -->
 		<script data-th-src="@{/js/swiper.min.js}"></script>
 

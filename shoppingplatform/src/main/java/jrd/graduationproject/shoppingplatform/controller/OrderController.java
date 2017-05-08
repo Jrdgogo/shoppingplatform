@@ -45,7 +45,10 @@ public class OrderController {
 		}
 		model.addAttribute("shopcars", shopCars);
 		model.addAttribute("money", money);
-		model.addAttribute("shopcarparam", shopcarparam.toString().substring("&shopcarid=".length()));
+		if(shopcarparam.length()>"&shopcarid=".length())
+		   model.addAttribute("shopcarparam", shopcarparam.toString().substring("&shopcarid=".length()));
+		else
+		   model.addAttribute("shopcarparam", shopcarparam.toString());
 		return "user/order";
 	}
 
@@ -54,6 +57,24 @@ public class OrderController {
 	public Order orderAdd(@RequestParam("sessionUserId") String id, @RequestParam("addrid") String addr,
 			@RequestParam("shopcarid") List<String> shopcars, Model model) {
 		return  orderService.createOrder(id, addr, shopcars);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/defrayOrder.ajax")
+	public Order defrayOrder(@RequestParam("orderid") String orderId) {
+		return  orderService.defrayOrder(orderId);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/cancalOrder.ajax")
+	public Order cancalOrder(@RequestParam("orderid") String orderId) {
+		return  orderService.cancalOrder(orderId);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/backOrder.ajax")
+	public Order backOrder(@RequestParam("orderid") String orderId) {
+		return  orderService.backOrder(orderId);
 	}
 
 }
