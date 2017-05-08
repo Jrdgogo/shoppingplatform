@@ -12,6 +12,42 @@
 		<link rel="stylesheet" th:href="@{/js/bower_components/bootstrap/dist/css/bootstrap.min.css}" />
 		<script data-th-src="@{/js/jquery-3.1.1.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+			var shopcarid = /*[[${shopcarparam}]]*/ '';
+			/*]]>*/
+		</script>
+		<script>
+			$(function() {
+				$(".addrli").on('click', function() {
+					$(this).addClass("addrids");
+					$(this).siblings(".addrli").removeClass("addrids");
+					$(this).children("div").children(" .addr").addClass("selected");
+					$(this).siblings(".addrli").children("div").children(" .addr").removeClass("selected");
+				});
+				$(".settlement").on('click', function() {
+
+					var addrid = $(".addrids").attr('value');
+					
+					$.ajax({
+						type: "post",
+						url: "/user/order/add.ajax",
+						dataType: "json",
+						/*<![CDATA[*/
+						data: "addrid=" + addrid + "&shopcarid=" + shopcarid,
+						/*]]>*/
+						success: function(data, textStatus, jqXHR) {
+                           
+						},
+						error: function(XMLHttpRequest, textStatus, errorThrown) {
+
+							alert(XMLHttpRequest.responseText);
+						}
+
+					});
+				});
+			});
+		</script>
 		<style type="text/css">
 			.checkout-steps {
 				background-color: #fff;
@@ -21,6 +57,16 @@
 			
 			li {
 				list-style: none;
+			}
+			
+			table {
+				width: 970px;
+			}
+			
+			td th {
+				padding: 10px;
+				margin: 10px;
+				text-align: center;
 			}
 		</style>
 	</head>
@@ -59,14 +105,68 @@
 					</div>
 					<div class="step-cont" >
 						<ul id="consignee-list">
-							<li style="display: block; margin:10px 0px;" data-th-unless="${#sets.isEmpty(addrs)}" data-th-each="addr,ai:${addrs}" data-th-value="${addr.id}">
+							<li style="display: block; margin:10px 0px;" class="addrli" data-th-unless="${#sets.isEmpty(addrs)}" data-th-each="addr,ai:${addrs}" data-th-value="${addr.id}" data-th-class="${ai.index}==0?'addrli addrids':'addrli'">
 								<div class="addr-detail" style="padding-left: 40px; font-size: 14px;">
-									<span class="addr-name selected" data-th-text="${addr.addressee}">季睿东</span>
-									<span class="addr-info selected" data-th-text="${addr.wareaddr}">湖南 益阳市 赫山区 龙岭工业园湖南省益阳市赫山区湖南城市学院</span>
-									<span class="addr-tel selected" data-th-text="${addr.phone}">155****4691</span>
+									<span data-th-class="${ai.index}==0?'addr selected':'addr'" data-th-text="${addr.addressee}">季睿东</span>
+									<span data-th-class="${ai.index}==0?'addr selected':'addr'" class="addr-info selected" data-th-text="${addr.wareaddr}">湖南 益阳市 赫山区 龙岭工业园湖南省益阳市赫山区湖南城市学院</span>
+									<span data-th-class="${ai.index}==0?'addr selected':'addr'" class="addr-tel selected" data-th-text="${addr.phone}">155****4691</span>
 									<span style="float: right;">
-									   <a style="color: black;">编辑</a>
+									   <a style="color: black;" data-toggle="modal" data-th-attr="data-target='#addr'+${ai.index}">编辑</a>
 								    </span>
+								    <!-- 模态框（Modal）ch -->
+										<div class="modal fade" data-th-attr="id='addr'+${ai.index}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-ch" aria-hidden="true">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<form class="form-horizontal" role="form" method="get" data-th-action="@{/user/address/alter.action}">
+														<input type="hidden" name="id" data-th-value="${addr.id}"/>
+														<input type="hidden" name="shopcarid" data-th-value="${shopcarparam}"/>
+														<div class="modal-header">
+															<!-- 关闭按钮 -->
+															<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+															<h4 class="modal-title" id="myModalLabel-ch">
+												                  |修改收货地址
+												            </h4>
+														</div>
+								
+														<div class="modal-body">
+															<!-- 水平表单 -->
+								
+															<div class="form-group">
+																<label for="zcname" class="col-md-3 control-label">收件人：</label>
+																<div class="col-md-9">
+																	<input type="text" class="form-control" id="chname" name="addressee" placeholder="请输入收件人" data-th-value="${addr.addressee}"/>
+																</div>
+															</div><br/>
+															<div class="form-group">
+																<label for="password-ch" class="col-md-3 control-label">地址：</label>
+																<div class="col-md-9">
+																	<input type="text" class="form-control" id="password-ch" name="wareaddr" placeholder="请输入地址" data-th-value="${addr.wareaddr}"/>
+																</div>
+															</div><br/>
+															<div class="form-group">
+																<label for="pwdcheck" class="col-md-3 control-label">邮政编号：</label>
+																<div class="col-md-9">
+																	<input type="text" class="form-control" id="pwdcheck" name="zipcode"  placeholder="请输入编号" data-th-value="${addr.zipcode}"/>
+																</div>
+															</div><br/>
+															<div class="form-group">
+																<label class="col-md-3 control-label">联系方式：</label>
+																<div class="col-md-9">
+																	<input type="text" class="form-control" id="email" name="phone" placeholder="请输入联系方式，必填" data-th-value="${addr.phone}"/>
+																</div>
+															</div><br/>
+								
+														</div>
+														<div class="modal-footer">
+															<input type="submit" class="btn btn-default" value="保存"></input>
+															<button type="button" class="btn btn-primary" data-dismiss="modal" id="chclose">关闭</button>
+														</div>
+													</form>
+												</div>
+												<!-- /.modal-content -->
+											</div>
+											<!-- /.modal -->
+										</div>
 								</div>
 								
 							</li>
@@ -87,13 +187,40 @@
 					</div>
 				</div>
 
+				<div class="checkout-steps" style="margin-top: 20px;">
+					<div class="step-tit">
+						<h3>送货清单</h3>
+					</div>
+					<div class="step-cont">
+						<!--商品-->
+						<table data-th-unless="${#lists.isEmpty(shopcars)}">
+							<tr style="width: 100%;" data-th-each="shpcar,si:${shopcars}">
+								<td style="width: 60%;">
+									<div data-th-Object="${shpcar.ware}" style="width: 400px;">
+										<img src="img/slide3.jpg" class="img-wh40 br20" data-th-src="*{photo}" style="width: 80px;height: 80px;" />
+										<span data-th-text="*{name}+*{ware}">绿***罪</span>
+									</div>
+								</td>
+								<td style="width: 20%;" data-th-text="${shpcar.warenum}+'件'"></td>
+								<td style="width: 5%;" class="tdprices" data-th-text="'¥'+(${#numbers.formatDecimal((shpcar.ware.price*shpcar.warenum),1,2)})"></td>
+							</tr>
+						</table>
+						<div data-th-unless="${#lists.isEmpty(shopcars)}">
+							<a href="javascript::void(0)" style="float: right;display: inline-block; width: 96px;height: 40px; background-color: red;text-align: center;padding-top: 16px;color: white;" class="settlement">提交定单</a>
+							<span data-th-text="${money}!=null?'¥'+(${#numbers.formatDecimal(money,1,2)}):'¥ 0'" class="allprice" style="color: red; font-size: 18px;float: right;" data-th-value="${money}!=null?${#numbers.formatDecimal(money,1,2)}:0"></span>
+							<span style="float: right;">总价：</span>
+						</div>
+					</div>
+				</div>
+
 			</div>
 		</div>
 		<!-- 模态框（Modal）zc -->
 		<div class="modal fade" id="myModal-zc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-zc" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
-					<form class="form-horizontal" role="form">
+					<form class="form-horizontal" role="form" method="get" data-th-action="@{/user/address/add.action}">
+						<input type="hidden" name="shopcarid" data-th-value="${shopcarparam}" />
 						<div class="modal-header">
 							<!-- 关闭按钮 -->
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -108,31 +235,31 @@
 							<div class="form-group">
 								<label for="zcname" class="col-md-3 control-label">收件人：</label>
 								<div class="col-md-9">
-									<input type="text" class="form-control" id="zcname" placeholder="请输入收件人" />
+									<input type="text" class="form-control" id="zcname" name="addressee" placeholder="请输入收件人" />
 								</div>
 							</div><br/>
 							<div class="form-group">
 								<label for="password-zc" class="col-md-3 control-label">地址：</label>
 								<div class="col-md-9">
-									<input type="password" class="form-control" id="password-zc" placeholder="请输入地址" />
+									<input type="text" class="form-control" id="password-zc" name="wareaddr" placeholder="请输入地址" />
 								</div>
 							</div><br/>
 							<div class="form-group">
 								<label for="pwdcheck" class="col-md-3 control-label">邮政编号：</label>
 								<div class="col-md-9">
-									<input type="password" class="form-control" id="pwdcheck" placeholder="请输入编号" />
+									<input type="text" class="form-control" id="pwdcheck" name="zipcode" placeholder="请输入编号" />
 								</div>
 							</div><br/>
 							<div class="form-group">
 								<label class="col-md-3 control-label">联系方式：</label>
 								<div class="col-md-9">
-									<input type="text" class="form-control" id="email" placeholder="请输入联系方式，必填" />
+									<input type="text" class="form-control" id="email" name="phone" placeholder="请输入联系方式，必填" />
 								</div>
 							</div><br/>
 
 						</div>
 						<div class="modal-footer">
-							<input type="submit" class="btn btn-default">保存</input>
+							<input type="submit" class="btn btn-default" value="保存"></input>
 							<button type="button" class="btn btn-primary" data-dismiss="modal" id="zcclose">关闭</button>
 						</div>
 					</form>

@@ -157,6 +157,9 @@ public class OrderServiceImpl implements IOrderService {
 		order.setId(GlobalUtil.getModelID(Order.class));
 		order.setUser(userJpa.findOne(id));
 		order.setWareaddr(userWareAddrJpa.findOne(addr));
+		order.setType("0");
+		order.setCreatedate(new Date());
+		order.setStatus(OrderStatusEnum.UNPAID);
 		// order.setType(type);
 		Double money = 0.0;
 		List<ShopCar> shopCars = shopCarJpa.findAll(shopcars);
@@ -168,13 +171,15 @@ public class OrderServiceImpl implements IOrderService {
 			OrderOfSeller entity = new OrderOfSeller();
 			entity.setId(GlobalUtil.getModelID(OrderOfSeller.class));
 			entity.setSellerid(seller);
-			entity.setSellerid(order.getId());
+			entity.setOrderid(order.getId());
 			orderSellerJpa.save(entity);
 
 			OrderDetail detail = new OrderDetail();
 			detail.setId(GlobalUtil.getModelID(OrderDetail.class));
 			detail.setWare(ware);
 			detail.setWarenum(shopCar.getWarenum());
+			detail.setOrder(order);
+			
 			order.getOrderdetails().add(detail);
 		}
 		shopCarJpa.delete(shopCars);

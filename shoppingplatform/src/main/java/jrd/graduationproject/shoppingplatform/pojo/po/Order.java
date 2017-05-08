@@ -48,7 +48,7 @@ public class Order {
 	@JoinColumn(name="userid")
 	private User user;
 	
-	@OneToMany(cascade={CascadeType.PERSIST,CascadeType.REMOVE},
+	@OneToMany(cascade={CascadeType.ALL},
 			mappedBy="order")
 	private Set<OrderDetail> orderdetails=new HashSet<>();
 	

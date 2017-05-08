@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import jrd.graduationproject.shoppingplatform.pojo.po.Order;
 import jrd.graduationproject.shoppingplatform.pojo.po.ShopCar;
 import jrd.graduationproject.shoppingplatform.pojo.po.Ware;
 import jrd.graduationproject.shoppingplatform.service.IOrderService;
@@ -41,17 +43,17 @@ public class OrderController {
 			Ware ware = shopCar.getWare();
 			money += ware.getPrice() * shopCar.getWarenum();
 		}
-		model.addAttribute("ShopCar", shopCars);
+		model.addAttribute("shopcars", shopCars);
 		model.addAttribute("money", money);
-		model.addAttribute("shopcarparam", shopcarparam.toString().substring(1));
+		model.addAttribute("shopcarparam", shopcarparam.toString().substring("&shopcarid=".length()));
 		return "user/order";
 	}
 
+	@ResponseBody
 	@RequestMapping(value = "/add.ajax")
-	public String orderAdd(@RequestParam("sessionUserId") String id, @RequestParam("addrid") String addr,
-			@RequestParam("id") List<String> shopcars, Model model) {
-		model.addAttribute("order", orderService.createOrder(id, addr, shopcars));
-		return "user/order";
+	public Order orderAdd(@RequestParam("sessionUserId") String id, @RequestParam("addrid") String addr,
+			@RequestParam("shopcarid") List<String> shopcars, Model model) {
+		return  orderService.createOrder(id, addr, shopcars);
 	}
 
 }

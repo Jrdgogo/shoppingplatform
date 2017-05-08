@@ -189,7 +189,7 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	@Transactional
 	public UserWareAddr alterAddr(UserWareAddr addr) {
-		userWareAddrMapper.updateByPrimaryKey(addr);
+		userWareAddrMapper.updateByPrimaryKeySelective(addr);
 		return userWareAddrMapper.selectByPrimaryKey(addr.getId());
 	}
 

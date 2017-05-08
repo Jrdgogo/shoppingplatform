@@ -78,21 +78,21 @@ public class UserController {
 
 	}
 
-	@ResponseBody
-	@RequestMapping(value = "/address/add.ajax")
+	
+	@RequestMapping(value = "/address/add.action")
 	public String addWareAdde(UserWareAddr addr, @RequestParam("sessionUserId") String id, Model model,
-			@RequestParam("shopcarid") String[] ids) {
+			@RequestParam("shopcarid") String ids) {
 		model.addAttribute("caddr", userService.addAddr(id, addr));
-		return orderController.Settlement(ids, id, model);
+		return orderController.Settlement(ids.split("&shopcarid="), id, model);
 	}
 
-	@ResponseBody
-	@RequestMapping(value = "/address/alter.ajax")
+	
+	@RequestMapping(value = "/address/alter.action")
 	public String alterWareAddr(UserWareAddr addr, Model model, @RequestParam("sessionUserId") String id,
-			@RequestParam("shopcarid") String[] ids) {
+			@RequestParam("shopcarid") String ids) {
 		model.addAttribute("caddr", userService.alterAddr(addr));
 
-		return orderController.Settlement(ids, id, model);
+		return orderController.Settlement(ids.split("&shopcarid="), id, model);
 	}
 
 	@ResponseBody
