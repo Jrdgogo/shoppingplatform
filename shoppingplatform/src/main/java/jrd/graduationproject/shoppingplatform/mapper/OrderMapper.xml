@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
     <result column="price" property="price" jdbcType="DOUBLE" />
-    <result column="status" property="status" jdbcType="INTEGER" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+    <result column="status" property="status" jdbcType="INTEGER" typeHandler="jrd.graduationproject.shoppingplatform.config.jdbc.OrderStatusEnumTypeHandler" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="userid" property="user" jdbcType="VARCHAR" typeHandler="jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler" />
     <result column="wareaddr" property="wareaddr" jdbcType="VARCHAR" typeHandler="jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler" />
@@ -40,15 +40,15 @@
                   and ${criterion.condition}
                 </when>
                 <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+                  and ${criterion.condition} #{criterion.value,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.OrderStatusEnumTypeHandler}
                 </when>
                 <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler} and #{criterion.secondValue,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+                  and ${criterion.condition} #{criterion.value,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.OrderStatusEnumTypeHandler} and #{criterion.secondValue,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.OrderStatusEnumTypeHandler}
                 </when>
                 <when test="criterion.listValue" >
                   and ${criterion.condition}
                   <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+                    #{listItem,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.OrderStatusEnumTypeHandler}
                   </foreach>
                 </when>
               </choose>
@@ -126,15 +126,15 @@
                   and ${criterion.condition}
                 </when>
                 <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+                  and ${criterion.condition} #{criterion.value,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.OrderStatusEnumTypeHandler}
                 </when>
                 <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler} and #{criterion.secondValue,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+                  and ${criterion.condition} #{criterion.value,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.OrderStatusEnumTypeHandler} and #{criterion.secondValue,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.OrderStatusEnumTypeHandler}
                 </when>
                 <when test="criterion.listValue" >
                   and ${criterion.condition}
                   <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+                    #{listItem,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.OrderStatusEnumTypeHandler}
                   </foreach>
                 </when>
               </choose>
@@ -222,7 +222,7 @@
       wareaddr
       )
     values (#{id,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, #{price,jdbcType=DOUBLE}, 
-      #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, 
+      #{status,jdbcType=INTEGER,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.OrderStatusEnumTypeHandler}, 
       #{type,jdbcType=INTEGER}, #{user,jdbcType=VARCHAR,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler}, 
       #{wareaddr,jdbcType=VARCHAR,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler}
       )
@@ -263,7 +263,7 @@
         #{price,jdbcType=DOUBLE},
       </if>
       <if test="status != null" >
-        #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+        #{status,jdbcType=INTEGER,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.OrderStatusEnumTypeHandler},
       </if>
       <if test="type != null" >
         #{type,jdbcType=INTEGER},
@@ -295,7 +295,7 @@
         price = #{record.price,jdbcType=DOUBLE},
       </if>
       <if test="record.status != null" >
-        `status` = #{record.status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+        `status` = #{record.status,jdbcType=INTEGER,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.OrderStatusEnumTypeHandler},
       </if>
       <if test="record.type != null" >
         `type` = #{record.type,jdbcType=INTEGER},
@@ -316,7 +316,7 @@
     set id = #{record.id,jdbcType=VARCHAR},
       createdate = #{record.createdate,jdbcType=TIMESTAMP},
       price = #{record.price,jdbcType=DOUBLE},
-      `status` = #{record.status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+      `status` = #{record.status,jdbcType=INTEGER,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.OrderStatusEnumTypeHandler},
       `type` = #{record.type,jdbcType=INTEGER},
       userid = #{record.user,jdbcType=VARCHAR,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler},
       wareaddr = #{record.wareaddr,jdbcType=VARCHAR,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler}
@@ -334,7 +334,7 @@
         price = #{price,jdbcType=DOUBLE},
       </if>
       <if test="status != null" >
-        `status` = #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+        `status` = #{status,jdbcType=INTEGER,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.OrderStatusEnumTypeHandler},
       </if>
       <if test="type != null" >
         `type` = #{type,jdbcType=INTEGER},
@@ -352,7 +352,7 @@
     update `t_order`
     set createdate = #{createdate,jdbcType=TIMESTAMP},
       price = #{price,jdbcType=DOUBLE},
-      `status` = #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+      `status` = #{status,jdbcType=INTEGER,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.OrderStatusEnumTypeHandler},
       `type` = #{type,jdbcType=INTEGER},
       userid = #{user,jdbcType=VARCHAR,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler},
       wareaddr = #{wareaddr,jdbcType=VARCHAR,typeHandler=jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler}

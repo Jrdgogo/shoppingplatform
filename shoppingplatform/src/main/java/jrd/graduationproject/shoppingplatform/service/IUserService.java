@@ -3,6 +3,7 @@ package jrd.graduationproject.shoppingplatform.service;
 import java.util.List;
 import java.util.Set;
 
+import jrd.graduationproject.shoppingplatform.pojo.po.Order;
 import jrd.graduationproject.shoppingplatform.pojo.po.Seller;
 import jrd.graduationproject.shoppingplatform.pojo.po.ShopCar;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
@@ -40,4 +41,7 @@ public interface IUserService {
 	void applySeller(Seller seller, String id);
 
 	User getUserByName_cookiePwd(User user);
+
+	String updatePW(String oldpw, String newpw, String type, String id);
+
 }

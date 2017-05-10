@@ -16,15 +16,24 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+import jrd.graduationproject.shoppingplatform.dao.jpa.CommentJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.OrderJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.OrderSellerJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.ShopCarJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.UserJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.UserWareAddrJpa;
+import jrd.graduationproject.shoppingplatform.dao.mybatis.OrderMapper;
+import jrd.graduationproject.shoppingplatform.dao.mybatis.UserMapper;
 import jrd.graduationproject.shoppingplatform.exception.UserOptionErrorException;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.OrderStatusEnum;
+import jrd.graduationproject.shoppingplatform.pojo.po.Comment;
 import jrd.graduationproject.shoppingplatform.pojo.po.Order;
 import jrd.graduationproject.shoppingplatform.pojo.po.OrderDetail;
+import jrd.graduationproject.shoppingplatform.pojo.po.OrderExample;
+import jrd.graduationproject.shoppingplatform.pojo.po.OrderExample.Criteria;
 import jrd.graduationproject.shoppingplatform.pojo.po.OrderOfSeller;
 import jrd.graduationproject.shoppingplatform.pojo.po.ShopCar;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
@@ -39,6 +48,8 @@ public class OrderServiceImpl implements IOrderService {
 	@Autowired
 	private OrderJpa orderJpa;
 	@Autowired
+	private OrderMapper orderMapper;
+	@Autowired
 	private OrderSellerJpa orderSellerJpa;
 	// @Autowired
 	// private WareJpa wareJpa;
@@ -47,7 +58,11 @@ public class OrderServiceImpl implements IOrderService {
 	@Autowired
 	private UserJpa userJpa;
 	@Autowired
+	private UserMapper userMapper;
+	@Autowired
 	private UserWareAddrJpa userWareAddrJpa;
+	@Autowired
+	private CommentJpa commentJpa;
 	// @Autowired
 	// private SellerJpa sellerJpa;
 
@@ -92,6 +107,7 @@ public class OrderServiceImpl implements IOrderService {
 		Double userMoney = user.getAccount();
 		user.setAccount(userMoney + orderMoney);
 		order.setStatus(OrderStatusEnum.BACK);
+		order.setType("4");
 		userJpa.saveAndFlush(user);
 		return order;
 	}
@@ -180,7 +196,7 @@ public class OrderServiceImpl implements IOrderService {
 			detail.setWare(ware);
 			detail.setWarenum(shopCar.getWarenum());
 			detail.setOrder(order);
-			
+
 			order.getOrderdetails().add(detail);
 		}
 		shopCarJpa.delete(shopCars);
@@ -191,20 +207,141 @@ public class OrderServiceImpl implements IOrderService {
 
 	@Override
 	public Long queryCountByStatus(OrderStatusEnum status) {
-		Order order=new Order();
+		Order order = new Order();
 		order.setStatus(status);
-		Example<Order> example=Example.of(order);
+		Example<Order> example = Example.of(order);
 		return orderJpa.count(example);
 	}
-
-
 
 	@Override
 	public Long queryCountByType(Integer type) {
-		Order order=new Order();
-		order.setType(""+type);
-		Example<Order> example=Example.of(order);
+		Order order = new Order();
+		order.setType("" + type);
+		Example<Order> example = Example.of(order);
 		return orderJpa.count(example);
 	}
+
+	@Override
+	public Slice<Order> getOrdersbyUserId(String id, PageParam page) {
+		Sort sort = new Sort(Sort.Direction.DESC, "createdate");
+		Pageable pageable = new PageRequest(page.getPagenum() - 1, page.getPagesize(), sort);
+
+		Order probe = new Order();
+		probe.setUser(userJpa.findOne(id));
+		Example<Order> example = Example.of(probe);
+
+		return orderJpa.findAll(example, pageable);
+	}
+
+//	@Override
+//	public Slice<Order> getOrdersbyUserId(String id, PageParam page, String type, Date date) {
+//		Sort sort = new Sort(Sort.Direction.DESC, "createdate");
+//		Pageable pageable = new PageRequest(page.getPagenum() - 1, page.getPagesize(), sort);
+//
+//		Order probe = new Order();
+//		probe.setUser(userJpa.findOne(id));
+//		if (!"0".equals(type)) {
+//			if ("1".equals(type)) {//等待付款
+//				probe.setStatus(OrderStatusEnum.UNPAID);
+//			} else if ("2".equals(type)) {//等待收货
+//				probe.setType("1");
+//			}else if ("3".equals(type)) {//等待评论
+//				probe.setType("2");
+//			} else if ("4".equals(type)) {//已完成
+//				probe.setStatus(OrderStatusEnum.OK);
+//			} else if ("5".equals(type)) {//已取消
+//				probe.setStatus(OrderStatusEnum.CANCEL);
+//			}
+//		}
+//
+//		Example<Order> example = Example.of(probe);
+//
+//		Page<Order> pages = orderJpa.findAll(example, pageable);
+//		List<Order> content = new ArrayList<>();
+//		for (Order order : pages.getContent()) {
+//			if (order.getCreatedate().after(date))
+//				content.add(order);
+//		}
+//		return new PageImpl<>(content, pageable, content.size());
+//	}
+	
+	@Override
+	public Slice<Order> getOrdersbyUserId(String id, PageParam page, String type, Date date) {
+		OrderExample example=new OrderExample();
+		Criteria criteria=example.createCriteria();
+		criteria.andUserEqualTo(userMapper.selectByPrimaryKey(id));
+		
+		if (!"0".equals(type)) {
+			if ("1".equals(type)) {//等待付款
+				criteria.andStatusEqualTo(OrderStatusEnum.UNPAID);
+			} else if ("2".equals(type)) {//等待收货
+				criteria.andTypeEqualTo(1);
+			}else if ("3".equals(type)) {//等待评论
+				criteria.andTypeEqualTo(2);
+			} else if ("4".equals(type)) {//已完成
+				criteria.andStatusEqualTo(OrderStatusEnum.OK);
+			} else if ("5".equals(type)) {//已取消
+				criteria.andStatusEqualTo(OrderStatusEnum.CANCEL);
+			}
+		}
+		criteria.andCreatedateGreaterThanOrEqualTo(date);
+		example.setOrderByClause(" createdate DESC ");
+		Page<Order> pagehelperPage = PageHelper.startPage(page.getPagenum(), page.getPagesize());
+		List<Order> orders=orderMapper.selectByExample(example);
+		List<Order> ods=new ArrayList<>();
+		for(Order order:orders){
+			ods.add(orderJpa.findOne(order.getId()));
+		}
+		Sort sort = new Sort(Sort.Direction.DESC, "createdate");
+		Pageable pageable = new PageRequest(page.getPagenum() - 1, page.getPagesize(), sort);
+		return new PageImpl<>(ods, pageable, pagehelperPage.getTotal());
+	}
+
+	@Override
+	@Transactional
+	public String addComment(String orderId, String id, String txt) {
+		Order order=orderJpa.findOne(orderId);
+		
+		User user=userJpa.findOne(id);
+		for(OrderDetail orderDetail:  order.getOrderdetails()){
+			Ware ware=orderDetail.getWare();
+			Comment comment=new Comment();
+			comment.setId(GlobalUtil.getModelID(Comment.class));
+			comment.setUser(user);
+			comment.setWare(ware);
+			comment.setCreatedate(new Date());
+			comment.setCdesc(txt);
+			commentJpa.saveAndFlush(comment);
+		}
+		order.setStatus(OrderStatusEnum.OK);
+		order.setType("3");
+		orderJpa.saveAndFlush(order);
+		return "评论发表成功";
+	}
+
+	@Override
+	public Order queryById(String orderId) {
+		return orderJpa.findOne(orderId);
+	}
+
+	@Override
+	public Order defrayOrder(String orderId, String id, String pwd) {
+		User user=userJpa.findOne(id);
+		if(!user.getPaymentpwd().equals(GlobalUtil.md5(pwd))){
+			return null;
+		}
+		Order order = orderJpa.findOne(orderId);
+		Double orderMoney = order.getPrice();
+		Double userMoney = user.getAccount();
+		if (orderMoney > userMoney) {
+			throw new UserOptionErrorException("账户余额不足");
+		}
+		user.setAccount(userMoney - orderMoney);
+		order.setStatus(OrderStatusEnum.PAYMENT);
+		order.setType("1");
+		userJpa.saveAndFlush(user);
+		return order;
+	}
+
 
 }

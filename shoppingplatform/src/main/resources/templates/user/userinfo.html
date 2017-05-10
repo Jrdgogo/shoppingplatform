@@ -15,7 +15,9 @@
 		<script type="text/javascript" th:src="@{/js/jquery-3.1.1.min.js}"></script>
 		<!--  JQuery文件 -->
 		<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/My97DatePicker/WdatePicker.js}"></script>
 		<script type="application/javascript">
+			/*<![CDATA[*/
 			$(function() {
 				$(".ordertime-cont").on("mouseover", function() {
 					$(this).addClass("ordertime-hover");
@@ -35,7 +37,134 @@
 				$(".consigneeshow").on("mouseout", function() {
 					$(this).children(".promptshow").css({ display: "none" });
 				});
+
+				$("#lpw").on("click", function() {
+					$("#pwtype").val("1");
+					$("#rsetpass").modal('show');
+				});
+				$("#ppw").on("click", function() {
+					$("#pwtype").val("2");
+					$("#rsetpass").modal('show');
+				});
+				$("#savepw").on("click", function() {
+					var type = $("#pwtype").val();
+					var oldpw = $("#oldpw").val();
+					var newpw = $("#newpw").val();
+
+					var spw = $("#spw").val();
+					if(!oldpw) {
+						alert("原密码不能为空");
+						return;
+					}
+					if(!newpw) {
+						alert("新密码不能为空");
+						return;
+					}
+					if(!spw) {
+						alert("确认密码不能为空");
+						return;
+					}
+					if(spw != newpw) {
+						alert("俩次密码不一致");
+						return;
+					}
+					$.ajax({
+						type: "post",
+						url: "/user/updatePW.ajax",
+						data: "type=" + type + "&oldpw=" + oldpw + "&newpw=" + newpw,
+						success: function(data, textStatus, jqXHR) {
+							alert(data);
+						},
+						error: function(XMLHttpRequest, textStatus, errorThrown) {
+
+							alert(XMLHttpRequest.responseText);
+						}
+
+					});
+
+				});
+
+				$(".btnssagain").on('click', function() {
+					var type = $(this).attr('type');
+					var orderid = $(this).parent().attr('orderid');
+					if(type == "1") {
+						$("#porderidi").val(orderid);
+						$("#paly").modal('show');
+						return;
+					}
+					if(type == "2") {
+						$("#orderidi").val(orderid);
+						$("#comment").modal('show');
+						return;
+					}
+
+					$.ajax({
+						type: "post",
+						url: "/user/order/option.ajax",
+						data: "type=" + type + "&orderid=" + orderid,
+						success: function(data, textStatus, jqXHR) {
+							alert("订单：" + data.id + ",已操作成功！");
+							window.location.href = "/user/userinfo.html";
+						},
+						error: function(XMLHttpRequest, textStatus, errorThrown) {
+
+							alert(XMLHttpRequest.responseText);
+						}
+
+					});
+				});
+				$(".search-btn").on('click', function() {
+					var orderid = $("#ip_keyword").val();
+					window.location.href = "/user/querybyid.action?orderid=" + orderid;
+				});
+
+				$("#palybu").on('click', function() {
+					var pwd = $("#palypwd").val();
+
+					var orderid = $("#porderidi").val();
+					$.ajax({
+						type: "post",
+						url: "/user/order/defrayOrder.ajax",
+						data: "pwd=" + pwd + "&orderid=" + orderid,
+						success: function(data, textStatus, jqXHR) {
+							if(!data)
+								alert("密码错误！")
+							else {
+								alert("支付成功");
+								$("#paly").modal('hide');
+								window.location.href = "/user/userinfo.html";
+							}
+						},
+						error: function(XMLHttpRequest, textStatus, errorThrown) {
+							alert(XMLHttpRequest.responseText);
+						}
+
+					});
+				});
+
+				$("#saveCom").on('click', function() {
+					var txt = $("#ctxt").val();
+
+					var orderid = $("#orderidi").val();
+					$.ajax({
+						type: "post",
+						url: "/user/order/comment.ajax",
+						data: "txt=" + txt + "&orderid=" + orderid,
+						success: function(data, textStatus, jqXHR) {
+
+							alert(data);
+							$("#comment").modal('hide');
+							window.location.href = "/user/userinfo.html";
+						},
+						error: function(XMLHttpRequest, textStatus, errorThrown) {
+
+							alert(XMLHttpRequest.responseText);
+						}
+
+					});
+				});
 			});
+			/*]]>*/
 		</script>
 		<style type="text/css">
 			.consigneeshow .prompt-02 {
@@ -60,6 +189,9 @@
 					<a href="" class="mr10 ftr c-999" data-toggle="modal" data-target="#myModal-dlu"> 申请商家入驻</a>
 				</div>
 				<div>
+					<a href="" class="mr10 ftr c-999" th:href="@{/user/userinfo.html}" style="margin-right: 10px; font-size: 18px;">
+						刷新
+					</a>
 					<a href="" class="mr10 ftr c-999" th:href="@{/}" style="margin-right: 10px; font-size: 18px;">
 						首页
 					</a>
@@ -85,7 +217,7 @@
 							<ul>
 								<li>
 									<div class="count-item">
-										<a target="_self" clstag="homepage|keycount|home2013|Homedfkk">
+										<a target="_self" clstag="homepage|keycount|home2013|Homedfkk" data-th-href="@{/user/queryorder.action(type=1,querydate=${querydate})}">
 											<i class="count-icon count-icon01"></i> 待付款
 											<em id="waitPay" data-th-text="${UNPAID}">0</em>
 										</a>
@@ -93,7 +225,7 @@
 								</li>
 								<li>
 									<div class="count-item">
-										<a target="_self" clstag="homepage|keycount|home2013|Homedsh">
+										<a target="_self" clstag="homepage|keycount|home2013|Homedsh" data-th-href="@{/user/queryorder.action(type=2,querydate=${querydate})}">
 											<i class="count-icon count-icon02"></i> 待收货
 											<em id="waitReceive" data-th-text="${PAYMENT}">0</em>
 										</a>
@@ -101,7 +233,7 @@
 								</li>
 								<li>
 									<div class="count-item">
-										<a clstag="homepage|keycount|home2013|Homedpj">
+										<a clstag="homepage|keycount|home2013|Homedpj" data-th-href="@{/user/queryorder.action(type=3,querydate=${querydate})}">
 											<i class="count-icon count-icon04"></i> 待评价
 											<em id="productCount" data-th-text="${COMMENT}">0</em>
 										</a>
@@ -124,11 +256,11 @@
 										</div>
 										<div>
 											<label></label>
-											<a clstag="homepage|keycount|home2013|Hometopye">更改账号密码</a>
+											<a href="javascript::void(0)" clstag="homepage|keycount|home2013|Hometopye" id="lpw">更改账号密码</a>
 										</div>
 										<div>
 											<label></label>
-											<a clstag="homepage|keycount|home2013|Hometopye">更改支付密码</a>
+											<a href="javascript::void(0)" clstag="homepage|keycount|home2013|Hometopye" id="ppw">更改支付密码</a>
 										</div>
 									</div>
 								</li>
@@ -142,15 +274,15 @@
 											<label>生日：</label>
 											<a clstag="homepage|keycount|home2013|Hometopye" data-th-text="${User.birth}!=null?${#dates.format(User.birth, 'dd-MM/yyyy')}:''">0.00</a>
 										</div>
-										
-									   <div>
+
+										<div>
 											<label>性别：</label>
 											<a clstag="homepage|keycount|home2013|Hometopye" data-th-text="${User.sex}">0.00</a>
 										</div>
-								    </div>
-								</li>		
+									</div>
+								</li>
 								<li class="fore1">
-									<div class="acco-item">		
+									<div class="acco-item">
 										<div>
 											<label>邮箱：</label>
 											<a clstag="homepage|keycount|home2013|Hometopye" data-th-text="${User.email}">0.00</a>
@@ -161,7 +293,7 @@
 										</div>
 										<div>
 											<label></label>
-											<a clstag="homepage|keycount|home2013|Hometopye">更改用户信息</a>
+											<a clstag="homepage|keycount|home2013|Hometopye" data-toggle="modal" data-target="#myModal-zc">更改用户信息</a>
 										</div>
 									</div>
 								</li>
@@ -174,22 +306,22 @@
 					<div class="mt">
 						<ul class="extra-l">
 							<li class="fore1">
-								<a href="//order.jd.com/center/list.action" class="txt curr">全部订单</a>
+								<a data-th-class="${type}==0?curr:''" data-th-href="@{/user/userinfo.html}">全部订单</a>
 							</li>
 							<li>
-								<a href="//order.jd.com/center/list.action?s=1" id="ordertoPay" clstag="click|keycount|orderinfo|waitPay" class="txt">待付款</a>
+								<a data-th-class="${type}==1?curr:''" clstag="click|keycount|orderinfo|waitPay" class="txt" data-th-href="@{/user/queryorder.action(type=1,querydate=${querydate})}">待付款</a>
 							</li>
 							<li>
-								<a href="//order.jd.com/center/list.action?s=128" id="ordertoReceive" clstag="click|keycount|orderinfo|waitReceive" class="txt">待收货</a>
+								<a data-th-class="${type}==2?curr:''" clstag="click|keycount|orderinfo|waitReceive" class="txt" data-th-href="@{/user/queryorder.action(type=2,querydate=${querydate})}">待收货</a>
 							</li>
 							<li>
-								<a href="//club.jd.com/mycomments.aspx" id="ordertoComment" target="_blank" class="txt" clstag="click|keycount|orderinfo|daipingjia">待评价</a>
+								<a data-th-class="${type}==3?curr:''" class="txt" clstag="click|keycount|orderinfo|daipingjia" data-th-href="@{/user/queryorder.action(type=3,querydate=${querydate})}">待评价</a>
 							</li>
 						</ul>
 						<div class="extra-r">
 							<div class="search">
-								<input id="ip_keyword" type="text" class="itxt" value="商品名称/订单号" style="color: rgb(204, 204, 204);" />
-								<a href="javascript:;" class="search-btn" clstag="click|keycount|orderinfo|search">搜索<b></b></a>
+								<input id="ip_keyword" type="text" class="itxt" value="订单号" style="color: rgb(204, 204, 204);" />
+								<a href="javascript::void(0);" class="search-btn" clstag="click|keycount|orderinfo|search">搜索<b></b></a>
 							</div>
 						</div>
 					</div>
@@ -208,13 +340,21 @@
 								<tr>
 									<th>
 										<div class="ordertime-cont">
-											<div class="time-txt">近三个月订单<b></b><span class="blank"></span></div>
+											<div class="time-txt"><span data-th-text="${sd}">近三个月订单</span><b></b><span class="blank"></span></div>
 											<div class="time-list">
 												<ul>
 													<li>
-														<a href="#none" _val="1&amp;s=4096" clstag="click|keycount|orderlist|zuijinsangeyue"><b></b>近三个月订单</a>
+														<a data-th-href="@{/user/queryorder.action(type=${type},querydate=3)}" _val="1&amp;s=4096" clstag="click|keycount|orderlist|zuijinsangeyue"><b></b>近三个月订单</a>
 													</li>
-
+													<li>
+														<a data-th-href="@{/user/queryorder.action(type=${type},querydate=6)}" _val="1&amp;s=4096" clstag="click|keycount|orderlist|zuijinsangeyue"><b></b>近半年订单</a>
+													</li>
+													<li>
+														<a data-th-href="@{/user/queryorder.action(type=${type},querydate=12)}" _val="1&amp;s=4096" clstag="click|keycount|orderlist|zuijinsangeyue"><b></b>近一年订单</a>
+													</li>
+													<li>
+														<a data-th-href="@{/user/queryorder.action(type=${type},querydate=36)}" _val="1&amp;s=4096" clstag="click|keycount|orderlist|zuijinsangeyue"><b></b>近三年订单</a>
+													</li>
 												</ul>
 											</div>
 										</div>
@@ -224,23 +364,23 @@
 									<th>金额</th>
 									<th>
 										<div class="deal-state-cont" id="orderState">
-											<div class="state-txt">全部状态<b></b><span class="blank"></span></div>
+											<div class="state-txt"><span data-th-text="${ss}">全部状态</span><b></b><span class="blank"></span></div>
 											<div class="state-list">
 												<ul>
 													<li value="4096">
-														<a href="#none" clstag="click|keycount|orderlist|quanbuzhuangtai" class="curr"><b></b>全部状态</a>
+														<a data-th-href="@{/user/queryorder.action(type=0,querydate=${querydate})}" clstag="click|keycount|orderlist|quanbuzhuangtai" data-th-class="${type}==0?curr:''"><b></b>全部状态</a>
 													</li>
 													<li value="1">
-														<a href="#none" clstag="click|keycount|orderlist|dengdaifukuan"><b></b>等待付款</a>
+														<a data-th-href="@{/user/queryorder.action(type=1,querydate=${querydate})}" clstag="click|keycount|orderlist|dengdaifukuan" data-th-class="${type}==1?curr:''"><b></b>等待付款</a>
 													</li>
 													<li value="128" clstag="click|keycount|orderlist|dengdaishouhuo">
-														<a href="#none"><b></b>等待收货</a>
+														<a data-th-href="@{/user/queryorder.action(type=2,querydate=${querydate})}" data-th-class="${type}==2?curr:''"><b></b>等待收货</a>
 													</li>
 													<li value="1024">
-														<a href="#none" clstag="click|keycount|orderlist|yiwancheng"><b></b>已完成</a>
+														<a data-th-href="@{/user/queryorder.action(type=4,querydate=${querydate})}" clstag="click|keycount|orderlist|yiwancheng" data-th-class="${type}==4?curr:''"><b></b>已完成</a>
 													</li>
 													<li value="-1">
-														<a href="#none" clstag="click|keycount|orderlist|yiquxiao"><b></b>已取消</a>
+														<a data-th-href="@{/user/queryorder.action(type=5,querydate=${querydate})}" clstag="click|keycount|orderlist|yiquxiao" data-th-class="${type}==5?curr:''"><b></b>已取消</a>
 													</li>
 												</ul>
 											</div>
@@ -250,7 +390,7 @@
 								</tr>
 
 							</thead>
-							
+
 							<tbody data-th-unless="${#lists.isEmpty(orders)}" data-th-each="order,oi:${orders}">
 								<tr class="sep-row">
 									<td colspan="5"></td>
@@ -271,7 +411,6 @@
 	                	                
 	                           			                </span>
 
-										
 									</td>
 								</tr>
 
@@ -288,7 +427,7 @@
 												<div class="p-name">
 													<a data-th-href="@{/public/pay.action(wareid=*{id})}" data-th-title="*{name}+*{ware}" data-th-text="*{name}+*{ware}" class="a-link" clstag="click|keycount|orderinfo|order_product" target="_blank" title="荣耀 V8 4GB+32GB 铂光金 移动联通4G手机 双卡双待双通">荣耀 V8 4GB+32GB 铂光金 移动联通4G手机 双卡双待双通</a>
 												</div>
-												
+
 											</div>
 										</div>
 										<div class="goods-number" data-th-text="'x'+${orderdetail.warenum}" style="margin-left: 200px;">
@@ -321,14 +460,16 @@
 										</div>
 									</td>
 									<td rowspan="2" data-th-if="${odi.index==0}" data-th-attr="rowspan=${odi.size}">
-										<div class="operate">
+										<div class="operate" data-th-attr="orderid=${order.id}">
 
-											<a class="btn-again btn-again-show" target="_blank" clstag="click|keycount|orderlist|buy"><b></b> 退单
-											</a><br/>
-											<a class="btn-again btn-again-show" target="_blank" clstag="click|keycount|orderlist|buy"><b></b> 支付
-											</a><br/>
-											<a class="btn-again btn-again-show" target="_blank" clstag="click|keycount|orderlist|buy"><b></b> 评价
-											</a><br/>
+											<a href="javascript::void(0)" data-th-if="${order.status.index==0}" type="0" class="btnssagain btn-again btn-again-show" clstag="click|keycount|orderlist|buy"><b></b> 取消
+											</a><br data-th-if="${order.status.index==0}" />
+											<a href="javascript::void(0)" data-th-if="${order.status.index==0}" type="1" class="btnssagain btn-again btn-again-show" clstag="click|keycount|orderlist|buy"><b></b> 支付
+											</a><br data-th-if="${order.status.index==0}" />
+											<a href="javascript::void(0)" data-th-if="${order.type=='2'}" type="2" class="btnssagain btn-again btn-again-show" clstag="click|keycount|orderlist|buy"><b></b> 评价
+											</a><br data-th-if="${order.type==2}" />
+											<a href="javascript::void(0)" data-th-if="${order.status.index==1}" type="3" class="btnssagain btn-again btn-again-show" clstag="click|keycount|orderlist|buy"><b></b> 退单
+											</a><br data-th-if="${order.status.index==1}" />
 
 										</div>
 									</td>
@@ -337,19 +478,28 @@
 							</tbody>
 						</table>
 
-						<div class="mt20">
-							<div class="pagin fr">
-								<!--  <span class="text">共2条记录</span>    <span class="text">共1页</span> -->
-								<span class="prev-disabled">上一页<b></b></span>
+						<ul class="pagination" style="float: right;" data-th-if="${page!=null}" data-th-unless="${page.totalPages==0}" th:object="${page}">
+							<!-- 上一页 -->
+							<li class="page-item" data-th-classappend="*{first} ? 'disabled' : ''">
+								<a th:href="*{first} ? 'javascript:void(0)':@{/user/queryorder.action(type=${type},querydate=${querydate},pagenum=${page.number})}" class="page-link" aria-label="Previous">
+									<span aria-hidden="true">«</span>
+								</a>
+							</li>
 
-								<!-- <span class="prev-disabled">首页</span> -->
-								<a class="current">1</a>
-								<!-- <span class="next-disabled">末页</span>  -->
-								<span class="next-disabled">下一页<b></b></span>
+							<!-- 迭代生成页码 -->
+							<li class="page-item" data-th-each="i : ${#numbers.sequence(1, page.totalPages)}" data-th-classappend="${(page.number + 1) eq i} ? 'active' : ''">
+								<a class="page-link" th:href="${(page.number + 1) eq i} ?'javascript:void(0)':@{/user/queryorder.action(type=${type},querydate=${querydate},pagenum=${i})}" th:if="${i}-${page.number}+4 > 0">
+									<span data-th-text="${i}"></span>
+								</a>
+							</li>
 
-							</div>
-							<div class="clr"></div>
-						</div>
+							<!-- 下一页 -->
+							<li class="page-item" data-th-classappend="*{last} ? 'disabled' : ''">
+								<a th:href="*{last} ? 'javascript:void(0)':@{/user/queryorder.action(type=${type},querydate=${querydate},pagenum=${page.number}+2)}" class="page-link" aria-label="Next">
+									<span aria-hidden="true">»</span>
+								</a>
+							</li>
+						</ul>
 
 					</div>
 				</div>
@@ -391,6 +541,179 @@
 							<button type="button" class="btn btn-primary" data-dismiss="modal" id="dluclose">关闭</button>
 						</div>
 					</form>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		</div>
+		<!-- 模态框（Modal）zc -->
+		<div class="modal fade" id="myModal-zc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-zc" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<!-- 关闭按钮 -->
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel-zc">
+                  |更改基本信息
+                </h4>
+					</div>
+					<form class="form-horizontal" role="form" method="post" data-th-action="@{/user/baseInfo/alter.action}">
+						<div class="modal-body">
+							<!-- 水平表单 -->
+
+							<div class="form-group">
+								<label for="zcname" class="col-md-3 control-label">用户名：</label>
+								<div class="col-md-9">
+									<input type="text" class="form-control" name="username" placeholder="请输入注册用户名" data-th-value="${User.username}" />
+								</div>
+							</div><br/>
+							<div class="form-group">
+								<label for="password-zc" class="col-md-3 control-label">真实姓名：</label>
+								<div class="col-md-9">
+									<input type="text" class="form-control" name="realname" placeholder="请输入密码" data-th-value="${User.realname}" />
+								</div>
+							</div><br/>
+							<div class="form-group">
+								<label for="pwdcheck" class="col-md-3 control-label">出生年月：</label>
+								<div class="col-md-9">
+									<input class="Wdate" style="width: 314px;height:32px; border-color: rgb(221, 221, 221);" type="text" name="birth" placeholder="点击选择" readonly="readonly" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd',width:'314'})" data-th-value="${#dates.format(User.birth, 'yyyy-MM-dd')}" />
+								</div>
+							</div><br/>
+							<div class="form-group">
+								<label for="pwdcheck" class="col-md-3 control-label">性别：</label>
+								<div class="col-md-9">
+									<input type="radio" name="sex" value="MAN" data-th-checked="${User.sex}==${MAN}">男</input>&nbsp;&nbsp;&nbsp;&nbsp;
+									<input type="radio" name="sex" value="WOMEN" data-th-checked="${User.sex}==${WOMEN}">女</input>
+								</div>
+							</div><br/>
+							<div class="form-group">
+								<label class="col-md-3 control-label">邮箱：</label>
+								<div class="col-md-9">
+									<input type="text" class="form-control" name="email" placeholder="请输入邮箱" data-th-value="${User.email}" />
+								</div>
+							</div><br/>
+							<div class="form-group">
+								<label class="col-md-3 control-label">电话号码：</label>
+								<div class="col-md-9">
+									<input type="text" class="form-control" name="phone" placeholder="请输入电话号码" data-th-value="${User.phone}" />
+								</div>
+							</div><br/>
+
+						</div>
+						<div class="modal-footer">
+							<input type="submit" class="btn btn-default" value="保存信息"></input>
+							<button type="button" class="btn btn-primary" data-dismiss="modal" id="zcclose">关闭</button>
+						</div>
+					</form>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		</div>
+		<!-- 模态框（Modal）dlu -->
+		<div class="modal fade" id="rsetpass" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<input type="hidden" value="1" id="pwtype" />
+					<div class="modal-header">
+						<!-- 关闭按钮 -->
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                 &times;
+                            </button>
+						<h4 class="modal-title">
+                                                             修改密码
+                            </h4>
+					</div>
+					<div class="modal-body">
+
+						<div class="form-group">
+							<label for="username" class="col-md-3 control-label">原密码：</label>
+							<div class="col-md-9">
+								<input type="password" id="oldpw" class="form-control" placeholder="请输入原密码" />
+							</div>
+						</div><br/>
+						<div class="form-group">
+							<label for="username" class="col-md-3 control-label">新密码：</label>
+							<div class="col-md-9">
+								<input type="password" id="newpw" class="form-control" placeholder="请输入新密码" />
+							</div>
+						</div><br/>
+						<div class="form-group">
+							<label for="username" class="col-md-3 control-label">确认密码：</label>
+							<div class="col-md-9">
+								<input type="password" id="spw" class="form-control" placeholder="请再一次输入新密码" />
+							</div>
+						</div><br/>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" id="savepw">保存</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal" id="dluclose">关闭</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		</div>
+		<!-- 模态框（Modal）dlu -->
+		<div class="modal fade" id="comment" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<!-- 关闭按钮 -->
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                 &times;
+                            </button>
+						<h4 class="modal-title">
+                                                                发表评论
+                            </h4>
+					</div>
+					<div class="modal-body">
+						<input type="hidden" id="orderidi" />
+						<div class="form-group">
+							<label for="username" class="col-md-3 control-label">留言：</label>
+							<div class="col-md-9">
+								<textarea id="ctxt" class="form-control" placeholder="请输入留言" />
+							</div>
+						</div><br/>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" id="saveCom">保存</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal" id="dluclose">关闭</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		</div>
+		<!-- 模态框（Modal）dlu -->
+		<div class="modal fade" id="paly" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<!-- 关闭按钮 -->
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                 &times;
+                            </button>
+						<h4 class="modal-title">
+                                                                支付
+                            </h4>
+					</div>
+					<div class="modal-body">
+						<input type="hidden" id="porderidi" />
+						<div class="form-group">
+							<label for="username" class="col-md-3 control-label">支付密码：</label>
+							<div class="col-md-9">
+								<input type="password" id="palypwd" class="form-control" placeholder="请输入支付密码" />
+							</div>
+						</div><br/>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" id="palybu">支付</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal" id="dluclose">关闭</button>
+					</div>
 				</div>
 				<!-- /.modal-content -->
 			</div>

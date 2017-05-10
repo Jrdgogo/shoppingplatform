@@ -1,5 +1,6 @@
 package jrd.graduationproject.shoppingplatform.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Slice;
@@ -25,5 +26,15 @@ public interface IOrderService {
 	Long queryCountByStatus(OrderStatusEnum status);
 
 	Long queryCountByType(Integer type);
+
+	Slice<Order> getOrdersbyUserId(String id, PageParam page);
+
+	Slice<Order> getOrdersbyUserId(String id, PageParam page, String type, Date date);
+
+	String addComment(String orderId, String id, String txt);
+
+	Order queryById(String orderId);
+
+	Order defrayOrder(String orderId, String id, String pwd);
 
 }

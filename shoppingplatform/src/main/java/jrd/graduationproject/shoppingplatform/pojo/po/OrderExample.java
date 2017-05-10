@@ -68,6 +68,10 @@ public class OrderExample {
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> statusCriteria;
 
+        protected List<Criterion> userCriteria;
+
+        protected List<Criterion> wareaddrCriteria;
+
         protected List<Criterion> allCriteria;
 
         protected List<Criterion> criteria;
@@ -76,6 +80,8 @@ public class OrderExample {
             super();
             criteria = new ArrayList<Criterion>();
             statusCriteria = new ArrayList<Criterion>();
+            userCriteria = new ArrayList<Criterion>();
+            wareaddrCriteria = new ArrayList<Criterion>();
         }
 
         public List<Criterion> getStatusCriteria() {
@@ -98,9 +104,51 @@ public class OrderExample {
             allCriteria = null;
         }
 
+        public List<Criterion> getUserCriteria() {
+            return userCriteria;
+        }
+
+        protected void addUserCriterion(String condition, Object value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            userCriteria.add(new Criterion(condition, value, "jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler"));
+            allCriteria = null;
+        }
+
+        protected void addUserCriterion(String condition, User value1, User value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            userCriteria.add(new Criterion(condition, value1, value2, "jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler"));
+            allCriteria = null;
+        }
+
+        public List<Criterion> getWareaddrCriteria() {
+            return wareaddrCriteria;
+        }
+
+        protected void addWareaddrCriterion(String condition, Object value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            wareaddrCriteria.add(new Criterion(condition, value, "jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler"));
+            allCriteria = null;
+        }
+
+        protected void addWareaddrCriterion(String condition, UserWareAddr value1, UserWareAddr value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            wareaddrCriteria.add(new Criterion(condition, value1, value2, "jrd.graduationproject.shoppingplatform.config.jdbc.DefaultTypeHandler"));
+            allCriteria = null;
+        }
+
         public boolean isValid() {
             return criteria.size() > 0
-                || statusCriteria.size() > 0;
+                || statusCriteria.size() > 0
+                || userCriteria.size() > 0
+                || wareaddrCriteria.size() > 0;
         }
 
         public List<Criterion> getAllCriteria() {
@@ -108,6 +156,8 @@ public class OrderExample {
                 allCriteria = new ArrayList<Criterion>();
                 allCriteria.addAll(criteria);
                 allCriteria.addAll(statusCriteria);
+                allCriteria.addAll(userCriteria);
+                allCriteria.addAll(wareaddrCriteria);
             }
             return allCriteria;
         }
@@ -461,62 +511,62 @@ public class OrderExample {
         }
 
         public Criteria andUserEqualTo(User value) {
-            addCriterion("userid =", value, "user");
+            addUserCriterion("userid =", value, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserNotEqualTo(User value) {
-            addCriterion("userid <>", value, "user");
+            addUserCriterion("userid <>", value, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserGreaterThan(User value) {
-            addCriterion("userid >", value, "user");
+            addUserCriterion("userid >", value, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserGreaterThanOrEqualTo(User value) {
-            addCriterion("userid >=", value, "user");
+            addUserCriterion("userid >=", value, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserLessThan(User value) {
-            addCriterion("userid <", value, "user");
+            addUserCriterion("userid <", value, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserLessThanOrEqualTo(User value) {
-            addCriterion("userid <=", value, "user");
+            addUserCriterion("userid <=", value, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserLike(User value) {
-            addCriterion("userid like", value, "user");
+            addUserCriterion("userid like", value, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserNotLike(User value) {
-            addCriterion("userid not like", value, "user");
+            addUserCriterion("userid not like", value, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserIn(List<User> values) {
-            addCriterion("userid in", values, "user");
+            addUserCriterion("userid in", values, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserNotIn(List<User> values) {
-            addCriterion("userid not in", values, "user");
+            addUserCriterion("userid not in", values, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserBetween(User value1, User value2) {
-            addCriterion("userid between", value1, value2, "user");
+            addUserCriterion("userid between", value1, value2, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserNotBetween(User value1, User value2) {
-            addCriterion("userid not between", value1, value2, "user");
+            addUserCriterion("userid not between", value1, value2, "user");
             return (Criteria) this;
         }
 
@@ -531,62 +581,62 @@ public class OrderExample {
         }
 
         public Criteria andWareaddrEqualTo(UserWareAddr value) {
-            addCriterion("wareaddr =", value, "wareaddr");
+            addWareaddrCriterion("wareaddr =", value, "wareaddr");
             return (Criteria) this;
         }
 
         public Criteria andWareaddrNotEqualTo(UserWareAddr value) {
-            addCriterion("wareaddr <>", value, "wareaddr");
+            addWareaddrCriterion("wareaddr <>", value, "wareaddr");
             return (Criteria) this;
         }
 
         public Criteria andWareaddrGreaterThan(UserWareAddr value) {
-            addCriterion("wareaddr >", value, "wareaddr");
+            addWareaddrCriterion("wareaddr >", value, "wareaddr");
             return (Criteria) this;
         }
 
         public Criteria andWareaddrGreaterThanOrEqualTo(UserWareAddr value) {
-            addCriterion("wareaddr >=", value, "wareaddr");
+            addWareaddrCriterion("wareaddr >=", value, "wareaddr");
             return (Criteria) this;
         }
 
         public Criteria andWareaddrLessThan(UserWareAddr value) {
-            addCriterion("wareaddr <", value, "wareaddr");
+            addWareaddrCriterion("wareaddr <", value, "wareaddr");
             return (Criteria) this;
         }
 
         public Criteria andWareaddrLessThanOrEqualTo(UserWareAddr value) {
-            addCriterion("wareaddr <=", value, "wareaddr");
+            addWareaddrCriterion("wareaddr <=", value, "wareaddr");
             return (Criteria) this;
         }
 
         public Criteria andWareaddrLike(UserWareAddr value) {
-            addCriterion("wareaddr like", value, "wareaddr");
+            addWareaddrCriterion("wareaddr like", value, "wareaddr");
             return (Criteria) this;
         }
 
         public Criteria andWareaddrNotLike(UserWareAddr value) {
-            addCriterion("wareaddr not like", value, "wareaddr");
+            addWareaddrCriterion("wareaddr not like", value, "wareaddr");
             return (Criteria) this;
         }
 
         public Criteria andWareaddrIn(List<UserWareAddr> values) {
-            addCriterion("wareaddr in", values, "wareaddr");
+            addWareaddrCriterion("wareaddr in", values, "wareaddr");
             return (Criteria) this;
         }
 
         public Criteria andWareaddrNotIn(List<UserWareAddr> values) {
-            addCriterion("wareaddr not in", values, "wareaddr");
+            addWareaddrCriterion("wareaddr not in", values, "wareaddr");
             return (Criteria) this;
         }
 
         public Criteria andWareaddrBetween(UserWareAddr value1, UserWareAddr value2) {
-            addCriterion("wareaddr between", value1, value2, "wareaddr");
+            addWareaddrCriterion("wareaddr between", value1, value2, "wareaddr");
             return (Criteria) this;
         }
 
         public Criteria andWareaddrNotBetween(UserWareAddr value1, UserWareAddr value2) {
-            addCriterion("wareaddr not between", value1, value2, "wareaddr");
+            addWareaddrCriterion("wareaddr not between", value1, value2, "wareaddr");
             return (Criteria) this;
         }
     }

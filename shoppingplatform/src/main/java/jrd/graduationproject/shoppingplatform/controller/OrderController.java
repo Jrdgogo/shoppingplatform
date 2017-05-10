@@ -62,8 +62,10 @@ public class OrderController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/defrayOrder.ajax")
-	public Order defrayOrder(@RequestParam("orderid") String orderId) {
-		Order order= orderService.defrayOrder(orderId);
+	public Order defrayOrder(@RequestParam("orderid") String orderId,
+			@RequestParam("pwd") String pwd,
+			@RequestParam("sessionUserId") String id) {
+		Order order= orderService.defrayOrder(orderId,id,pwd);
 		return order;
 	}
 	
@@ -77,6 +79,28 @@ public class OrderController {
 	@RequestMapping(value = "/backOrder.ajax")
 	public Order backOrder(@RequestParam("orderid") String orderId) {
 		return  orderService.backOrder(orderId);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/option.ajax")
+	public Order option(@RequestParam("orderid") String orderId,
+			@RequestParam("type") Integer type) {
+		Order order=null;
+		 if(type==0)
+			 order=orderService.cancalOrder(orderId);
+		 else if(type==1)
+			 order=orderService.defrayOrder(orderId);
+		 else if(type==3)
+			 order=orderService.backOrder(orderId);
+		 return order;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/comment.ajax")
+	public String option(@RequestParam("orderid") String orderId,
+			@RequestParam("sessionUserId") String id,
+			@RequestParam("txt") String txt) {
+		return orderService.addComment(orderId,id,txt);
 	}
 
 }

@@ -3,7 +3,7 @@ package jrd.graduationproject.shoppingplatform.pojo.enumfield;
 import jrd.graduationproject.shoppingplatform.exception.category.NotFindEnumException;
 
 public enum OrderStatusEnum {
-	UNPAID(0,"未支付"),PAYMENT(1,"已支付"),CANCEL(2,"取消"),BACK(3,"退单");
+	UNPAID(0,"未支付"),PAYMENT(1,"已支付"),CANCEL(2,"取消"),BACK(3,"退单"), OK(4,"已收货");
 	private Integer index;
 	private String desc;
     private OrderStatusEnum(Integer index,String desc){

@@ -58,6 +58,7 @@
 					</a>
 				</div>
 				<div>
+					
 					<a href="" class="mr10 ftr c-999" th:href="@{/}" style="margin-right: 10px; font-size: 18px;">
 						首页
 					</a>
@@ -123,7 +124,7 @@
 			</div>
 
 			<div class="container m0a ptb10 mt10 bc-f2f2f2 b-b-b1191a" style="font-size: 0;">
-				<span class="f14 c-fff bc-b1191a comment p10">商品评价</span>
+				<span class="f14 c-fff bc-b1191a comment p10" style="color:black">商品评价</span>
 			</div>
 
 			<div class="container m0a ptb10 mt10 mb50">
@@ -134,7 +135,7 @@
 						<span class="name f12" data-th-text="*{username}">绿***罪</span>
 					</div>
 					<div class="div-w75 ptb10 comment">
-						<div class="f14 c-333 mb10" data-th-text="${comment.desc}">
+						<div class="f14 c-333 mb10" data-th-text="${comment.cdesc}">
 							上午下单下午就收到了，京东的物流速度是666！！！华为荣耀6X手机也是666！！！后置的双摄像头+800万前置自拍，无论是自拍还是拍女神拍美景拍美食都美美哒；华为自家麒麟655芯片、大内存4GB+64GB、3340mAh大电池，无论性能还是续航，都超级棒！2.5D弧面玻璃+背面弧度，既掌握舒适又美观，够6的荣耀6X！
 						</div>
 						<span class="c-999 f12 ftr" data-th-text="${#dates.format(comment.createdate,'yyyy-MM-dd hh:mm')}">2016-10-25 17:09</span>

@@ -33,7 +33,7 @@ public class Order {
 
 	@Column(nullable = false)
 	private Double price;
-	
+	//0 未支付    1待收货   2待评论   3已评论
 	@Column(nullable = false,columnDefinition="INT default 0")
 	private String type;
 

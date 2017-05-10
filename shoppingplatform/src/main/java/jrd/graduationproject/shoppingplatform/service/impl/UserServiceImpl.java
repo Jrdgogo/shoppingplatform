@@ -1,10 +1,12 @@
 package jrd.graduationproject.shoppingplatform.service.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -25,6 +27,7 @@ import jrd.graduationproject.shoppingplatform.dao.mybatis.UserWareAddrMapper;
 import jrd.graduationproject.shoppingplatform.exception.UserOptionErrorException;
 import jrd.graduationproject.shoppingplatform.exception.category.NotSaveException;
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.StatusEnum;
+import jrd.graduationproject.shoppingplatform.pojo.po.Order;
 import jrd.graduationproject.shoppingplatform.pojo.po.Seller;
 import jrd.graduationproject.shoppingplatform.pojo.po.ShopCar;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
@@ -135,10 +138,25 @@ public class UserServiceImpl implements IUserService {
 		String msg = GlobalUtil.toJsonString(logmsg, params, user.getEmail());
 		mailPublish.publish(msg);
 	}
+	private Calendar calendar=Calendar.getInstance(TimeZone.getTimeZone("GMT-8"));
 
 	@Override
 	@Transactional
 	public User alterUserInfo(User user) {
+		Date birth=user.getBirth();
+		calendar.setTime(birth);
+		int byear=calendar.get(Calendar.YEAR);
+		if(birth!=null){
+			Date current=new Date();
+			calendar.setTime(current);
+			int cyear=calendar.get(Calendar.YEAR);
+			if(birth.after(current)){
+				user.setBirth(null);
+				user.setAge(null);
+			}else{
+				user.setAge(cyear-byear);
+			}
+		}
 		userMapper.updateByPrimaryKeySelective(user);
 		return userMapper.selectByPrimaryKey(user.getId());
 	}
@@ -219,6 +237,26 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public User getUserByName_cookiePwd(User user) {
 		return userJpa.findByUsernameAndPassword(user.getUsername(), user.getPassword());
+	}
+
+	@Override
+	public String updatePW(String oldpw, String newpw, String type,String id) {
+		User user=getUserInfo(id);
+		String pwd=null;
+		if(type.equals(1))
+		  pwd=user.getPassword();
+		else if(type.equals(2))
+			  pwd=user.getPaymentpwd();
+		String oldpwmd5=GlobalUtil.md5(oldpw);
+		String newpwmd5=GlobalUtil.md5(newpw);
+		if(!oldpwmd5.equals(pwd))
+			return "原密码错误！";
+		if(type.equals(1))
+			  user.setPassword(newpwmd5);
+		else if(type.equals(2))
+			user.setPaymentpwd(newpwmd5);
+		userMapper.updateByPrimaryKeySelective(user);
+		return "修改成功";
 	}
 
 }
