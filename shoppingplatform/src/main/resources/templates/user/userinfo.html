@@ -1,16 +1,401 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
-		<meta charset="UTF-8"/>
+		<meta charset="UTF-8" />
 		<title>个人中心</title>
+		<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+		<link rel="stylesheet" th:href="@{/css/common.css}" />
+		<link rel="stylesheet" th:href="@{/css/unit.css}" />
+		<link rel="stylesheet" th:href="@{/css/widget.css}" />
+		<link rel="stylesheet" th:href="@{/css/ordercenter.css}" />
+
+		<link rel="stylesheet" data-th-href="@{/css/style.css}" />
+
+		<script type="text/javascript" th:src="@{/js/jquery-3.1.1.min.js}"></script>
+		<!--  JQuery文件 -->
+		<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+		<script type="application/javascript">
+			$(function() {
+				$(".ordertime-cont").on("mouseover", function() {
+					$(this).addClass("ordertime-hover");
+				});
+				$(".ordertime-cont").on("mouseout", function() {
+					$(this).removeClass("ordertime-hover");
+				});
+				$(".deal-state-cont").on("mouseover", function() {
+					$(this).addClass("deal-state-hover");
+				});
+				$(".deal-state-cont").on("mouseout", function() {
+					$(this).removeClass("deal-state-hover");
+				});
+				$(".consigneeshow").on("mouseover", function() {
+					$(this).children(".promptshow").css({ display: "block" })
+				});
+				$(".consigneeshow").on("mouseout", function() {
+					$(this).children(".promptshow").css({ display: "none" });
+				});
+			});
+		</script>
+		<style type="text/css">
+			.consigneeshow .prompt-02 {
+				position: absolute;
+				z-index: 1;
+				width: 300px;
+				right: 52%;
+				padding: 15px 20px;
+				display: none;
+				color: #666;
+				line-height: 22px;
+			}
+		</style>
 	</head>
+
 	<body>
-		<form data-th-action="@{/user/apply.controller(type=1)}" method="post" enctype="multipart/form-data">
-			<title>申请商家入驻</title>
-			<input type="text" name="sname"/>
-			<input type="file" name="file"/>
-			<input type="submit"/>
-		</form>
-		<a th:href="@{/user/apply.controller(type=2)}">申请管理员权限</a>
+		<div class="bg" style="width: 100%;">
+			<div class="header bc-e3e4e5 vc">
+
+				<div class="m0a" style="width: 80%;">
+					<a class="mr10 ftr c-999" th:href="@{/user/apply.controller(type=2)}">申请管理员权限</a>
+					<a href="" class="mr10 ftr c-999" data-toggle="modal" data-target="#myModal-dlu"> 申请商家入驻</a>
+				</div>
+				<div>
+					<a href="" class="mr10 ftr c-999" th:href="@{/}" style="margin-right: 10px; font-size: 18px;">
+						首页
+					</a>
+				</div>
+			</div>
+			<div class="container m0a pt20" style="width: 100%;">
+				<div id="user-info" class="user-info">
+					<div class="info-lcol">
+						<div class="u-pic" clstag="homepage|keycount|home2013|Hometxlogo">
+							<img alt="用户头像" data-th-src="@{${User.photo}}" style="width: 100px;height: 100px;" />
+							<a id="accountImg" href="javascript::void(0)">
+								<div class="mask"></div>
+							</a>
+						</div>
+						<div class="info-m">
+							<div class="u-name" clstag="homepage|keycount|home2013|Homeinname">
+								<a data-th-text="${User.username}">jrd丶听风</a>
+							</div>
+						</div>
+					</div>
+					<div class="info-rcol">
+						<div class="user-counts">
+							<ul>
+								<li>
+									<div class="count-item">
+										<a target="_self" clstag="homepage|keycount|home2013|Homedfkk">
+											<i class="count-icon count-icon01"></i> 待付款
+											<em id="waitPay" data-th-text="${UNPAID}">0</em>
+										</a>
+									</div>
+								</li>
+								<li>
+									<div class="count-item">
+										<a target="_self" clstag="homepage|keycount|home2013|Homedsh">
+											<i class="count-icon count-icon02"></i> 待收货
+											<em id="waitReceive" data-th-text="${PAYMENT}">0</em>
+										</a>
+									</div>
+								</li>
+								<li>
+									<div class="count-item">
+										<a clstag="homepage|keycount|home2013|Homedpj">
+											<i class="count-icon count-icon04"></i> 待评价
+											<em id="productCount" data-th-text="${COMMENT}">0</em>
+										</a>
+									</div>
+								</li>
+							</ul>
+						</div>
+
+						<div class="acco-info">
+							<ul>
+								<li class="fore1">
+									<div class="acco-item">
+										<div>
+											<label>真实姓名：</label>
+											<a clstag="homepage|keycount|home2013|Hometopye" data-th-text="${User.realname}">0.00</a>
+										</div>
+										<div>
+											<label>余额：</label>
+											<a clstag="homepage|keycount|home2013|Hometopye" data-th-text="${#numbers.formatDecimal(User.account,1,2)}">0.00</a>
+										</div>
+										<div>
+											<label></label>
+											<a clstag="homepage|keycount|home2013|Hometopye">更改账号密码</a>
+										</div>
+										<div>
+											<label></label>
+											<a clstag="homepage|keycount|home2013|Hometopye">更改支付密码</a>
+										</div>
+									</div>
+								</li>
+								<li class="fore1">
+									<div class="acco-item">
+										<div>
+											<label>年龄：</label>
+											<a clstag="homepage|keycount|home2013|Hometopye" data-th-text="${User.age}">0.00</a>
+										</div>
+										<div>
+											<label>生日：</label>
+											<a clstag="homepage|keycount|home2013|Hometopye" data-th-text="${User.birth}!=null?${#dates.format(User.birth, 'dd-MM/yyyy')}:''">0.00</a>
+										</div>
+										
+									   <div>
+											<label>性别：</label>
+											<a clstag="homepage|keycount|home2013|Hometopye" data-th-text="${User.sex}">0.00</a>
+										</div>
+								    </div>
+								</li>		
+								<li class="fore1">
+									<div class="acco-item">		
+										<div>
+											<label>邮箱：</label>
+											<a clstag="homepage|keycount|home2013|Hometopye" data-th-text="${User.email}">0.00</a>
+										</div>
+										<div>
+											<label>联系方式：</label>
+											<a clstag="homepage|keycount|home2013|Hometopye" data-th-text="${User.phone}">0.00</a>
+										</div>
+										<div>
+											<label></label>
+											<a clstag="homepage|keycount|home2013|Hometopye">更改用户信息</a>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+
+					</div>
+				</div>
+				<div class="mod-main mod-comm lefta-box" id="order02">
+					<div class="mt">
+						<ul class="extra-l">
+							<li class="fore1">
+								<a href="//order.jd.com/center/list.action" class="txt curr">全部订单</a>
+							</li>
+							<li>
+								<a href="//order.jd.com/center/list.action?s=1" id="ordertoPay" clstag="click|keycount|orderinfo|waitPay" class="txt">待付款</a>
+							</li>
+							<li>
+								<a href="//order.jd.com/center/list.action?s=128" id="ordertoReceive" clstag="click|keycount|orderinfo|waitReceive" class="txt">待收货</a>
+							</li>
+							<li>
+								<a href="//club.jd.com/mycomments.aspx" id="ordertoComment" target="_blank" class="txt" clstag="click|keycount|orderinfo|daipingjia">待评价</a>
+							</li>
+						</ul>
+						<div class="extra-r">
+							<div class="search">
+								<input id="ip_keyword" type="text" class="itxt" value="商品名称/订单号" style="color: rgb(204, 204, 204);" />
+								<a href="javascript:;" class="search-btn" clstag="click|keycount|orderinfo|search">搜索<b></b></a>
+							</div>
+						</div>
+					</div>
+
+					<div class="mc">
+
+						<table class="td-void order-tb">
+							<colgroup>
+								<col class="number-col" />
+								<col class="consignee-col" />
+								<col class="amount-col" />
+								<col class="status-col" />
+								<col class="operate-col" />
+							</colgroup>
+							<thead>
+								<tr>
+									<th>
+										<div class="ordertime-cont">
+											<div class="time-txt">近三个月订单<b></b><span class="blank"></span></div>
+											<div class="time-list">
+												<ul>
+													<li>
+														<a href="#none" _val="1&amp;s=4096" clstag="click|keycount|orderlist|zuijinsangeyue"><b></b>近三个月订单</a>
+													</li>
+
+												</ul>
+											</div>
+										</div>
+										<div class="order-detail-txt ac">订单详情</div>
+									</th>
+									<th>收货人</th>
+									<th>金额</th>
+									<th>
+										<div class="deal-state-cont" id="orderState">
+											<div class="state-txt">全部状态<b></b><span class="blank"></span></div>
+											<div class="state-list">
+												<ul>
+													<li value="4096">
+														<a href="#none" clstag="click|keycount|orderlist|quanbuzhuangtai" class="curr"><b></b>全部状态</a>
+													</li>
+													<li value="1">
+														<a href="#none" clstag="click|keycount|orderlist|dengdaifukuan"><b></b>等待付款</a>
+													</li>
+													<li value="128" clstag="click|keycount|orderlist|dengdaishouhuo">
+														<a href="#none"><b></b>等待收货</a>
+													</li>
+													<li value="1024">
+														<a href="#none" clstag="click|keycount|orderlist|yiwancheng"><b></b>已完成</a>
+													</li>
+													<li value="-1">
+														<a href="#none" clstag="click|keycount|orderlist|yiquxiao"><b></b>已取消</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</th>
+									<th>操作</th>
+								</tr>
+
+							</thead>
+							
+							<tbody data-th-unless="${#lists.isEmpty(orders)}" data-th-each="order,oi:${orders}">
+								<tr class="sep-row">
+									<td colspan="5"></td>
+								</tr>
+
+								<tr class="tr-th">
+									<td colspan="5">
+										<span class="gap"></span>
+										<span class="dealtime" data-th-attr="title=${#dates.format(order.createdate, 'yyyy-MM-dd hh:mm:ss')}" data-th-text="${#dates.format(order.createdate, 'yyyy-MM-dd hh:mm:ss')}">2017-04-12 21:32:30</span>
+										<input type="hidden" id="datasubmit-51113538321" data-th-value="${#dates.format(order.createdate, 'yyyy-MM-dd hh:mm:ss')}" />
+
+										<span class="number" style="width: 300px;">
+               		                	订单号：
+                	                	<a name="orderIdLinks" data-th-attr="id=${order.id}" data-th-text="${order.id}" clstag="click|keycount|orderinfo|order_num">51113538321</a>
+                    
+                                        
+                    					
+	                	                
+	                           			                </span>
+
+										
+									</td>
+								</tr>
+
+								<tr class="tr-bd" oty="0,4,70" data-th-unless="${#sets.isEmpty(order.orderdetails)}" data-th-each="orderdetail,odi:${order.orderdetails}" data-th-attr="id=${orderdetail.id}">
+									<td data-th-Object="${orderdetail.ware}" style="width: 600px;">
+										<div class="goods-item p-3046724">
+											<div class="p-img">
+												<a data-th-href="@{/public/pay.action(wareid=*{id})}" clstag="click|keycount|orderinfo|order_product" target="_blank">
+													<img class="" data-th-src="*{photo}" data-th-title="*{name}+*{ware}" data-lazy-img="done" width="60" height="60" />
+
+												</a>
+											</div>
+											<div class="p-msg">
+												<div class="p-name">
+													<a data-th-href="@{/public/pay.action(wareid=*{id})}" data-th-title="*{name}+*{ware}" data-th-text="*{name}+*{ware}" class="a-link" clstag="click|keycount|orderinfo|order_product" target="_blank" title="荣耀 V8 4GB+32GB 铂光金 移动联通4G手机 双卡双待双通">荣耀 V8 4GB+32GB 铂光金 移动联通4G手机 双卡双待双通</a>
+												</div>
+												
+											</div>
+										</div>
+										<div class="goods-number" data-th-text="'x'+${orderdetail.warenum}" style="margin-left: 200px;">
+											x1
+										</div>
+									</td>
+
+									<td rowspan="2" data-th-if="${odi.index==0}" data-th-attr="rowspan=${odi.size}">
+										<div class="consigneeshow" data-th-Object="${order.wareaddr}">
+											<span class="txt" data-th-text="*{addressee}">季睿东</span><b></b>
+											<div class="prompt-01 prompt-02 promptshow" style="display: none;">
+												<div class="pc">
+													<strong data-th-text="*{addressee}">季睿东</strong>
+													<p data-th-text="*{wareaddr}">湖南益阳市赫山区龙岭工业园湖南省益阳市赫山区湖南城市学院</p>
+													<p data-th-text="*{phone}">155****4691</p>
+												</div>
+												<div class="p-arrow p-arrow-left"></div>
+											</div>
+										</div>
+									</td>
+									<td rowspan="2" data-th-if="${odi.index==0}" data-th-attr="rowspan=${odi.size}">
+										<div class="amount">
+											总额 ¥<span data-th-text="${#numbers.formatDecimal(order.price,3,2)}">1999.00</span> <br/>
+											<span class="ftx-13">余额支付</span>
+										</div>
+									</td>
+									<td rowspan="2" data-th-if="${odi.index==0}" data-th-attr="rowspan=${odi.size}">
+										<div class="status">
+											<span class="order-status ftx-03" data-th-text="${order.status.desc}"></span>
+										</div>
+									</td>
+									<td rowspan="2" data-th-if="${odi.index==0}" data-th-attr="rowspan=${odi.size}">
+										<div class="operate">
+
+											<a class="btn-again btn-again-show" target="_blank" clstag="click|keycount|orderlist|buy"><b></b> 退单
+											</a><br/>
+											<a class="btn-again btn-again-show" target="_blank" clstag="click|keycount|orderlist|buy"><b></b> 支付
+											</a><br/>
+											<a class="btn-again btn-again-show" target="_blank" clstag="click|keycount|orderlist|buy"><b></b> 评价
+											</a><br/>
+
+										</div>
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+
+						<div class="mt20">
+							<div class="pagin fr">
+								<!--  <span class="text">共2条记录</span>    <span class="text">共1页</span> -->
+								<span class="prev-disabled">上一页<b></b></span>
+
+								<!-- <span class="prev-disabled">首页</span> -->
+								<a class="current">1</a>
+								<!-- <span class="next-disabled">末页</span>  -->
+								<span class="next-disabled">下一页<b></b></span>
+
+							</div>
+							<div class="clr"></div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 模态框（Modal）dlu -->
+		<div class="modal fade" id="myModal-dlu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-dlu" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<form data-th-action="@{/user/apply.controller(type=1)}" method="post" enctype="multipart/form-data">
+						<div class="modal-header">
+							<!-- 关闭按钮 -->
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                 &times;
+                            </button>
+							<h4 class="modal-title" id="myModalLabel-dlu">
+                                                               申请商家入驻
+                            </h4>
+						</div>
+						<div class="modal-body">
+
+							<div class="form-group">
+								<label for="username" class="col-md-3 control-label">商家名：</label>
+								<div class="col-md-9">
+									<input type="text" name="sname" class="form-control" id="username" placeholder="请输入商家名" />
+								</div>
+							</div><br/>
+							<div class="form-group">
+								<label for="password-dlu" class="col-md-3 control-label">商标：</label>
+								<div class="col-md-9">
+									<input type="file" name="file" class="form-control" id="password-dlu" placeholder="请输入商标" />
+								</div>
+							</div><br/>
+
+						</div>
+						<div class="modal-footer">
+							<input type="submit" class="btn btn-default" value="申请"></input>
+							<button type="button" class="btn btn-primary" data-dismiss="modal" id="dluclose">关闭</button>
+						</div>
+					</form>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		</div>
 	</body>
+
 </html>

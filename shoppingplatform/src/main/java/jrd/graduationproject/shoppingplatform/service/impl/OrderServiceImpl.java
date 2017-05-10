@@ -69,6 +69,7 @@ public class OrderServiceImpl implements IOrderService {
 		}
 		user.setAccount(userMoney - orderMoney);
 		order.setStatus(OrderStatusEnum.PAYMENT);
+		order.setType("1");
 		userJpa.saveAndFlush(user);
 		return order;
 	}
@@ -186,6 +187,24 @@ public class OrderServiceImpl implements IOrderService {
 		order.setPrice(money);
 
 		return orderJpa.save(order);
+	}
+
+	@Override
+	public Long queryCountByStatus(OrderStatusEnum status) {
+		Order order=new Order();
+		order.setStatus(status);
+		Example<Order> example=Example.of(order);
+		return orderJpa.count(example);
+	}
+
+
+
+	@Override
+	public Long queryCountByType(Integer type) {
+		Order order=new Order();
+		order.setType(""+type);
+		Example<Order> example=Example.of(order);
+		return orderJpa.count(example);
 	}
 
 }

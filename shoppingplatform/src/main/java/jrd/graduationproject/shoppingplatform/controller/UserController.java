@@ -16,10 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import jrd.graduationproject.shoppingplatform.dao.jpa.OrderJpa;
+import jrd.graduationproject.shoppingplatform.pojo.enumfield.OrderStatusEnum;
 import jrd.graduationproject.shoppingplatform.pojo.po.Seller;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
 import jrd.graduationproject.shoppingplatform.pojo.po.UserWareAddr;
 import jrd.graduationproject.shoppingplatform.pojo.po.Ware;
+import jrd.graduationproject.shoppingplatform.service.IOrderService;
 import jrd.graduationproject.shoppingplatform.service.ISystemService;
 import jrd.graduationproject.shoppingplatform.service.IUserService;
 import jrd.graduationproject.shoppingplatform.util.GlobalUtil;
@@ -34,20 +37,16 @@ public class UserController {
 	private ISystemService systemService;
 	@Autowired
 	private OrderController orderController;
+	@Autowired
+	private IOrderService orderService;
 
 	@RequestMapping(value = "/baseInfo/alter.action")
-	public String alterUserInfo(User user, Model model) {
-		model.addAttribute("User", userService.alterUserInfo(user));
-		return "/user/baseinfo";
+	public String alterUserInfo(User user,Model model,@RequestParam("sessionUserId") String id) {
+		userService.alterUserInfo(user);
+		return userinfoHtml(model,id);
 
 	}
 
-	@RequestMapping(value = "/baseInfo/show.action")
-	public String userInfo(@RequestParam("sessionUserId") String id, Model model) {
-		model.addAttribute("User", userService.getUserInfo(id));
-		return "/user/baseinfo";
-
-	}
 
 	@RequestMapping(value = "/shopcar/Info.action")
 	public String shopcarInfo(@RequestParam("sessionUserId") String id, Model model) {
@@ -110,6 +109,17 @@ public class UserController {
 		return systemService.apply(type, id);
 	}
 
+	@RequestMapping("/userinfo.html")
+	public String userinfoHtml(Model model,@RequestParam("sessionUserId") String id) {
+		
+		model.addAttribute("UNPAID", orderService.queryCountByStatus(OrderStatusEnum.UNPAID));
+		model.addAttribute("PAYMENT", orderService.queryCountByType(1));
+		model.addAttribute("COMMENT", orderService.queryCountByType(2));
+		
+		model.addAttribute("orders", orderService.getOrdersbyUserId(id));
+
+		return "user/userinfo" ;
+	}
 	@RequestMapping("/{path}.html")
 	public String userHtml(@PathVariable(value = "path", required = true) String path) {
 

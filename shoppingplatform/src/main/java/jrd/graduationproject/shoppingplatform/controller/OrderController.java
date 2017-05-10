@@ -55,14 +55,16 @@ public class OrderController {
 	@ResponseBody
 	@RequestMapping(value = "/add.ajax")
 	public Order orderAdd(@RequestParam("sessionUserId") String id, @RequestParam("addrid") String addr,
-			@RequestParam("shopcarid") List<String> shopcars, Model model) {
-		return  orderService.createOrder(id, addr, shopcars);
+			@RequestParam("shopcarid") List<String> shopcars) {
+		Order order= orderService.createOrder(id, addr, shopcars);
+		return order;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/defrayOrder.ajax")
 	public Order defrayOrder(@RequestParam("orderid") String orderId) {
-		return  orderService.defrayOrder(orderId);
+		Order order= orderService.defrayOrder(orderId);
+		return order;
 	}
 	
 	@ResponseBody

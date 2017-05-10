@@ -7,23 +7,26 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "t_order_detail")
 public class OrderDetail {
 	@Id
-	@Column(length=32)
+	@Column(length = 32)
 	private String id;
-	
-	@Column(nullable=false,columnDefinition="INT default 1")
+
+	@Column(nullable = false, columnDefinition = "INT default 1")
 	private Integer warenum;
-	
-	//级联
-	@ManyToOne(optional=false)
-	@JoinColumn(name="wareid")
+
+	// 级联
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "wareid")
 	private Ware ware;
-	
+
 	@ManyToOne
-	@JoinColumn(name="orderid")
+	@JoinColumn(name = "orderid")
+	@JsonBackReference
 	private Order order;
 
 	public String getId() {
@@ -57,6 +60,5 @@ public class OrderDetail {
 	public void setOrder(Order order) {
 		this.order = order;
 	}
-	
 
 }

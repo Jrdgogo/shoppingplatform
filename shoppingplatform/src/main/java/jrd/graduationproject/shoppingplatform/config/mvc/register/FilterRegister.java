@@ -46,7 +46,7 @@ public class FilterRegister {
 	public FilterRegistrationBean returnJSonFilterRegistration() {
 		FilterRegistrationBean registration = new FilterRegistrationBean();
 		registration.setFilter(new ReturnJSonFilter());
-		registration.addUrlPatterns("*.ajax");
+		registration.addUrlPatterns("*.ajax_json");
 		registration.setName("returnJSonFilter");
 		registration.setOrder(4);
 		return registration;

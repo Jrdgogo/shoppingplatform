@@ -163,12 +163,12 @@
 					<a href="" class="c-f10215 ftr" th:if="${User == null }" th:href="@{/public/welcome.html}">
 						免费注册
 					</a>
-					<a href="" class="mr10 ftr c-999" th:href="${User == null}?@{/public/welcome.html}:''" th:text="${User != null}? '你好,'+${User.username}:'你好,请登录'">
+					<a href="" class="mr10 ftr c-999" th:href="${User == null}?@{/public/welcome.html}:@{/user/userinfo.html}" th:text="${User != null}? '你好,'+${User.username}:'你好,请登录'">
 						你好，请登录
 					</a>
 				</div>
 				<div>
-					<a href="" th:href="@{/}" style="margin-right: 10px; font-size: 18px;">
+					<a href="" class="mr10 ftr c-999" th:href="@{/}" style="margin-right: 10px; font-size: 18px;">
 						首页
 					</a>
 				</div>

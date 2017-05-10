@@ -18,6 +18,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.OrderStatusEnum;
 
 @Entity
@@ -41,15 +44,18 @@ public class Order {
 	//级联
 	@ManyToOne
 	@JoinColumn(name="wareaddr")
+	@JsonIgnore
 	private UserWareAddr wareaddr;
 	
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="userid")
+	@JsonIgnore
 	private User user;
 	
 	@OneToMany(cascade={CascadeType.ALL},
 			mappedBy="order")
+	@JsonIgnore
 	private Set<OrderDetail> orderdetails=new HashSet<>();
 	
 

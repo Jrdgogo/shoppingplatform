@@ -18,6 +18,7 @@
 			/*]]>*/
 		</script>
 		<script>
+			/*<![CDATA[*/
 			$(function() {
 				$(".addrli").on('click', function() {
 					$(this).addClass("addrids");
@@ -25,6 +26,7 @@
 					$(this).children("div").children(" .addr").addClass("selected");
 					$(this).siblings(".addrli").children("div").children(" .addr").removeClass("selected");
 				});
+				
 				$(".settlement").on('click', function() {
 
 					var addrid = $(".addrids").attr('value');
@@ -33,9 +35,9 @@
 						type: "post",
 						url: "/user/order/add.ajax",
 						dataType: "json",
-						/*<![CDATA[*/
+						
 						data: "addrid=" + addrid + "&shopcarid=" + shopcarid,
-						/*]]>*/
+						
 						success: function(data, textStatus, jqXHR) {
 							$("#orderId").text(data.id);
                             $("#outprice").text(data.price);
@@ -49,17 +51,18 @@
 					});
 				});
 				$("#buy").on("click",function(){
-					$('#ticketModal').modal('hide');
+					
 					$.ajax({
 						type: "post",
 						url: "/user/order/defrayOrder.ajax",
 						dataType: "json",
-						/*<![CDATA[*/
 						data: "orderid=" + $("#orderId").text(),
-						/*]]>*/
+						
 						success: function(data, textStatus, jqXHR) {
+							$('#ticketModal').modal('hide');
 							if(data)
 							  alert("支付成功！");
+							window.location.href="/";  
 						},
 						error: function(XMLHttpRequest, textStatus, errorThrown) {
 
@@ -69,6 +72,7 @@
 					});
 				});
 			});
+			/*]]>*/
 		</script>
 		<style type="text/css">
 			.checkout-steps {
@@ -97,15 +101,15 @@
 		<div class="bg">
 			<div class="header bc-e3e4e5 vc">
 				<div class="m0a" style="width: 80%;">
-					<a href="" class="c-f10215 ftr" th:if="${User == null }" th:href="@{/public/welcome.html}">
+					<a href="" class="c-f10215 ftr" data-th-if="${User == null }" th:href="@{/public/welcome.html}">
 						免费注册
 					</a>
-					<a href="" class="mr10 ftr c-999" th:href="${User == null}?@{/public/welcome.html}:''" th:text="${User != null}? '你好,'+${User.username}:'你好,请登录'">
+					<a href="" class="mr10 ftr c-999" th:href="${User == null}?@{/public/welcome.html}:@{/user/userinfo.html}" th:text="${User != null}? '你好,'+${User.username}:'你好,请登录'">
 						你好，请登录
 					</a>
 				</div>
 				<div>
-					<a href="" th:href="@{/}" style="margin-right: 10px; font-size: 18px;">
+					<a href="" class="mr10 ftr c-999"  th:href="@{/}" style="margin-right: 10px; font-size: 18px;">
 						首页
 					</a>
 				</div>
