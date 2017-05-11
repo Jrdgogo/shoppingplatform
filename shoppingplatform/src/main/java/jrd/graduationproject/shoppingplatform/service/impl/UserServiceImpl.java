@@ -168,7 +168,10 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public List<ShopCar> getUserShopCar(String id) {
-		return shopcarJpa.findAll(new Sort(Sort.Direction.DESC, "createdate"));
+		ShopCar probe=new ShopCar();
+		probe.setUser(userJpa.findOne(id));
+		Example<ShopCar> example=Example.of(probe);
+		return shopcarJpa.findAll(example,new Sort(Sort.Direction.DESC, "createdate"));
 	}
 
 	@Override

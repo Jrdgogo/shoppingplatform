@@ -33,7 +33,6 @@
 				max-width: 500px;
 			}
 			
-			
 			.mao-content {
 				margin: 0 0;
 				margin-top: 20px;
@@ -85,6 +84,9 @@
 						$(this).children('span').hide();
 					}
 				});
+				$('.changeware').on('click', function() {
+
+				});
 
 				$(document).on('click', '#removeselected', function(event) {
 					catagory = null;
@@ -97,14 +99,15 @@
 			});
 		</script>
 		<style type="text/css">
-		  #areas{
-		  	top:10px;
-		  	width: 90%;
-		  	left: 5%;
-		  }
-		  .add{
-		  	border-color: yellow;
-		  }
+			#areas {
+				top: 10px;
+				width: 90%;
+				left: 5%;
+			}
+			
+			.add {
+				border-color: yellow;
+			}
 		</style>
 	</head>
 
@@ -147,7 +150,7 @@
 								</div>
 								<div class="col-md-6">
 									<div style="margin-top: 10px;display: inline;">商品小类：
-										<input name="commodity" type="text" readonly="true" id="catagory" style="width: 280px;"/>
+										<input name="commodity" type="text" readonly="true" id="catagory" style="width: 280px;" />
 									</div>
 								</div>
 							</div>
@@ -171,7 +174,7 @@
 								</div>
 								<div class="col-md-6">
 									<div style="margin-top: 10px;">商品展示图：
-										<input name="file" type="file" placeholder="商品展示图片" style="display: inline-block;"/>
+										<input name="file" type="file" placeholder="商品展示图片" style="display: inline-block;" />
 									</div>
 								</div>
 							</div>
@@ -189,7 +192,7 @@
 				<div class="sortbox mb50" th:each="row :${wares}">
 					<!--放了四个-->
 					<div th:each="ware :${row}" data-th-class="${ware.id==add?'add sortlists p10':'sortlists p10'}" style="width: 200px;height: 200px;">
-						<a href="" class=""><img th:src="@{${ware.photo}}" alt="" class="img-googs" /></a>
+						<a href="javascript::void(0)" data-toggle="modal" data-th-attr="data-target='#sdsd'+${ware.id}" class="changeware"><img th:src="@{${ware.photo}}" alt="" class="img-googs" /></a>
 						<div class="c-f10215 mt5">
 							¥
 							<span class="f18" th:text="${ware.price}">1799.00</span>
@@ -199,11 +202,85 @@
 							<span class="f18" data-th-if="${ware.status==3}" th:text="(未合格)" style="color: red;">1799.00</span>
 						</div>
 						<div class="mt5 f12">
-							<a style="color: black;" href="" class="c-666 describe" title="欢迎上架商品" th:text="${ware.name}+' '+${ware.ware}">荣耀 畅玩6X 4GB 32GB 全网通4G手机 高配版 玫瑰金</a>
+							<a data-toggle="modal" data-th-attr="data-target='#sdsd'+${ware.id}" style="color: black;" href="javascript::void(0)" class="c-666 describe changeware" title="欢迎上架商品" th:text="${ware.name}+' '+${ware.ware}">荣耀 畅玩6X 4GB 32GB 全网通4G手机 高配版 玫瑰金</a>
+						</div>
+						<!-- 模态框（Modal）zc -->
+						<div class="modal fade" data-th-id="'sdsd'+${ware.id}" tabindex="-1" role="dialog" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<!-- 关闭按钮 -->
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+										<h4 class="modal-title" id="myModalLabel-zc">
+                  |更改商品信息
+                </h4>
+									</div>
+									<form class="form-horizontal" role="form" method="post" data-th-action="@{/shop/ware/alter.controller}" enctype="multipart/form-data">
+										<div class="modal-body">
+											<!-- 水平表单 -->
+											<input type="hidden" class="form-control" name="id" placeholder="请输入商品名" data-th-value="${ware.id}" />
+											<div class="form-group">
+												<label for="zcname" class="col-md-3 control-label"><img data-th-src="@{${ware.photo}}" style="width: 50px;height: 50px;"/></label>
+												<div class="col-md-9">
+													<input type="file" class="form-control" name="file" />
+												</div>
+											</div><br/>
+											<div class="form-group">
+												<label for="zcname" class="col-md-3 control-label">商品名：</label>
+												<div class="col-md-9">
+													<input type="text" class="form-control" name="name" placeholder="请输入商品名" data-th-value="${ware.name}" />
+												</div>
+											</div><br/>
+											<div class="form-group">
+												<label for="password-zc" class="col-md-3 control-label">商品描述：</label>
+												<div class="col-md-9">
+													<textarea class="form-control" name="ware" placeholder="请输入商品描述" data-th-text="${ware.ware}" />
+												</div>
+											</div><br/>
+
+											<div class="form-group">
+												<label class="col-md-3 control-label">价格：</label>
+												<div class="col-md-9">
+													<input type="text" class="form-control" name="price" placeholder="请输入价格" data-th-value="${ware.price}" />
+												</div>
+											</div><br/>
+
+										</div>
+										<div class="modal-footer">
+											<input style="background-color: #337AB7; color: white;" type="submit" class="btn btn-default" value="保存信息"></input>
+											<button type="button" class="btn btn-primary" data-dismiss="modal" id="zcclose">关闭</button>
+										</div>
+									</form>
+								</div>
+								<!-- /.modal-content -->
+							</div>
+							<!-- /.modal -->
 						</div>
 					</div>
 				</div>
 			</div>
+			<ul class="pagination" style="float: right;" data-th-if="${page!=null}" data-th-unless="${page.totalPages==0}" th:object="${page}">
+				<!-- 上一页 -->
+				<li class="page-item" data-th-classappend="*{first} ? 'disabled' : ''">
+					<a th:href="*{first} ? 'javascript:void(0)':@{/shop/order/show.action(pagenum=${page.number})}" class="page-link" aria-label="Previous">
+						<span aria-hidden="true">«</span>
+					</a>
+				</li>
+
+				<!-- 迭代生成页码 -->
+				<li class="page-item" data-th-each="i : ${#numbers.sequence(1, page.totalPages)}" data-th-classappend="${(page.number + 1) eq i} ? 'active' : ''">
+					<a class="page-link" th:href="${(page.number + 1) eq i} ?'javascript:void(0)':@{/shop/order/show.action(pagenum=${i})}" th:if="${i}-${page.number}+4 > 0">
+						<span data-th-text="${i}"></span>
+					</a>
+				</li>
+
+				<!-- 下一页 -->
+				<li class="page-item" data-th-classappend="*{last} ? 'disabled' : ''">
+					<a th:href="*{last} ? 'javascript:void(0)':@{/shop/order/show.action(pagenum=${page.number}+2)}" class="page-link" aria-label="Next">
+						<span aria-hidden="true">»</span>
+					</a>
+				</li>
+			</ul>
 		</div>
 	</body>
 

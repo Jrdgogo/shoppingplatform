@@ -25,7 +25,6 @@ function validateNameisHave() {
 	$.ajax({
 		type : "post",
 		url : getRootPath("/home/getUserByName.ajax"),
-		dataType : "json",
 		data : "username=" + username,
 		success : function(data, textStatus, jqXHR) {
 			if (data) {
@@ -57,7 +56,6 @@ function reg() {
 	$.ajax({
 		type : "post",
 		url : getRootPath("/home/registerUser.ajax"),
-		dataType : "json",
 		data : "username=" + username + "&password=" + password + "&pwd=" + pwd
 				+ "&email=" + email + "&code=" + code,
 		success : function(data, textStatus, jqXHR) {

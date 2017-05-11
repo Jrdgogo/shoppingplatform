@@ -189,6 +189,7 @@
 					<a href="" class="mr10 ftr c-999" data-toggle="modal" data-target="#myModal-dlu"> 申请商家入驻</a>
 				</div>
 				<div>
+					<a class="mr10 ftr c-999" th:href="@{/home/logout.action}"><img th:src="@{/images/manage/out.png}" /></a>
 					<a href="" class="mr10 ftr c-999" th:href="@{/user/userinfo.html}" style="margin-right: 10px; font-size: 18px;">
 						刷新
 					</a>
@@ -570,13 +571,13 @@
 							<div class="form-group">
 								<label for="password-zc" class="col-md-3 control-label">真实姓名：</label>
 								<div class="col-md-9">
-									<input type="text" class="form-control" name="realname" placeholder="请输入密码" data-th-value="${User.realname}" />
+									<input type="text" class="form-control" name="realname" placeholder="请输入真实姓名" data-th-value="${User.realname}" />
 								</div>
 							</div><br/>
 							<div class="form-group">
 								<label for="pwdcheck" class="col-md-3 control-label">出生年月：</label>
 								<div class="col-md-9">
-									<input class="Wdate" style="width: 314px;height:32px; border-color: rgb(221, 221, 221);" type="text" name="birth" placeholder="点击选择" readonly="readonly" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd',width:'314'})" data-th-value="${#dates.format(User.birth, 'yyyy-MM-dd')}" />
+									<input class="Wdate" style="width: 314px;height:32px; border-color: rgb(221, 221, 221);" type="text" name="birth" placeholder="点击选择" readonly="readonly" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd',width:'314'})" data-th-value="${User.birth}!=null?${#dates.format(User.birth, 'yyyy-MM-dd')}:''" />
 								</div>
 							</div><br/>
 							<div class="form-group">

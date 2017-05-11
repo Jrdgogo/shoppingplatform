@@ -47,18 +47,9 @@ public class LoginFilter implements Filter {
 		if (flag)
 			flag = sessionHave(session);
 		
-		if(user==null){
-			sessionHave(session);
-		    user = (User) session.getAttribute("User");
-        }
-		
 		if (flag)
 			flag = cookieHave(req, session);
-		    
-		if(user==null){
-			cookieHave(req, session);
-		    user = (User) session.getAttribute("User");
-	    }
+		
 
 		if (flag) {
 			String local = req.getContextPath();

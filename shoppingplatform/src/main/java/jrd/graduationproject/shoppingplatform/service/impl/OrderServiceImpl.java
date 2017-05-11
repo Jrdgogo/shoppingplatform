@@ -38,6 +38,7 @@ import jrd.graduationproject.shoppingplatform.pojo.po.OrderOfSeller;
 import jrd.graduationproject.shoppingplatform.pojo.po.ShopCar;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
 import jrd.graduationproject.shoppingplatform.pojo.po.Ware;
+import jrd.graduationproject.shoppingplatform.pojo.vo.OrderQuery;
 import jrd.graduationproject.shoppingplatform.pojo.vo.PageParam;
 import jrd.graduationproject.shoppingplatform.service.IOrderService;
 import jrd.graduationproject.shoppingplatform.util.GlobalUtil;
@@ -144,7 +145,7 @@ public class OrderServiceImpl implements IOrderService {
 					orderdetails.add(detail);
 			}
 			o.setOrderdetails(orderdetails);
-			orw.add(order);
+			orw.add(o);
 		}
 		if (!orw.isEmpty()) {
 			orw.sort((o1, o2) -> (int) (o1.getCreatedate().getTime() - o2.getCreatedate().getTime()));
@@ -206,16 +207,18 @@ public class OrderServiceImpl implements IOrderService {
 	}
 
 	@Override
-	public Long queryCountByStatus(OrderStatusEnum status) {
+	public Long queryCountByStatus(String id,OrderStatusEnum status) {
 		Order order = new Order();
 		order.setStatus(status);
+		order.setUser(userJpa.findOne(id));
 		Example<Order> example = Example.of(order);
 		return orderJpa.count(example);
 	}
 
 	@Override
-	public Long queryCountByType(Integer type) {
+	public Long queryCountByType(String id,Integer type) {
 		Order order = new Order();
+		order.setUser(userJpa.findOne(id));
 		order.setType("" + type);
 		Example<Order> example = Example.of(order);
 		return orderJpa.count(example);
@@ -341,6 +344,79 @@ public class OrderServiceImpl implements IOrderService {
 		order.setType("1");
 		userJpa.saveAndFlush(user);
 		return order;
+	}
+
+	@Override
+	public Slice<Order> getOrdersBySeller(OrderQuery order, String id, PageParam page) {
+		
+		Sort sort = new Sort(Sort.Direction.DESC, "createdate");
+		Pageable pageable = new PageRequest(page.getPagenum() - 1, page.getPagesize(), sort);
+
+		List<Order> orw = new ArrayList<>();
+
+		OrderOfSeller os = new OrderOfSeller();
+		os.setOrderid(order.getId());
+		os.setSellerid(id);
+		Example<OrderOfSeller> example = Example.of(os);
+		List<OrderOfSeller> orderOfSellers = orderSellerJpa.findAll(example);
+
+		List<String> ids = new ArrayList<>();
+		for (OrderOfSeller orderOfSeller : orderOfSellers)
+			ids.add(orderOfSeller.getOrderid());
+		List<Order> orders = orderJpa.findAll(ids);
+
+		for (Order o : orders) {
+
+			if (order.getStartdate() != null) {
+				if (o.getCreatedate().before(order.getStartdate()))
+					continue;
+			}
+			if (order.getEnddate() != null) {
+				Date d=new Date(order.getEnddate().getTime()+1000*60*60*24);
+				if (o.getCreatedate().after(d))
+					continue;
+			}
+			String type=order.getQuerytype();
+			if(type!=null){
+				if("0".equals(type)&&!OrderStatusEnum.UNPAID.equals(o.getStatus()))
+					continue;
+				if("1".equals(type)&&!OrderStatusEnum.PAYMENT.equals(o.getStatus()))
+					continue;
+				if("2".equals(type)&&!("3".equals(o.getType())||OrderStatusEnum.OK.equals(o.getStatus())))
+					continue;
+				if("3".equals(type)&&!OrderStatusEnum.BACK.equals(o.getStatus()))
+					continue;
+					
+			}
+			Set<OrderDetail> details = o.getOrderdetails();
+			Set<OrderDetail> orderdetails = new HashSet<>();
+			for (OrderDetail detail : details) {
+				String seller = detail.getWare().getSeller();
+				if (id.equals(seller))
+					orderdetails.add(detail);
+			}
+			o.setOrderdetails(orderdetails);
+			orw.add(o);
+		}
+		if (!orw.isEmpty()) {
+			orw.sort((o1, o2) -> (int) (o1.getCreatedate().getTime() - o2.getCreatedate().getTime()));
+			int fi = (page.getPagenum() - 1) * page.getPagesize();
+			int ei = page.getPagenum() * page.getPagesize();
+			if (ei <= orw.size())
+				return new PageImpl<Order>(orw.subList(fi, ei), pageable, orw.size());
+			else if (ei > orw.size() && fi < orw.size())
+				return new PageImpl<Order>(orw.subList(fi, orw.size()), pageable, orw.size());
+			else if (fi >= orw.size())
+				return new PageImpl<Order>(new ArrayList<>(), pageable, orw.size());
+		}
+		return new PageImpl<Order>(orw, pageable, orw.size());
+	}
+
+	@Override
+	public void songda(String orderid) {
+		Order order=orderJpa.findOne(orderid);
+		order.setType("2");
+		orderJpa.saveAndFlush(order);
 	}
 
 

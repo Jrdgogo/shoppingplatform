@@ -7,6 +7,7 @@ import org.springframework.data.domain.Slice;
 
 import jrd.graduationproject.shoppingplatform.pojo.enumfield.OrderStatusEnum;
 import jrd.graduationproject.shoppingplatform.pojo.po.Order;
+import jrd.graduationproject.shoppingplatform.pojo.vo.OrderQuery;
 import jrd.graduationproject.shoppingplatform.pojo.vo.PageParam;
 
 public interface IOrderService {
@@ -20,12 +21,13 @@ public interface IOrderService {
 	Order backOrder(String orderid);
 
 	Slice<Order> getOrdersBySeller(Order order, String id, PageParam page);
+	Slice<Order> getOrdersBySeller(OrderQuery order, String id, PageParam page);
 
 	Order createOrder(String id, String addr, List<String> wares);
 
-	Long queryCountByStatus(OrderStatusEnum status);
+	Long queryCountByStatus(String id, OrderStatusEnum status);
 
-	Long queryCountByType(Integer type);
+	Long queryCountByType(String id, Integer type);
 
 	Slice<Order> getOrdersbyUserId(String id, PageParam page);
 
@@ -36,5 +38,7 @@ public interface IOrderService {
 	Order queryById(String orderId);
 
 	Order defrayOrder(String orderId, String id, String pwd);
+
+	void songda(String orderid);
 
 }

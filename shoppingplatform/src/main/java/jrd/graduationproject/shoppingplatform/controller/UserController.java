@@ -129,7 +129,7 @@ public class UserController {
 	@RequestMapping("/userinfo.html")
 	public String userinfoHtml(Model model,@RequestParam("sessionUserId") String id,PageParam page) {
 		
-		baseOrder(model);
+		baseOrder(id,model);
 		Slice<Order> pages=orderService.getOrdersbyUserId(id,page);
 		model.addAttribute("orders",pages.getContent() );
 		model.addAttribute("page",pages);
@@ -139,10 +139,10 @@ public class UserController {
 		model.addAttribute("ss", "全部状态");
 		return "user/userinfo" ;
 	}
-	private void baseOrder(Model model) {
-		model.addAttribute("UNPAID", orderService.queryCountByStatus(OrderStatusEnum.UNPAID));
-		model.addAttribute("PAYMENT", orderService.queryCountByType(1));
-		model.addAttribute("COMMENT", orderService.queryCountByType(2));
+	private void baseOrder(String id, Model model) {
+		model.addAttribute("UNPAID", orderService.queryCountByStatus(id,OrderStatusEnum.UNPAID));
+		model.addAttribute("PAYMENT", orderService.queryCountByType(id,1));
+		model.addAttribute("COMMENT", orderService.queryCountByType(id,2));
 		model.addAttribute("MAN", SexEnum.MAN);
 		model.addAttribute("WOMEN", SexEnum.WOMEN);
 	}
@@ -151,7 +151,7 @@ public class UserController {
 	public String queryorder(Model model,@RequestParam("sessionUserId") String id,PageParam page,
 			@RequestParam("type") String type,
 			@RequestParam(value="querydate",defaultValue="3") Long querydate) {
-		baseOrder(model);
+		baseOrder(id,model);
 		Date date=new Date();
 		Long time=date.getTime()-querydate*1000*60*60*24*30;
 		date=new Date(time);
@@ -191,7 +191,7 @@ public class UserController {
 		List<Order> orders=new ArrayList<>();
 		orders.add( orderService.queryById(orderId));
 		model.addAttribute("orders",orders);
-		baseOrder(model);
+		baseOrder(id,model);
 		model.addAttribute("page",new PageImpl<>(orders,new PageRequest(0, 10),(long)1));
 		model.addAttribute("type", "0");
 		model.addAttribute("querydate", "3");

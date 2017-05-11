@@ -25,6 +25,7 @@ import jrd.graduationproject.shoppingplatform.pojo.po.Order;
 import jrd.graduationproject.shoppingplatform.pojo.po.Seller;
 import jrd.graduationproject.shoppingplatform.pojo.po.User;
 import jrd.graduationproject.shoppingplatform.pojo.po.Ware;
+import jrd.graduationproject.shoppingplatform.pojo.vo.OrderQuery;
 import jrd.graduationproject.shoppingplatform.pojo.vo.PageParam;
 import jrd.graduationproject.shoppingplatform.pojo.vo.WareQuery;
 import jrd.graduationproject.shoppingplatform.service.IOrderService;
@@ -67,6 +68,7 @@ public class SellerController {
 		query.getOrderby().put("", "CASE status WHEN 0 THEN 1 WHEN 1 THEN 1 WHEN 2 THEN 2 ELSE 3 END");
 		query.setSeller(id);
 		query.setStatus(-1);
+		page.setPagesize(25);
 		Slice<Ware> wares = wareService.getWares(page, query);
 		model.addAttribute("wares", splitWare(wares.getContent()));
 		model.addAttribute("page", wares);
@@ -106,6 +108,28 @@ public class SellerController {
 		Seller seller = wareService.getSeller(id);
 		model.addAttribute("seller", seller);
 		return "shop/order";
+	}
+
+	@RequestMapping(value = "/order/query.action")
+	public String queryOrder(@RequestParam("sessionUserId") String id, OrderQuery order, PageParam page, Model model) {
+
+		Slice<Order> orders = orderService.getOrdersBySeller(order, id, page);
+		model.addAttribute("orders", orders.getContent());
+		model.addAttribute("page", orders);
+		Seller seller = wareService.getSeller(id);
+		model.addAttribute("seller", seller);
+		model.addAttribute("querytype", order.getQuerytype());
+		model.addAttribute("orderid", order.getId());
+		model.addAttribute("startdate", order.getStartdate());
+		model.addAttribute("enddate", order.getEnddate());
+		return "shop/order";
+	}
+	@RequestMapping(value = "/order/songda.action")
+	public String songda(@RequestParam("orderid") String orderid, 
+			@RequestParam("sessionUserId") String id, Order order, PageParam page, Model model) {
+		
+		orderService.songda(orderid);
+		return showOrder(id, order, page, model);
 	}
 
 	@RequestMapping("/{path}.html")
