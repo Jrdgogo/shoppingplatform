@@ -125,6 +125,13 @@
 					if(id != "")
 						window.location.href = "/user/order/settlement.action" + id;
 				});
+				
+				$(".a-search-icon").on('click',function(){
+	    			var key=$(".input-search").val();
+	    			if(!key||key=="")
+	    			   return;
+	    			window.location.href="/public/keyword.action?keyword="+key;
+	    		});
 
 			});
 
@@ -177,7 +184,7 @@
 				<img th:src="@{/img/logo.png}" alt="" class="img-w200" />
 				<div class="ml80 tac" style="display: inline-block;">
 					<input type="text" class="input-search" placeholder="请输入搜索关键词" />
-					<a href="" class="a-search-icon bc-f10215"><img th:src="@{/img/search.png}" alt="" class="" /></a>
+					<a href="javascript:void(0)" class="a-search-icon bc-f10215"><img th:src="@{/img/search.png}" alt="" class="" /></a>
 				</div>
 			</div>
 

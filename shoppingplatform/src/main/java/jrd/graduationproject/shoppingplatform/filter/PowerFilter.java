@@ -49,20 +49,20 @@ public class PowerFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse resp = (HttpServletResponse) response;
+		HttpServletRequest req = (HttpServletRequest) request;//获取request对象
+		HttpServletResponse resp = (HttpServletResponse) response;//获取response对象
 
-		String url = req.getRequestURL().toString();
+		String url = req.getRequestURL().toString();//获取url
 		try {
-			ModuleEnum moduleEnum = ModuleEnum.getAdminByUrl(url);
-			Integer power = moduleEnum.getIndex();
+			ModuleEnum moduleEnum = ModuleEnum.getAdminByUrl(url);//获取该url要访问的模块
+			Integer power = moduleEnum.getIndex();//得到该模块的访问权限
 			// 非开放区
 			if (power > 0) {
-				HttpSession session = req.getSession();
-				User user = (User) session.getAttribute("User");
-				Integer userPower = user.getPower();
-				Integer rolePower = AdminEnum.getModulePowerByRolePower(userPower);
-				if ((power & rolePower) == power) {
+				HttpSession session = req.getSession();//获取session对象
+				User user = (User) session.getAttribute("User");//获取当前用户对象
+				Integer userPower = user.getPower();//获取当前用户具有的角色权限值
+				Integer rolePower = AdminEnum.getModulePowerByRolePower(userPower);//获取当前用户具有的模块访问权限值
+				if ((power & rolePower) == power) {//符合则访问
 					chain.doFilter(request, response);
 					return;
 				}
@@ -73,7 +73,7 @@ public class PowerFilter implements Filter {
 		String local = req.getContextPath();
 		if (!local.endsWith("/"))
 			local = local + "/";
-		resp.sendRedirect(local);
+		resp.sendRedirect(local);//回到主页
 		return;
 	}
 

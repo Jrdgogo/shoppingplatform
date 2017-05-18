@@ -148,6 +148,7 @@ public class GlobalUtil {
 		byte[] bytes = file.getBytes();
 		String dir = md5(file.getName(), get32bitString());
 		URL url=Thread.currentThread().getContextClassLoader().getResource("");
+		System.out.println(url.getFile());
 		String parent = url.getFile()+"static"+root;
 		String firstDir = dir.substring(0, 2);
 		ware.append(firstDir + "/");

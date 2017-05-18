@@ -55,6 +55,18 @@ public class PublicController {
 
 		return "public/phone";
 	}
+	
+	@RequestMapping("/keyword.action")
+	public String wareHtml(
+			@RequestParam(value = "keyword") String keyword, Model model, PageParam page,
+			HttpSession session) {
+        Commodity commodity= wareService.getCommodityByKeyWord(keyword);
+        String id=null;
+        if(commodity!=null){
+        	id=commodity.getId();
+        }
+		return wareHtml("commodity", id, model, page, new Ware(), session);
+	}
 
 	private List<List<Ware>> splitWare(List<Ware> content) {
 		List<List<Ware>> wares = new ArrayList<>();
@@ -194,7 +206,7 @@ public class PublicController {
 	}
 
 	@RequestMapping("/pay.action")
-	public String wareHtml(Model model, @RequestParam("wareid") String id, HttpSession session,PageParam page) {
+	public String payHtml(Model model, @RequestParam("wareid") String id, HttpSession session,PageParam page) {
 		User user = (User) session.getAttribute("User");
 		model.addAttribute("User", user);
 

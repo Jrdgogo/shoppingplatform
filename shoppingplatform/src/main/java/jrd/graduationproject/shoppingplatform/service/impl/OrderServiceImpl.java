@@ -25,6 +25,7 @@ import jrd.graduationproject.shoppingplatform.dao.jpa.OrderSellerJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.ShopCarJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.UserJpa;
 import jrd.graduationproject.shoppingplatform.dao.jpa.UserWareAddrJpa;
+import jrd.graduationproject.shoppingplatform.dao.jpa.WareJpa;
 import jrd.graduationproject.shoppingplatform.dao.mybatis.OrderMapper;
 import jrd.graduationproject.shoppingplatform.dao.mybatis.UserMapper;
 import jrd.graduationproject.shoppingplatform.exception.UserOptionErrorException;
@@ -52,8 +53,8 @@ public class OrderServiceImpl implements IOrderService {
 	private OrderMapper orderMapper;
 	@Autowired
 	private OrderSellerJpa orderSellerJpa;
-	// @Autowired
-	// private WareJpa wareJpa;
+	@Autowired
+	private WareJpa wareJpa;
 	@Autowired
 	private ShopCarJpa shopCarJpa;
 	@Autowired
@@ -87,6 +88,12 @@ public class OrderServiceImpl implements IOrderService {
 		order.setStatus(OrderStatusEnum.PAYMENT);
 		order.setType("1");
 		userJpa.saveAndFlush(user);
+		Set<OrderDetail> orderDetails=order.getOrderdetails();
+		for(OrderDetail detail:orderDetails){
+			Ware ware=detail.getWare();
+			ware.setSales(ware.getSales()+1);
+			wareJpa.saveAndFlush(ware);
+		}
 		return order;
 	}
 

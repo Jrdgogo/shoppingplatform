@@ -10,6 +10,12 @@
 		<script data-th-src="@{/js/jquery-3.1.1.min.js}"></script>
 		<script type="text/javascript">
 			$(function() {
+				$(".a-search-icon").on('click',function(){
+	    			var key=$(".input-search").val();
+	    			if(!key||key=="")
+	    			   return;
+	    			top.location.href="/public/keyword.action?keyword="+key;
+	    		});
 				$(".paynumber").on("click", function() {
 					var text=$(this).text();
 					var number=Number($("#paynumber").val());
@@ -68,7 +74,7 @@
 				<img th:src="@{/img/logo.png}" alt="" class="img-w200" />
 				<div class="ml80 tac" style="display: inline-block;">
 					<input type="text" class="input-search" placeholder="请输入搜索关键词" />
-					<a href="" class="a-search-icon bc-f10215"><img th:src="@{/img/search.png}" alt="" class="" /></a>
+					<a href="javascript:void(0)" class="a-search-icon bc-f10215"><img th:src="@{/img/search.png}" alt="" class="" /></a>
 					<a class="span-shop bc-fff ml30 plr30 c-f10215 b-e3e4e5" th:if="${User !=null}" data-th-href="@{/user/shopcar/Info.action}">
 			    	<img th:src="@{/img/shopping.png}" alt="" class="mr5" />
 			    	我的购物车

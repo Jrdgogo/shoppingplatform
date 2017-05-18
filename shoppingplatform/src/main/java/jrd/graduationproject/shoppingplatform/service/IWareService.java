@@ -48,4 +48,6 @@ public interface IWareService {
 	
 	Slice<Comment> getCommentbyWare(PageParam page,Ware ware);
 
+	Commodity getCommodityByKeyWord(String keyword);
+
 }

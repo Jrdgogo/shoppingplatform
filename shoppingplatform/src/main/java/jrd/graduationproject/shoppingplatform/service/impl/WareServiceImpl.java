@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -193,26 +194,31 @@ public class WareServiceImpl implements IWareService {
 
 	@Override
 	public Slice<Ware> getWares(PageParam page, WareQuery query) {
-		WareExample wareExample = new WareExample();
+		WareExample wareExample = new WareExample();//商品查询的Example对象
 
-		fullSelect(wareExample, query);
+		fullSelect(wareExample, query);//向Example对象中加入查询条件
 
-		OrderSelect(wareExample, query);
+		OrderSelect(wareExample, query);//向Example对象中加入排序条件
 
+		//分页对象
 		Page<Ware> pagehelperPage = PageHelper.startPage(page.getPagenum(), page.getPagesize());
+		//获取商品信息
 		List<Ware> wares = wareMapper.selectByExample(wareExample);
+		//构造jpa的分页对象，用于前端分页
 		Pageable pageable = new PageRequest(page.getPagenum() - 1, page.getPagesize());
 		Slice<Ware> slice = new PageImpl<>(wares, pageable, pagehelperPage.getTotal());
 		return slice;
 	}
 
 	private void OrderSelect(WareExample wareExample, WareQuery query) {
+		//获取要排序字段的集合
 		Map<String, String> orderMap = query.getOrderby();
 		if (orderMap == null || orderMap.isEmpty())
 			return;
 		StringBuffer sb = new StringBuffer();
 		Iterator<Entry<String, String>> it = orderMap.entrySet().iterator();
 		Integer index = 0;
+		//遍历排序字段，组装sql中 order by语句
 		while (it.hasNext()) {
 			if (index != 0)
 				sb.append(",");
@@ -223,42 +229,57 @@ public class WareServiceImpl implements IWareService {
 			index++;
 		}
 		sb.append(" ");
+		//设置排序
 		wareExample.setOrderByClause(sb.toString());
 	}
 
 	private void fullSelect(WareExample wareExample, WareQuery ware) {
-		WareExample.Criteria criteria = wareExample.or();
+		WareExample.Criteria criteria = wareExample.or();//制造criteria对象
 
+		//若状态为空，则sql语句添加 AND status = 1为默认查询
 		if (ware.getStatus() == null)
 			criteria.andStatusEqualTo(1);
+		//若状态不为空，则sql语句添加 AND status = ?
 		else if (ware.getStatus() > -1)
 			criteria.andStatusEqualTo(ware.getStatus());
+		//若id不为空，则sql语句添加 AND id = ?
 		if (ware.getId() != null)
 			criteria.andIdEqualTo(ware.getId());
+		//若商品名不为空，则sql语句添加 AND name = ?
 		if (ware.getName() != null)
-			criteria.andIdEqualTo(ware.getName());
+			criteria.andNameEqualTo(ware.getName());
+		//若门类不为空，则sql语句添加 AND category = ?
 		if (ware.getCategory() != null)
 			criteria.andCategoryEqualTo(ware.getCategory());
+		//若大类不为空，则sql语句添加 AND type = ?
 		if (ware.getType() != null)
 			criteria.andTypeEqualTo(ware.getType());
+		//若分类不为空，则sql语句添加 AND commodity = ?
 		if (ware.getCommodity() != null)
 			criteria.andCommodityEqualTo(ware.getCommodity());
+		//若商家不为空，则sql语句添加 AND seller = 1
 		if (ware.getSeller() != null)
 			criteria.andSellerEqualTo(ware.getSeller());
+		//价格范围查询处理
 		Map<String, Between> between = ware.getPricebetween();
+		//价格为空，查询全部价格商品
 		if (between == null || between.isEmpty())
 			return;
+		//价格不为空，则sql语句添加 AND price > ? AND price < ?
 		Iterator<Entry<String, Between>> it = between.entrySet().iterator();
 		while (it.hasNext()) {
 			Entry<String, Between> entry = it.next();
 			String path = entry.getKey();
 			Between values = entry.getValue();
 			if ("price".equals(path)) {
+				//价格上下限约束
 				if (values.getLessthen() != null && values.getGreaterthen() != null)
 					criteria.andPriceBetween(Double.valueOf(values.getGreaterthen()),
 							Double.valueOf(values.getLessthen()));
+				//价格上限约束
 				else if (values.getLessthen() != null)
 					criteria.andPriceLessThan(Double.valueOf(values.getLessthen()));
+				//价格下限约束
 				else if (values.getGreaterthen() != null)
 					criteria.andPriceGreaterThan(Double.valueOf(values.getGreaterthen()));
 			}
@@ -315,6 +336,15 @@ public class WareServiceImpl implements IWareService {
 		probe.setWare(ware);
 		Example<Comment> example = Example.of(probe);
 		return commentJpa.findAll(example, pageable);
+	}
+
+	@Override
+	public Commodity getCommodityByKeyWord(String keyword){
+		List<Commodity> commodities=commodityJpa.findBySearchkeyLike(keyword);
+		if(commodities==null||commodities.isEmpty())
+			return null;
+		int i=new Random().nextInt(commodities.size());
+		return commodities.get(i);
 	}
 
 }

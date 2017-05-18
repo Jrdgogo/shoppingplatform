@@ -55,6 +55,7 @@ public class LoginFilter implements Filter {
 			String local = req.getContextPath();
 			if (!local.endsWith("/"))
 				local = local + "/";
+			local+="public/welcome.html";
 			resp.sendRedirect(local);
 			return;
 		}
